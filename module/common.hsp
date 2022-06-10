@@ -1,0 +1,9 @@
+
+// デバッグ時のみコンパイル
+#if isDebug
+	exist "hsptmp":if strsize!-1:delete "hsptmp"
+	exist "obj":if strsize!-1:delete "obj"
+	exist "packfile":if strsize!-1:delete "packfile"
+	exist "hsptmp.exe":if strsize!-1:delete "hsptmp.exe"
+	exist "start.ax":if strsize!-1:delete "start.ax"
+#endif

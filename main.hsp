@@ -1,0 +1,27 @@
+
+// 定数などを定義
+#include "./module/_define.hsp"
+
+// アプリケーションの設定
+#define global isDebug true
+
+// 各パーツの読み込み
+#include "./module/common.hsp"
+#include "./module/backup.hsp"
+#include "./module/color_load.hsp"
+#include "./module/color_window.hsp"
+#include "./module/create_object.hsp"
+#include "./module/create_window.hsp"
+#include "./module/list_window.hsp"
+#include "./module/memo_load.hsp"
+#include "./module/memo_save.hsp"
+#include "./module/memo_create.hsp"
+#include "./module/setting_load.hsp"
+#include "./module/setting_save.hsp"
+
+// 起動時処理
+
+// オブジェクト生成
+
+// メモ読み込み
+
