@@ -1,0 +1,141 @@
+
+// メモ設定
+#const global MinMemoWidth 640
+#const global MinMemoHeight 480
+
+// メモ管理モジュール
+#module MOD_MEMO jsonText, path, text, x, y, w, h, wid
+
+// コンストラクタ（infoはjson文字列）
+#modinit str _jsonText
+    jsonText = _jsonText
+
+    // JSON形式を開く
+    jsonopen@ jsonPtr, jsonText
+
+    // 読み込み
+    jsongets@ path, "path", jsonPtr
+    jsongeti@ x, "x", jsonPtr
+    jsongeti@ y, "y", jsonPtr
+    jsongeti@ w, "w", jsonPtr
+    jsongeti@ h, "h", jsonPtr
+
+    // JSONを閉じる
+    jsonclose@
+
+    // 読み込み
+    notesel text
+    noteload path
+    noteunsel
+
+    // ウィンドウ位置・大きさ修正
+    w = limit(w, MinMemoWidth, w)
+    h = limit(h, MinMemoHeight, h)
+
+    // ウィンドウ生成
+    wid = OverrapBgWin(x, y, w, h, *OnResize, *OnWidthChange)
+    gsel wid, 1
+	gosub *OnResize
+
+    return
+
+#modcfunc WidthChange
+#define LEFT		0x00000001
+#define RIGHT		0x00000002
+#define TOP			0x00000004
+#define BOTTOM		0x00000008
+#define CaptionHeight ButtonSize
+#define BORDERWIDTH 4
+
+    // 処理するウィンドウ
+    gsel wid
+
+    // 座標
+    mposx = ginfo_mx - ginfo_wx1
+    mposy = ginfo_my - ginfo_wy1
+
+    // マウスが範囲外なら別ウィンドウ
+    // [TODO] 非アクティブ時の幅調節
+    if (mposx < 0 || mposx > ginfo_winx || mposy < 0 || mposy > ginfo_winy) {
+        return HTCAPTION
+    }
+
+    // マウスのポジション
+    dim area
+    if (mposx <= BORDERWIDTH)             : area |= LEFT
+    if (mposx >= ginfo_winx - BORDERWIDTH): area |= RIGHT
+    if (mposy <= BORDERWIDTH)             : area |= TOP
+    if (mposy >= ginfo_winy - BORDERWIDTH): area |= BOTTOM
+
+    // 各方向ごとの処理
+    if (area & LEFT) {
+        if (area & TOP)    : return HTTOPLEFT
+        if (area & BOTTOM) : return HTBOTTOMLEFT
+        return HTLEFT
+    }
+    if (area & RIGHT) {
+        if (area & TOP)    : return HTTOPRIGHT
+        if (area & BOTTOM) : return HTBOTTOMRIGHT
+        return HTRIGHT
+    }
+    if (area & TOP)    : return HTTOP
+    if (area & BOTTOM) : return HTBOTTOM
+
+    // マウス座標がタイトルバーなら移動
+    if (mposy <= CaptionHeight) : return HTCAPTION
+
+
+    return 0
+
+// 再描画
+#modfunc Resize
+
+    // 処理するウィンドウ
+    gsel wid
+
+    // 仮
+    cls 2
+	color 100, 100, 100
+	boxf 0, 0, ginfo_winx, CAPTIONHEIGHT
+	color 255, 255, 255
+	pos 15, 4
+	font "", 22
+	mes "たいとるばー"
+
+    return
+
+// ゲッター
+#modcfunc getWid
+    return wid
+
+// ---------------------------------------------------------------------
+// 画面リサイズ時＋初期化表示
+*OnResize
+
+    foreach memo
+        // アクティブウィンドウを探す
+        if(ginfo(2) != getWid(memo.cnt)){
+            continue
+        }
+
+        // リサイズ時の処理
+        Resize memo.cnt
+        break
+    loop
+    return
+
+// 画面リサイズ用の動き
+*OnWidthChange
+    n = HTCAPTION
+    foreach memo
+        // アクティブウィンドウを探す
+        if(ginfo(2) != getWid(memo.cnt)){
+            continue
+        }
+
+        // リサイズ用の処理
+        n = WidthChange(memo.cnt)
+        break
+    loop
+    return n
+#global

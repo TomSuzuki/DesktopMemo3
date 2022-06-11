@@ -1,6 +1,7 @@
 // コンパイルオプション
 #include "hsp3utf.as"
 #cmpopt utf8 1
+#cmpopt optcode 0	// [TODO] モジュールの作成が終わったら最適化する（ONにすると作成途中のモジュールがうまく動かない）
 #bootopt utf8 1
 
 // ライブラリの読み込み
@@ -14,6 +15,13 @@
 #define global isDebug true
 #define global appTitle "Desktop Memo 3"
 #define global colorSetting "./color.json"
+#define global memoPath "./memo/*.json" 
+
+// グローバル変数
+#define global memo _memo@
+
+// メモの定義
+dimtype memo, vartype("struct")
 
 // 各パーツの読み込み
 #include "./module/common.hsp"
@@ -44,6 +52,6 @@
 
 
 // メモ読み込み
-	LoadAllMemo
+	LoadAllMemo memoPath
 
 

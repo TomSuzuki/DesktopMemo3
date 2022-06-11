@@ -6,3 +6,25 @@
 // マクロ
 #define global ctype decRGB(%1) %1>>16 & 0xFF,%1>>8 & 0xFF,%1 & 0xFF
 #define global ctype hexBGR(%1) ((%1 & 0xFF)<<16 | (%1>>8 & 0xFF)<<8 | (%1>>16 & 0xFF))
+
+// WINAPI
+#define global WM_SIZE			0x0005
+#define global WM_NCHITTEST		0x0084
+#define global WM_ACTIVATE      0x0006
+
+// 画面回り
+#define global HTLEFT			0x000A
+#define global HTRIGHT			0x000B
+#define global HTTOP			0x000C
+#define global HTTOPLEFT		0x000D
+#define global HTTOPRIGHT		0x000E
+#define global HTBOTTOM			0x000F
+#define global HTBOTTOMLEFT	    0x0010
+#define global HTBOTTOMRIGHT	0x0011
+#define global HTCLIENT			0x0001
+#define global HTCAPTION		0x0002
+
+
+
+
+

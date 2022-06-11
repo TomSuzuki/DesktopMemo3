@@ -42,6 +42,9 @@
         newmod color_obj, MOD_COLOR_OBJ, int(text), int(theme), int(box)
     loop
 
+    // JSONを閉じる
+    jsonclose@
+
     return
 
 #global

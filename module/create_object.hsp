@@ -1,7 +1,4 @@
 
-// ボタンバッファ
-#define global BufferButton _BufferButton@
-
 // ボタンのファイル
 #define global PathAdd "./img/add.gif"
 #define global PathCol "./img/col.gif"
@@ -35,7 +32,7 @@
 #define global ButtonMouseOverColor  0xAAAAAA
 
 // ボタン関連の処理
-#module
+#module AREA_BUTTON
 // ボタン画像の作成
 #deffunc CreateButton
 

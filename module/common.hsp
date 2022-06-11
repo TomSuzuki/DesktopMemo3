@@ -43,3 +43,30 @@
 	return g
 
 #global
+
+#module
+// 可変枠無しウィンドウ（非表示生成）
+#defcfunc OverrapBgWin int x, int y, int w, int h, label _resize, label _widthChange
+
+	// 取得
+	n = ginfo_sel
+	g = ginfo_newid
+
+	// 生成
+	oncmd 0
+	bgscr g, ginfo_dispx, ginfo_dispy, screen_hide, x, y
+	width w, h
+
+	// 登録
+	oncmd gosub _resize, WM_SIZE
+	oncmd gosub _widthChange, WM_NCHITTEST
+	oncmd 1
+
+	// 戻す
+	gsel n
+
+	return g
+
+#global
+
+
