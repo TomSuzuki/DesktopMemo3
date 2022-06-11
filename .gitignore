@@ -7,3 +7,7 @@ obj
 
 # vscode
 .vscode
+
+memo/*
+note/*
+trash/*

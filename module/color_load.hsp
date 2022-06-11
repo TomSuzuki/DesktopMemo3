@@ -1,0 +1,47 @@
+
+// 色管理モジュール
+#module MOD_COLOR_OBJ text, theme, box
+// コンストラクタ
+#modinit int _text, int _theme, int _box
+    text = _text
+    theme = _theme
+    box = _box
+    return
+
+// ゲッター
+#modcfunc getTextColor
+    return text
+#modcfunc getThemeColor
+    return theme
+#modcfunc getBoxColor
+    return box
+#global
+
+// 色関連の読み込み処理
+#module
+// 色の読み込み
+#deffunc LoadColor str fname
+
+    // 読み込み
+    notesel jsonText
+    noteload fname
+    noteunsel
+
+    // 色管理モジュール初期化
+    dimtype color_obj, vartype("struct")
+
+    // JSON形式を開く
+    jsonopen@ jsonPtr, jsonText
+    
+    // JSONから読み込み（モジュール変数の順番は保証されるはず）
+    repeat 8
+        jsongetobj@ nowPtr, str(cnt), jsonPtr
+        jsongets@ text, "text", nowPtr
+        jsongets@ theme, "theme", nowPtr
+        jsongets@ box, "box", nowPtr
+        newmod color_obj, MOD_COLOR_OBJ, int(text), int(theme), int(box)
+    loop
+
+    return
+
+#global

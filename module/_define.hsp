@@ -1,5 +1,8 @@
 
-// �萔
+// 定数
 #const global true 1
 #const global false 0
 
+// マクロ
+#define global ctype decRGB(%1) %1>>16 & 0xFF,%1>>8 & 0xFF,%1 & 0xFF
+#define global ctype hexBGR(%1) ((%1 & 0xFF)<<16 | (%1>>8 & 0xFF)<<8 | (%1>>16 & 0xFF))

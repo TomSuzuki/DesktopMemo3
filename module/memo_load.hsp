@@ -1,0 +1,7 @@
+
+// メモの読み込み処理
+#module
+// メモの読み込み（すべて）
+#deffunc LoadAllMemo
+    return
+#global

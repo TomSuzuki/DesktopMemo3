@@ -1,5 +1,5 @@
 
-// �f�o�b�O���̂݃R���p�C��
+// デバッグ時のみコンパイル
 #if isDebug
 	exist "hsptmp":if strsize!-1:delete "hsptmp"
 	exist "obj":if strsize!-1:delete "obj"
@@ -7,3 +7,39 @@
 	exist "hsptmp.exe":if strsize!-1:delete "hsptmp.exe"
 	exist "start.ax":if strsize!-1:delete "start.ax"
 #endif
+
+// 命令定義・関数定義
+#module
+// MakeDirectory ...ディレクトリが無い場合に作成します（一階層上までないと失敗します？）。
+#deffunc MakeDirectory str p1
+	dirlist list,p1,5
+	if(stat == 0){
+		mkdir p1
+	}
+	return
+
+// NewBuffer ...新しいバッファを作成する。戻り値はバッファID。
+#defcfunc NewBuffer int p1,int p2
+	// 取得
+	n = ginfo_sel
+	g = ginfo_newid
+
+	// メイン
+	screen g,p1,p2,screen_fixedsize+screen_hide
+	gsel n
+
+	return g
+
+// ImgLoad ...画像をロードし、バッファIDを返す。
+#defcfunc ImgLoad str p1
+	// 取得
+	n = ginfo_sel
+	g = ginfo_newid
+	file = p1
+
+	// メイン
+	buffer g:picload file
+	gsel n
+	return g
+
+#global

@@ -1,11 +1,21 @@
+// ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+#include "hsp3utf.as"
+#cmpopt utf8 1
+#bootopt utf8 1
 
-// ’è”‚È‚Ç‚ğ’è‹`
+// ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®èª­ã¿è¾¼ã¿
+#include "./hspext.as"
+#include "./hspinet.as"
+
+// å®šæ•°ãªã©ã‚’å®šç¾©
 #include "./module/_define.hsp"
 
-// ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚Ìİ’è
+// ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®è¨­å®š
 #define global isDebug true
+#define global appTitle "Desktop Memo 3"
+#define global colorSetting "./color.json"
 
-// Šeƒp[ƒc‚Ì“Ç‚İ‚İ
+// å„ãƒ‘ãƒ¼ãƒ„ã®èª­ã¿è¾¼ã¿
 #include "./module/common.hsp"
 #include "./module/backup.hsp"
 #include "./module/color_load.hsp"
@@ -13,15 +23,27 @@
 #include "./module/create_object.hsp"
 #include "./module/create_window.hsp"
 #include "./module/list_window.hsp"
+#include "./module/memo.hsp"
 #include "./module/memo_load.hsp"
 #include "./module/memo_save.hsp"
 #include "./module/memo_create.hsp"
 #include "./module/setting_load.hsp"
 #include "./module/setting_save.hsp"
+#include "./module/app_initialize.hsp"
 
-// ‹N“®ˆ—
+// èµ·å‹•æ™‚å‡¦ç†
+	AppInitialize
 
-// ƒIƒuƒWƒFƒNƒg¶¬
+// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
+	CreateButton
 
-// ƒƒ‚“Ç‚İ‚İ
+// è‰²æƒ…å ±ã®èª­ã¿è¾¼ã¿
+	LoadColor colorSetting
+
+// ãƒ‘ãƒ¬ãƒƒãƒˆã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ç”Ÿæˆ
+
+
+// ãƒ¡ãƒ¢èª­ã¿è¾¼ã¿
+	LoadAllMemo
+
 

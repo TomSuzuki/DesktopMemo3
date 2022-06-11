@@ -1,0 +1,74 @@
+
+// ボタンバッファ
+#define global BufferButton _BufferButton@
+
+// ボタンのファイル
+#define global PathAdd "./img/add.gif"
+#define global PathCol "./img/col.gif"
+#define global PathDel "./img/del.gif"
+#define global PathPinT "./img/PinT.gif"
+#define global PathPinF "./img/PinF.gif"
+
+// ボタンのサイズ（正方形）
+#const global ButtonSize 32
+
+// ボタンのY場所、X座標は常に0
+#const global PosButtonAddY              ButtonSize*0
+#const global PosButtonAddClickY         ButtonSize*1
+#const global PosButtonAddMouseOverY     ButtonSize*2
+#const global PosButtonColY              ButtonSize*3
+#const global PosButtonColClickY         ButtonSize*4
+#const global PosButtonColMouseOverY     ButtonSize*5
+#const global PosButtonDelY              ButtonSize*6
+#const global PosButtonDelClickY         ButtonSize*7
+#const global PosButtonDelMouseOverY     ButtonSize*8
+#const global PosButtonPinTY             ButtonSize*9
+#const global PosButtonPinTClickY        ButtonSize*10
+#const global PosButtonPinTMouseOverY    ButtonSize*11
+#const global PosButtonPinFY             ButtonSize*12
+#const global PosButtonPinFClickY        ButtonSize*13
+#const global PosButtonPinFMouseOverY    ButtonSize*14
+
+// ボタン色
+#define global ButtonColor           0xCCCCCC
+#define global ButtonClickColor      0xFFFFFF
+#define global ButtonMouseOverColor  0xAAAAAA
+
+// ボタン関連の処理
+#module
+// ボタン画像の作成
+#deffunc CreateButton
+
+    // バッファの作成
+    BufferButton = NewBuffer(ButtonSize*2, ButtonSize*15)
+
+    // 画像のロード
+    imgAdd = ImgLoad(PathAdd)
+    imgCol = ImgLoad(PathCol)
+    imgDel = ImgLoad(PathDel)
+    imgPinT = ImgLoad(PathPinT)
+    imgPinF = ImgLoad(PathPinF)
+
+    // ボタン色の設定（通常、押し下げ、マウスオーバー）
+    gsel BufferButton
+    repeat 5
+        y = cnt*ButtonSize*3
+        color decRGB(ButtonColor)           :boxf 0,y+ButtonSize*0,ButtonSize,y+ButtonSize*1
+        color decRGB(ButtonClickColor)      :boxf 0,y+ButtonSize*1,ButtonSize,y+ButtonSize*2
+        color decRGB(ButtonMouseOverColor)  :boxf 0,y+ButtonSize*2,ButtonSize,y+ButtonSize*3
+    loop
+
+    // 画像の配置
+    gmode 0,ButtonSize,ButtonSize
+    repeat 3
+        pos ButtonSize,PosButtonAddY+cnt*ButtonSize:gcopy imgAdd
+        pos ButtonSize,PosButtonColY+cnt*ButtonSize:gcopy imgCol
+        pos ButtonSize,PosButtonDelY+cnt*ButtonSize:gcopy imgDel
+        pos ButtonSize,PosButtonPinTY+cnt*ButtonSize:gcopy imgPinT
+        pos ButtonSize,PosButtonPinFY+cnt*ButtonSize:gcopy imgPinF
+    loop
+
+    return
+
+// ボタンイメージの作成
+#global
