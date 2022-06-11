@@ -18,7 +18,8 @@
 #define global appTitle "Desktop Memo 3"
 #define global appSetting "./setting.json"
 #define global colorSetting "./color.json"
-#define global memoPath "./memo/*.json" 
+#define global memoFileMask "./memo/*.json" 
+#define global trashDir "./trash/" 
 
 // グローバル変数
 #define global memo _memo@
@@ -59,6 +60,6 @@ dimtype memo, vartype("struct")
 
 
 // メモ読み込み
-	LoadAllMemo memoPath
+	LoadAllMemo memoFileMask
 
 

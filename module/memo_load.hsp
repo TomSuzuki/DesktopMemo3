@@ -64,7 +64,7 @@
     }
     
     // メモウィンドウの作成（モジュール変数はmemo.hspでグローバル定義）
-    newmod memo, MOD_MEMO, jsonText
+    newmod memo, MOD_MEMO, fname, jsonText
 
     return 0
 #global

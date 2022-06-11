@@ -4,7 +4,7 @@
 #const global MinMemoHeight 240
 
 // メモ管理モジュール
-#module MOD_MEMO jsonText, path, text, x, y, w, h, wid, colorId, btnId_Add, btnId_Col, btnId_Pin, btnId_Del, isPin, textAreaId, hMesbox, hBrush
+#module MOD_MEMO jsonText, memoPath, path, text, x, y, w, h, wid, colorId, btnId_Add, btnId_Col, btnId_Pin, btnId_Del, isPin, textAreaId, hMesbox, hBrush
 #uselib "user32"
     #cfunc GetWindowLong "GetWindowLongA" int, int
     #func SetWindowLong "SetWindowLongA" int, int, int
@@ -26,7 +26,8 @@
 #define CaptionHeight ButtonSize
 #define BORDERWIDTH 4
 // コンストラクタ（infoはjson文字列）
-#modinit str _jsonText
+#modinit str _memoPath, str _jsonText
+    memoPath = _memoPath
     jsonText = _jsonText
 
     // JSON形式を開く
@@ -126,10 +127,10 @@
     if(btnId_Del != 0):clrobj btnId_Del, btnId_Del
 
     // ボタンの配置
-    CreateButtonImage ButtonTypeAdd, colorId :pos ButtonSize*0,0 :button gosub "",*OnNewWindow@  :btnId_Add = stat
-    CreateButtonImage ButtonTypeCol, colorId :pos ButtonSize*1,0 :button gosub "",*OnNewWindow@  :btnId_Col = stat
-    CreateButtonImage ButtonTypePinT+1-isPin, colorId :pos ButtonSize*2,0 :button gosub "",*OnButtonPin  :btnId_Pin = stat
-    CreateButtonImage ButtonTypeDel, colorId :pos ginfo_winx-ButtonSize,0 :button gosub "",*OnNewWindow@  :btnId_Del = stat
+    CreateButtonImage ButtonTypeAdd, colorId            :pos ButtonSize*0,0         :button gosub "",*OnNewWindow@  :btnId_Add = stat
+    CreateButtonImage ButtonTypeCol, colorId            :pos ButtonSize*1,0         :button gosub "",*OnNewWindow@  :btnId_Col = stat
+    CreateButtonImage ButtonTypePinT+1-isPin, colorId   :pos ButtonSize*2,0         :button gosub "",*OnButtonPin   :btnId_Pin = stat
+    CreateButtonImage ButtonTypeDel, colorId            :pos ginfo_winx-ButtonSize,0:button gosub "",*OnButtonDel   :btnId_Del = stat
 
     // テキストエリアの配置
     padding = 5
@@ -169,6 +170,26 @@
     gsel wid, 1+isPin
     return
 
+
+// メモの削除
+#modfunc DelMemo
+
+    // ファイルの移動
+    bcopy memoPath, trashDir + getpath(memoPath, 8)
+    delete memoPath
+
+    // ウィドウを非表示
+    gsel wid, -1
+
+    // メモリの開放
+    DeleteObject hBrush
+    buffer wid,1,1,2
+
+    // 削除
+    delmod thismod
+
+    return
+
 // テキストエリアの処理
 #modcfunc TextArea int _lparam, int _wparam
 	if hMesbox = _lparam {
@@ -199,6 +220,20 @@
         if(n != 0):break
     loop
     return n
+
+// 削除ボタンの処理
+*OnButtonDel
+    foreach memo
+        // アクティブウィンドウを探す
+        if(ginfo(2) != getWid(memo.cnt)){
+            continue
+        }
+
+        // ピン止めの処理
+        DelMemo memo.cnt
+        break
+    loop
+    return
 
 // ピン止めボタンの処理
 *OnButtonPin
