@@ -4,7 +4,7 @@
 #const global MinMemoHeight 240
 
 // メモ管理モジュール
-#module MOD_MEMO jsonText, path, text, x, y, w, h, wid, colorId, btnId_Add, btnId_Col, btnId_Pin, btnId_Del
+#module MOD_MEMO jsonText, path, text, x, y, w, h, wid, colorId, btnId_Add, btnId_Col, btnId_Pin, btnId_Del, isPin
 #define LEFT		0x00000001
 #define RIGHT		0x00000002
 #define TOP			0x00000004
@@ -25,6 +25,7 @@
     jsongeti@ w, "w", jsonPtr
     jsongeti@ h, "h", jsonPtr
     jsongeti@ colorId, "color_id", jsonPtr
+    jsongeti@ isPin, "pin", jsonPtr
 
     // JSONを閉じる
     jsonclose@
@@ -43,7 +44,7 @@
 
     // ウィンドウ生成
     wid = OverrapBgWin(x, y, w, h, *OnResize, *OnWidthChange)
-    gsel wid, 1
+    gsel wid, 1+isPin
 	gosub *OnResize
 
     return
@@ -114,13 +115,29 @@
     // ボタンの配置
     CreateButtonImage ButtonTypeAdd, colorId :pos ButtonSize*0,0 :button gosub "",*OnNewWindow@  :btnId_Add = stat
     CreateButtonImage ButtonTypeCol, colorId :pos ButtonSize*1,0 :button gosub "",*OnNewWindow@  :btnId_Col = stat
-    CreateButtonImage ButtonTypePinT, colorId :pos ButtonSize*2,0 :button gosub "",*OnNewWindow@  :btnId_Pin = stat
+    CreateButtonImage ButtonTypePinT+1-isPin, colorId :pos ButtonSize*2,0 :button gosub "",*OnButtonPin  :btnId_Pin = stat
     CreateButtonImage ButtonTypeDel, colorId :pos ginfo_winx-ButtonSize,0 :button gosub "",*OnNewWindow@  :btnId_Del = stat
 
     // テキストエリアの配置
+    // resizeobj
+
+    // メモの更新
+    saveMemo thismod
 
     redraw 1
 
+    return
+
+// ピン止め処理
+#modfunc Pin
+    isPin = isPin == false
+    Resize thismod
+    if(isPin):gsel wid, 2
+    return
+
+// メモの保存
+#modfunc saveMemo
+    await
     return
 
 // ゲッター
@@ -128,9 +145,22 @@
     return wid
 
 // ---------------------------------------------------------------------
+// ピン止めボタンの処理
+*OnButtonPin
+    foreach memo
+        // アクティブウィンドウを探す
+        if(ginfo(2) != getWid(memo.cnt)){
+            continue
+        }
+
+        // ピン止めの処理
+        Pin memo.cnt
+        break
+    loop
+    return
+
 // 画面リサイズ時＋初期化表示
 *OnResize
-
     foreach memo
         // アクティブウィンドウを探す
         if(ginfo(2) != getWid(memo.cnt)){
