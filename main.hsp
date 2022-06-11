@@ -8,6 +8,7 @@
 #include "./user32.as"
 #include "./hspext.as"
 #include "./hspinet.as"
+#include "./obj.as"
 
 // 定数などを定義
 #include "./module/_define.hsp"

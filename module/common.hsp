@@ -59,7 +59,7 @@
 
 	// 影
 	GetClassLong hwnd,GCL_STYLE
-	SetClassLong hwnd,GCL_STYLE,stat|CS_DROPSHADOW
+	SetClassLong hwnd,GCL_STYLE, stat | CS_DROPSHADOW
 
 	// 登録
 	oncmd gosub _resize, WM_SIZE

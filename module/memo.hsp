@@ -4,7 +4,7 @@
 #const global MinMemoHeight 240
 
 // メモ管理モジュール
-#module MOD_MEMO jsonText, path, text, x, y, w, h, wid, colorId, btnId_Add, btnId_Col, btnId_Pin, btnId_Del, isPin
+#module MOD_MEMO jsonText, path, text, x, y, w, h, wid, colorId, btnId_Add, btnId_Col, btnId_Pin, btnId_Del, isPin, textAreaId
 #define LEFT		0x00000001
 #define RIGHT		0x00000002
 #define TOP			0x00000004
@@ -60,7 +60,7 @@
 
     // マウスが範囲外なら別ウィンドウ
     // [TODO] 非アクティブ時の幅調節
-    if (mposx < 0 || mposx > ginfo_winx || mposy < 0 || mposy > ginfo_winy) {
+    if (mposx < -BORDERWIDTH || mposx > ginfo_winx+BORDERWIDTH || mposy < -BORDERWIDTH || mposy > ginfo_winy+BORDERWIDTH) {
         return HTCAPTION
     }
 
@@ -88,7 +88,6 @@
     // マウス座標がタイトルバーなら移動
     if (mposy <= CaptionHeight) : return HTCAPTION
 
-
     return 0
 
 // 再描画
@@ -104,13 +103,13 @@
 
     // 背景色
 	color decRGB(getColor(colorId, ColorTypeTheme))
-	boxf 0, 0, ginfo_winx, CaptionHeight
+	boxf
 
     // ボタンの初期化
-    if(btnId_Add != 0):clrobj btnId_Add
-    if(btnId_Col != 0):clrobj btnId_Col
-    if(btnId_Pin != 0):clrobj btnId_Pin
-    if(btnId_Del != 0):clrobj btnId_Del
+    if(btnId_Add != 0):clrobj btnId_Add, btnId_Add
+    if(btnId_Col != 0):clrobj btnId_Col, btnId_Col
+    if(btnId_Pin != 0):clrobj btnId_Pin, btnId_Pin
+    if(btnId_Del != 0):clrobj btnId_Del, btnId_Del
 
     // ボタンの配置
     CreateButtonImage ButtonTypeAdd, colorId :pos ButtonSize*0,0 :button gosub "",*OnNewWindow@  :btnId_Add = stat
@@ -119,7 +118,16 @@
     CreateButtonImage ButtonTypeDel, colorId :pos ginfo_winx-ButtonSize,0 :button gosub "",*OnNewWindow@  :btnId_Del = stat
 
     // テキストエリアの配置
-    // resizeobj
+    padding = 5
+    if(textAreaId == 0){
+        // [TODO] テキストエリアの文字設定
+        pos padding, ButtonSize+padding
+        mesbox text, ginfo_winx-padding*2, ginfo_winy-padding*2-ButtonSize, 1, -1
+        textAreaId = stat
+    }else{
+        size = ginfo_winx-padding*2, ginfo_winy-padding*2-ButtonSize, padding, ButtonSize+padding
+        resizeobj textAreaId, size, 0
+    }
 
     // メモの更新
     saveMemo thismod
@@ -132,7 +140,7 @@
 #modfunc Pin
     isPin = isPin == false
     Resize thismod
-    if(isPin):gsel wid, 2
+    gsel wid, 1+isPin
     return
 
 // メモの保存
