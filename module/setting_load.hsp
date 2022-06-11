@@ -1,0 +1,24 @@
+
+// アプリケーションの設定を読み込む
+#module
+#deffunc SettingLoad str fname
+
+    // 読み込み
+    notesel jsonText
+    noteload fname
+    noteunsel
+
+    // JSON形式を開く
+    jsonopen@ jsonPtr, jsonText
+
+    jsongets@ fontName, "font", jsonPtr
+    jsongeti@ fontSize, "font_size", jsonPtr
+    jsongeti@ fontStyle, "font_style", jsonPtr
+
+    // JSONを閉じる
+    jsonclose@
+
+    return
+
+// ゲッター
+#global

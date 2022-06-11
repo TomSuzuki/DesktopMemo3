@@ -134,8 +134,9 @@
     // テキストエリアの配置
     padding = 5
     if(textAreaId == 0){
-        // [TODO] テキストエリアの文字設定
         oncmd gosub *OnCtrlEdit, 0x133
+        font fontName, fontSize, fontStyle
+        objmode 2,0
         pos padding, ButtonSize+padding
         mesbox text, ginfo_winx-padding*2, ginfo_winy-padding*2-ButtonSize, 1, -1
         textAreaId = stat
