@@ -4,7 +4,21 @@
 #const global MinMemoHeight 240
 
 // メモ管理モジュール
-#module MOD_MEMO jsonText, path, text, x, y, w, h, wid, colorId, btnId_Add, btnId_Col, btnId_Pin, btnId_Del, isPin, textAreaId
+#module MOD_MEMO jsonText, path, text, x, y, w, h, wid, colorId, btnId_Add, btnId_Col, btnId_Pin, btnId_Del, isPin, textAreaId, hMesbox, hBrush
+#uselib "user32"
+    #cfunc GetWindowLong "GetWindowLongA" int, int
+    #func SetWindowLong "SetWindowLongA" int, int, int
+	#func SetWindowPos "SetWindowPos" int, nullptr, nullptr, nullptr, nullptr, nullptr, int
+#uselib "gdi32"
+    #func CreateSolidBrush "CreateSolidBrush" sptr
+	#func DeleteObject "DeleteObject" sptr
+	#func SetBkColor "SetBkColor" sptr,sptr
+	#func SetBkMode "SetBkMode" sptr,sptr
+	#func SetTextColor "SetTextColor" sptr,sptr
+#define ctype BGR(%1,%2,%3) (%1 | %2 << 8 | %3 << 16)
+#define GWL_STYLE	$FFFFFFF0
+#define GWL_EXSTYLE -20
+#define WS_EX_TOOLWINDOW	0x0080
 #define LEFT		0x00000001
 #define RIGHT		0x00000002
 #define TOP			0x00000004
@@ -121,9 +135,20 @@
     padding = 5
     if(textAreaId == 0){
         // [TODO] テキストエリアの文字設定
+        oncmd gosub *OnCtrlEdit, 0x133
         pos padding, ButtonSize+padding
         mesbox text, ginfo_winx-padding*2, ginfo_winy-padding*2-ButtonSize, 1, -1
         textAreaId = stat
+        hMesbox = objinfo(stat, 2)
+        ShowScrollBar hMesbox, 3, 0
+        SetWindowLong hMesbox,-20, 0x0
+        SetWindowPos hMesbox, 0x27
+        CreateSolidBrush hexBGR(getColor(colorId, ColorTypeBox))
+        hBrush = stat
+        await
+        SetWindowPos hMesbox, 0x27
+        sendmsg hMesbox, 0x00B9
+        sendmsg hMesbox, 0x00CF, f
     }else{
         size = ginfo_winx-padding*2, ginfo_winy-padding*2-ButtonSize, padding, ButtonSize+padding
         resizeobj textAreaId, size, 0
@@ -143,7 +168,18 @@
     gsel wid, 1+isPin
     return
 
-// メモの保存
+// テキストエリアの処理
+#modcfunc TextArea int _lparam, int _wparam
+	if hMesbox = _lparam {
+        gsel wid
+		SetTextColor _wparam, hexBGR(getColor(colorId, ColorTypeText))
+		SetBkColor _wparam, hexBGR(getColor(colorId, ColorTypeBox))
+        SetBkMode _wparam, 1
+		return hBrush
+	}
+    return 0
+
+// [TODO] メモの保存
 #modfunc saveMemo
     await
     return
@@ -153,6 +189,16 @@
     return wid
 
 // ---------------------------------------------------------------------
+// テキストエリアの処理
+*OnCtrlEdit
+    n = 0
+    foreach memo
+        // テキストエリアの処理
+        n = TextArea(memo.cnt, lparam, wparam)
+        if(n != 0):break
+    loop
+    return n
+
 // ピン止めボタンの処理
 *OnButtonPin
     foreach memo
