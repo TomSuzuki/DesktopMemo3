@@ -1,4 +1,9 @@
 
+#const global ColorNum 8
+#enum global ColorTypeText 0
+#enum global ColorTypeTheme
+#enum global ColorTypeBox
+
 // 色管理モジュール
 #module MOD_COLOR_OBJ text, theme, box
 // コンストラクタ
@@ -28,13 +33,13 @@
     noteunsel
 
     // 色管理モジュール初期化
-    dimtype color_obj, vartype("struct")
+    dimtype color_obj, vartype("struct")    // この区間だけ有効な変数であるはず
 
     // JSON形式を開く
     jsonopen@ jsonPtr, jsonText
     
     // JSONから読み込み（モジュール変数の順番は保証されるはず）
-    repeat 8
+    repeat ColorNum
         jsongetobj@ nowPtr, str(cnt), jsonPtr
         jsongets@ text, "text", nowPtr
         jsongets@ theme, "theme", nowPtr
@@ -47,4 +52,11 @@
 
     return
 
+// 色を取得
+#defcfunc getColor int _id, int _type
+    c = 0
+    if(_type == ColorTypeText)  :c = getTextColor(color_obj._id)
+    if(_type == ColorTypeTheme) :c = getThemeColor(color_obj._id)
+    if(_type == ColorTypeBox)   :c = getBoxColor(color_obj._id)
+    return c
 #global

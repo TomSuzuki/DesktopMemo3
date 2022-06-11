@@ -5,6 +5,7 @@
 #bootopt utf8 1
 
 // ライブラリの読み込み
+#include "./user32.as"
 #include "./hspext.as"
 #include "./hspinet.as"
 
@@ -42,11 +43,11 @@ dimtype memo, vartype("struct")
 // 起動時処理
 	AppInitialize
 
-// オブジェクト生成
-	CreateButton
-
 // 色情報の読み込み
 	LoadColor colorSetting
+
+// オブジェクト生成
+	CreateButton
 
 // パレットウィンドウ生成
 

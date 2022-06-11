@@ -24,7 +24,8 @@
 #define global HTCLIENT			0x0001
 #define global HTCAPTION		0x0002
 
-
+#define global GCL_STYLE		-26
+#define global CS_DROPSHADOW	0x00020000
 
 
 

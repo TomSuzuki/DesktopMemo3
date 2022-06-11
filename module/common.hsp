@@ -57,6 +57,10 @@
 	bgscr g, ginfo_dispx, ginfo_dispy, screen_hide, x, y
 	width w, h
 
+	// 影
+	GetClassLong hwnd,GCL_STYLE
+	SetClassLong hwnd,GCL_STYLE,stat|CS_DROPSHADOW
+
 	// 登録
 	oncmd gosub _resize, WM_SIZE
 	oncmd gosub _widthChange, WM_NCHITTEST

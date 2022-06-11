@@ -1,11 +1,16 @@
 
 // メモ設定
-#const global MinMemoWidth 640
-#const global MinMemoHeight 480
+#const global MinMemoWidth 320
+#const global MinMemoHeight 240
 
 // メモ管理モジュール
-#module MOD_MEMO jsonText, path, text, x, y, w, h, wid
-
+#module MOD_MEMO jsonText, path, text, x, y, w, h, wid, colorId, btnId_Add, btnId_Col, btnId_Pin, btnId_Del
+#define LEFT		0x00000001
+#define RIGHT		0x00000002
+#define TOP			0x00000004
+#define BOTTOM		0x00000008
+#define CaptionHeight ButtonSize
+#define BORDERWIDTH 4
 // コンストラクタ（infoはjson文字列）
 #modinit str _jsonText
     jsonText = _jsonText
@@ -19,6 +24,7 @@
     jsongeti@ y, "y", jsonPtr
     jsongeti@ w, "w", jsonPtr
     jsongeti@ h, "h", jsonPtr
+    jsongeti@ colorId, "color_id", jsonPtr
 
     // JSONを閉じる
     jsonclose@
@@ -27,6 +33,9 @@
     notesel text
     noteload path
     noteunsel
+
+    // 不正な値を防ぐ
+    if(colorId != limit(colorId, 0, ColorNum))
 
     // ウィンドウ位置・大きさ修正
     w = limit(w, MinMemoWidth, w)
@@ -40,12 +49,6 @@
     return
 
 #modcfunc WidthChange
-#define LEFT		0x00000001
-#define RIGHT		0x00000002
-#define TOP			0x00000004
-#define BOTTOM		0x00000008
-#define CaptionHeight ButtonSize
-#define BORDERWIDTH 4
 
     // 処理するウィンドウ
     gsel wid
@@ -92,15 +95,31 @@
 
     // 処理するウィンドウ
     gsel wid
+    redraw 0
 
-    // 仮
-    cls 2
-	color 100, 100, 100
-	boxf 0, 0, ginfo_winx, CAPTIONHEIGHT
-	color 255, 255, 255
-	pos 15, 4
-	font "", 22
-	mes "たいとるばー"
+    // 最小幅 [TODO] 画面がちらつく
+    if(MinMemoWidth > ginfo_winx):width MinMemoWidth, ginfo_winy
+    if(MinMemoHeight > ginfo_winy):width ginfo_winx, MinMemoHeight
+
+    // 背景色
+	color decRGB(getColor(colorId, ColorTypeTheme))
+	boxf 0, 0, ginfo_winx, CaptionHeight
+
+    // ボタンの初期化
+    if(btnId_Add != 0):clrobj btnId_Add
+    if(btnId_Col != 0):clrobj btnId_Col
+    if(btnId_Pin != 0):clrobj btnId_Pin
+    if(btnId_Del != 0):clrobj btnId_Del
+
+    // ボタンの配置
+    CreateButtonImage ButtonTypeAdd, colorId :pos ButtonSize*0,0 :button gosub "",*OnNewWindow@  :btnId_Add = stat
+    CreateButtonImage ButtonTypeCol, colorId :pos ButtonSize*1,0 :button gosub "",*OnNewWindow@  :btnId_Col = stat
+    CreateButtonImage ButtonTypePinT, colorId :pos ButtonSize*2,0 :button gosub "",*OnNewWindow@  :btnId_Pin = stat
+    CreateButtonImage ButtonTypeDel, colorId :pos ginfo_winx-ButtonSize,0 :button gosub "",*OnNewWindow@  :btnId_Del = stat
+
+    // テキストエリアの配置
+
+    redraw 1
 
     return
 
