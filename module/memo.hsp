@@ -1,3 +1,5 @@
+// modfunc, modcfunc ...publicメソッド扱い
+// label ...staticメソッド扱い
 
 // メモ設定
 #const global MinMemoWidth 320
@@ -60,6 +62,8 @@
     // ウィンドウ生成
     wid = OverrapBgWin(x, y, w, h, *OnResize, *OnWidthChange)// TODO: OnMove
     gsel wid, 1+isPin
+    DandD_SetLabel *OnDragAndDrop
+    DandD_SetWindow true
 	gosub *OnResize
 
     return
@@ -255,6 +259,20 @@
     return wid
 
 // ---------------------------------------------------------------------
+// D&D時の処理
+*OnDragAndDrop
+
+    // 情報の取得
+    fileNum = DandD_GetInfo(0)
+
+    // 各ファイルの処理
+    repeat fileNum
+        fname = DandD_GetPath(cnt)
+        createNewMemo fname
+    loop
+
+    return
+
 // テキストエリアの処理
 *OnCtrlEdit
     n = 0

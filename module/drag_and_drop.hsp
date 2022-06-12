@@ -1,0 +1,63 @@
+/*
+ * 参考元
+ * http://menyukko.ifdef.jp/cauldron/hmdandd.html
+ */
+
+// データ取り出し用
+#define global DandD_FileCnt        DandD_GetInfo(0)
+#define global DandD_DropPX         DandD_GetInfo(1)
+#define global DandD_DropPY         DandD_GetInfo(2)
+#define global DandD_DropWinID      DandD_GetInfo(3)
+
+#module
+#define  WM_DROPFILES       0x0233
+#uselib "shell32.dll"
+    #func apiDragAcceptFiles    "DragAcceptFiles"   int, int
+    #func apiDragQueryFile      "DragQueryFileW"    int, int, var, int
+    #func apiDragQueryFile_2    "DragQueryFileW"    int, int, nullptr, nullptr
+    #func apiDragFinish         "DragFinish"        int
+
+#uselib "user32.dll"
+    #func apiScreenToClient     "ScreenToClient"    int, var
+
+// D&Dの受け入れを設定（1...On/0...Off）
+#deffunc DandD_SetWindow int f
+    if f == 0  : apiDragAcceptFiles hwnd, 0
+    if f == 1 {
+        oncmd gosub *ddLabel_WmDropFiles, WM_DROPFILES
+        apiDragAcceptFiles hwnd, 1
+    }
+    return
+
+// D&D割り込みラベルの設定
+#deffunc DandD_SetLabel label l
+    ddSubLabel = l
+    return
+
+// D&D時に処理する元ラベル
+*ddLabel_WmDropFiles
+    ddTmpi = wparam, ginfo_sel, 0
+    ddInfo = 0, ginfo_mx, ginfo_my, ginfo_intid
+    ddInfo = apiDragQueryFile_2(ddTmpi, -1)
+    gsel ginfo_intid
+    apiScreenToClient hwnd, ddInfo(1)
+    gsel ddTmpi(1)
+    ddList = ""
+    repeat ddInfo
+        ddTmpi(2) = apiDragQueryFile_2(ddTmpi, cnt)
+        memexpand ddList(cnt), ddTmpi(2) * 2 + 2
+        apiDragQueryFile ddTmpi, cnt, ddList(cnt), ddTmpi(2) + 1
+    loop
+    apiDragFinish ddTmpi
+    if vartype(ddSubLabel) == vartype("label")  : gosub ddSubLabel
+    return 0
+
+// D&Dファイル情報の取得
+#defcfunc DandD_GetInfo int i
+    return ddInfo(i)
+
+// D&Dファイル名の取得
+#defcfunc DandD_GetPath int i
+    return cnvwtos(ddList(i))
+
+#global

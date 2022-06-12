@@ -34,6 +34,7 @@ dimtype memo, vartype("struct")
 
 // 各パーツの読み込み
 #include "./module/common.hsp"
+#include "./module/drag_and_drop.hsp"
 #include "./module/backup.hsp"
 #include "./module/color_load.hsp"
 #include "./module/color_window.hsp"
