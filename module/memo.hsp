@@ -142,7 +142,7 @@
 
     // ボタンの配置
     CreateButtonImage ButtonTypeAdd, colorId            :pos ButtonSize*0,0         :button gosub "",*OnButtonNew   :btnId_Add = stat
-    ;CreateButtonImage ButtonTypeCol, colorId            :pos ButtonSize*1,0         :button gosub "",*OnNewWindow@  :btnId_Col = stat
+    CreateButtonImage ButtonTypeCol, colorId            :pos ButtonSize*1,0         :button gosub "",*OnButtonCol  :btnId_Col = stat
     CreateButtonImage ButtonTypePinT+1-isPin, colorId   :pos ButtonSize*2,0         :button gosub "",*OnButtonPin   :btnId_Pin = stat
     if(isPin == false){
         CreateButtonImage ButtonTypeDel, colorId            :pos ginfo_winx-ButtonSize,0:button gosub "",*OnButtonDel   :btnId_Del = stat
@@ -230,7 +230,7 @@
 	}
     return 0
 
-// TODO: メモの保存
+// メモの保存
 #modfunc saveMemo
 
     // 処理待ち
@@ -274,11 +274,33 @@
 
     return
 
+// 色変更処理
+#modfunc ColorChange int _colorId
+
+    // 色コード変更
+    colorId = _colorId
+
+    // テキストエリア削除
+    clrobj textAreaId, textAreaId
+    textAreaId = 0
+
+    // リサイズ＋保存
+    Resize thismod
+
+    return
+
 // ゲッター
 #modcfunc getWid
     return wid
 
 // ---------------------------------------------------------------------
+// 色変更ウィンドウの有効化
+*OnButtonCol
+
+    // 色変更ウィンドウの配置
+    DisplayColorWindow ginfo(2)
+
+    return
 
 // 移動時の処理
 *OnMove

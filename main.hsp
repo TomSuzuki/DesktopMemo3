@@ -50,7 +50,6 @@ dimtype memo, vartype("struct")
 #include "./module/drag_and_drop.hsp"
 #include "./module/backup.hsp"
 #include "./module/color_load.hsp"
-#include "./module/color_window.hsp"
 #include "./module/create_object.hsp"
 #include "./module/create_window.hsp"
 #include "./module/list_window.hsp"
@@ -58,6 +57,7 @@ dimtype memo, vartype("struct")
 #include "./module/memo_load.hsp"
 #include "./module/memo_save.hsp"
 #include "./module/memo_create.hsp"
+#include "./module/color_window.hsp"
 #include "./module/setting_load.hsp"
 #include "./module/setting_save.hsp"
 #include "./module/app_initialize.hsp"
@@ -73,7 +73,7 @@ dimtype memo, vartype("struct")
 	CreateButton
 
 // パレットウィンドウ生成
-
+	InitializeColorWindow
 
 // メモ読み込み
 	LoadAllMemo memoFileMask
