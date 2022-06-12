@@ -146,7 +146,9 @@
     CreateButtonImage ButtonTypeAdd, colorId            :pos ButtonSize*0,0         :button gosub "",*OnButtonNew   :btnId_Add = stat
     ;CreateButtonImage ButtonTypeCol, colorId            :pos ButtonSize*1,0         :button gosub "",*OnNewWindow@  :btnId_Col = stat
     CreateButtonImage ButtonTypePinT+1-isPin, colorId   :pos ButtonSize*2,0         :button gosub "",*OnButtonPin   :btnId_Pin = stat
-    CreateButtonImage ButtonTypeDel, colorId            :pos ginfo_winx-ButtonSize,0:button gosub "",*OnButtonDel   :btnId_Del = stat
+    if(isPin == false){
+        CreateButtonImage ButtonTypeDel, colorId            :pos ginfo_winx-ButtonSize,0:button gosub "",*OnButtonDel   :btnId_Del = stat
+    }
 
     // テキストエリアの配置
     padding = 5
