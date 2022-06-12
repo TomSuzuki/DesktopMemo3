@@ -16,10 +16,12 @@
 // アプリケーションの設定
 #define global isDebug true
 #define global appTitle "Desktop Memo 3"
+#define global trashDir "./trash/" 
+#define global memoDir "./memo/"
+#define global noteDir "./note/"
 #define global appSetting "./setting.json"
 #define global colorSetting "./color.json"
-#define global memoFileMask "./memo/*.json" 
-#define global trashDir "./trash/" 
+#define global memoFileMask memoDir+"*.json" 
 
 // グローバル変数
 #define global memo _memo@

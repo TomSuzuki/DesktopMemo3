@@ -127,8 +127,8 @@
     if(btnId_Del != 0):clrobj btnId_Del, btnId_Del
 
     // ボタンの配置
-    CreateButtonImage ButtonTypeAdd, colorId            :pos ButtonSize*0,0         :button gosub "",*OnNewWindow@  :btnId_Add = stat
-    CreateButtonImage ButtonTypeCol, colorId            :pos ButtonSize*1,0         :button gosub "",*OnNewWindow@  :btnId_Col = stat
+    CreateButtonImage ButtonTypeAdd, colorId            :pos ButtonSize*0,0         :button gosub "",*OnButtonNew   :btnId_Add = stat
+    ;CreateButtonImage ButtonTypeCol, colorId            :pos ButtonSize*1,0         :button gosub "",*OnNewWindow@  :btnId_Col = stat
     CreateButtonImage ButtonTypePinT+1-isPin, colorId   :pos ButtonSize*2,0         :button gosub "",*OnButtonPin   :btnId_Pin = stat
     CreateButtonImage ButtonTypeDel, colorId            :pos ginfo_winx-ButtonSize,0:button gosub "",*OnButtonDel   :btnId_Del = stat
 
@@ -220,6 +220,11 @@
         if(n != 0):break
     loop
     return n
+
+// 新規メモ追加
+*OnButtonNew
+    createNewMemo ""
+    return
 
 // 削除ボタンの処理
 *OnButtonDel

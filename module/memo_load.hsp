@@ -59,7 +59,8 @@
     // リンク先メモが存在しなかったらゴミ箱に入れる
     exist path
     if(strsize == -1) {
-        // [TODO] ゴミ箱へ移動
+        bcopy fname, trashDir + getpath(fname, 8)
+        delete fname
         return 0
     }
     
