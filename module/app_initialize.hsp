@@ -10,6 +10,13 @@
 		end
 	}
 
+	// タスクトレイ
+	SetTrayIconFile tasktrayIcon
+	CreateTrayIcon appTitle, 0, 0
+
+	// タスクトレイのメニューを設定
+	CreateTasktrayMenu
+
 	// ウィンドウ設定
 	gsel 0,isDebug - 1
 	title appTitle

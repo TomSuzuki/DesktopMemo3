@@ -7,6 +7,7 @@
 
 ## 参考にさせていただいたもの
 - [HSP用 ドラッグ・アンド・ドロップ モジュール - 略して仮。](http://menyukko.ifdef.jp/cauldron/hmdandd.html)
+- [タスクトレイアイコンモジュール - つーさのくーかん](https://tu3.jp/0108)
 
 ## 参考サイト
 - [WINAPI ウィンドウメッセージリスト](http://chokuto.ifdef.jp/urawaza/message/index.html)

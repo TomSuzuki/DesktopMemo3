@@ -14,11 +14,11 @@
     return
 
 // ゲッター
-#modcfunc getTextColor
+#modcfunc getObjTextColor
     return text
-#modcfunc getThemeColor
+#modcfunc getObjThemeColor
     return theme
-#modcfunc getBoxColor
+#modcfunc getObjBoxColor
     return box
 #global
 
@@ -55,8 +55,8 @@
 // 色を取得
 #defcfunc getColor int _id, int _type
     c = 0
-    if(_type == ColorTypeText)  :c = getTextColor(color_obj._id)
-    if(_type == ColorTypeTheme) :c = getThemeColor(color_obj._id)
-    if(_type == ColorTypeBox)   :c = getBoxColor(color_obj._id)
+    if(_type == ColorTypeText)  :c = getObjTextColor(color_obj._id)
+    if(_type == ColorTypeTheme) :c = getObjThemeColor(color_obj._id)
+    if(_type == ColorTypeBox)   :c = getObjBoxColor(color_obj._id)
     return c
 #global

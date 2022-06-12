@@ -6,6 +6,8 @@
 
 // ライブラリの読み込み
 #include "./user32.as"
+#include "./gdi32.as"
+#include "./shell32.as"
 #include "./hspext.as"
 #include "./hspinet.as"
 #include "./obj.as"
@@ -16,6 +18,7 @@
 // アプリケーションの設定
 #define global isDebug true
 #define global appTitle "Desktop Memo 3"
+#define global appLink "https://github.com/TomSuzuki/DesktopMemo3"
 
 // パス設定
 #define global trashDir "./trash/" 
@@ -26,6 +29,8 @@
 #define global memoFileMask memoDir + "*.json" 
 #define global memoNewFileName getMemoNewFileName()
 #define global noteNewFileName getNoteNewFileName()
+#define global tasktrayIcon "./img/app.ico"
+#define global tasktrayIconSize	32
 
 // 重大なエラー回避（マクロ文字列で%が使えない）
 #module
@@ -44,6 +49,9 @@
 
 // メモの定義
 dimtype memo, vartype("struct")
+
+// モジュール読み込み
+#include "./module/tasktray.hsp"
 
 // 各パーツの読み込み
 #include "./module/common.hsp"
@@ -78,4 +86,9 @@ dimtype memo, vartype("struct")
 // メモ読み込み
 	LoadAllMemo memoFileMask
 
+	stop
 
+// 終了時処理
+*LabelExit
+	await
+	end
