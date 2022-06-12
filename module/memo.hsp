@@ -60,7 +60,7 @@
     h = limit(h, MinMemoHeight, h)
 
     // ウィンドウ生成
-    wid = OverrapBgWin(x, y, w, h, *OnResize, *OnWidthChange)// TODO: OnMove
+    wid = OverrapBgWin(x, y, w, h, *OnResize, *OnWidthChange, *OnMove)
     gsel wid, 1+isPin
     DandD_SetLabel *OnDragAndDrop
     DandD_SetWindow true
@@ -110,8 +110,6 @@
     return 0
 
 // TODO: 内容更新時のテキスト更新
-
-// TODO: ピン設定変更時の設定更新
 
 // 移動時
 #modfunc Move
@@ -183,9 +181,16 @@
 
 // ピン止め処理
 #modfunc Pin
+
+    // ピン設定の更新
     isPin = isPin == false
+
+    // 再描画
     Resize thismod
+
+    // 最前面処理（メモの更新）
     gsel wid, 1+isPin
+
     return
 
 
@@ -229,6 +234,7 @@
     // TODO: 無ければ内部フォルダの note に新規ファイル → そこに保存
 
     // 情報の更新
+    gsel wid
     x = ginfo_wx1
     y = ginfo_wy1
     w = ginfo_sizex
@@ -261,6 +267,21 @@
     return wid
 
 // ---------------------------------------------------------------------
+
+// 移動時の処理
+*OnMove
+    foreach memo
+        // アクティブウィンドウを探す
+        if(ginfo(2) != getWid(memo.cnt)){
+            continue
+        }
+
+        // 移動時処理
+        Move memo.cnt
+        break
+    loop
+    return
+
 // D&D時の処理
 *OnDragAndDrop
 

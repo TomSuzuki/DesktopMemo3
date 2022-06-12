@@ -11,6 +11,7 @@
 #define global WM_SIZE			0x0005
 #define global WM_NCHITTEST		0x0084
 #define global WM_ACTIVATE      0x0006
+#define global WM_MOVE          0x0003
 
 // 画面回り
 #define global HTLEFT			0x000A
