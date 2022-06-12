@@ -109,8 +109,6 @@
 
     return 0
 
-// TODO: 内容更新時のテキスト更新
-
 // 移動時
 #modfunc Move
 
@@ -215,13 +213,19 @@
 
     return
 
-// テキストエリアの処理
+// テキストエリアの処理（更新）
 #modcfunc TextArea int _lparam, int _wparam
 	if hMesbox = _lparam {
+
+        // ファイル更新
+        saveMemo thismod
+
+        // 色処理
         gsel wid
 		SetTextColor _wparam, hexBGR(getColor(colorId, ColorTypeText))
 		SetBkColor _wparam, hexBGR(getColor(colorId, ColorTypeBox))
         SetBkMode _wparam, 1
+
 		return hBrush
 	}
     return 0
@@ -234,6 +238,9 @@
 
     // テキストファイルが存在するかチェック
     // TODO: 無ければ内部フォルダの note に新規ファイル → そこに保存
+    notesel text
+    notesave path
+    noteunsel
 
     // 情報の更新
     gsel wid
