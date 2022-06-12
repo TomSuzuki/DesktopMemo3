@@ -3,12 +3,12 @@
 #deffunc createNewMemo str _fname
 
     // 設定ファイル名の決定
-    memoPath = memoDir + strf("%04d_%02d%02d_%02d%02d_%02d_%03d.json", gettime(0), gettime(1), gettime(3), gettime(4), gettime(5), gettime(6), gettime(7))
+    memoPath = memoNewFileName
 
     // リンクファイルの処理（無ければ作成）
     fname = _fname
     if(fname == "") {
-        fname = noteDir + strf("%04d_%02d%02d_%02d%02d_%02d_%03d.txt", gettime(0), gettime(1), gettime(3), gettime(4), gettime(5), gettime(6), gettime(7))
+        fname = noteNewFileName
         notedata = ""
         notesel notedata
         notesave fname

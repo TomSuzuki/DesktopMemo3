@@ -237,7 +237,12 @@
     await
 
     // テキストファイルが存在するかチェック
-    // TODO: 無ければ内部フォルダの note に新規ファイル → そこに保存
+    exist path
+    if(strsize == -1){
+        path = noteNewFileName
+    }
+
+    // テキストの保存
     notesel text
     notesave path
     noteunsel
@@ -266,8 +271,6 @@
     notesel jsonText
     notesave memoPath
     noteunsel
-
-    // テキストの保存
 
     return
 
