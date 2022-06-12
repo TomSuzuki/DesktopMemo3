@@ -58,7 +58,7 @@
     h = limit(h, MinMemoHeight, h)
 
     // ウィンドウ生成
-    wid = OverrapBgWin(x, y, w, h, *OnResize, *OnWidthChange)
+    wid = OverrapBgWin(x, y, w, h, *OnResize, *OnWidthChange)// TODO: OnMove
     gsel wid, 1+isPin
 	gosub *OnResize
 
@@ -104,6 +104,18 @@
     if (mposy <= CaptionHeight) : return HTCAPTION
 
     return 0
+
+// TODO: 内容更新時のテキスト更新
+
+// TODO: ピン設定変更時の設定更新
+
+// 移動時
+#modfunc Move
+
+    // メモの更新
+    saveMemo thismod
+
+    return
 
 // 再描画
 #modfunc Resize
@@ -210,9 +222,29 @@
     // テキストファイルが存在するかチェック
     // TODO: 無ければ内部フォルダの note に新規ファイル → そこに保存
 
+    // 情報の更新
+    x = ginfo_wx1
+    y = ginfo_wy1
+    w = ginfo_sizex
+    h = ginfo_sizey
+
     // 設定データの組み立て
+    sdim jsonText
+    jsonnewobj@ jsonPtr
+    jsonputs@ jsonPtr, "path", path
+    jsonputi@ jsonPtr, "x", x
+    jsonputi@ jsonPtr, "y", y
+    jsonputi@ jsonPtr, "w", w
+    jsonputi@ jsonPtr, "h", h
+    jsonputi@ jsonPtr, "color_id", colorId
+    jsonputi@ jsonPtr, "pin", isPin
+    jsonout@ jsonText, jsonPtr
+    jsonclose@
 
     // 設定の保存
+    notesel jsonText
+    notesave memoPath
+    noteunsel
 
     // テキストの保存
 
