@@ -26,13 +26,14 @@
         flg = LoadMemoFile(getpath(filemask, 32) + fname)
 
         // 成功したファイルが存在する
-        if(flg && false == isOpend) {
+        if(flg) {
             isOpend = true
         }
     loop
 
     // 一つもロードできなかったら新しいメモをを作成
     if(false == isOpend) {
+        createNewMemo ""
     }
 
     return
@@ -61,11 +62,11 @@
     if(strsize == -1) {
         bcopy fname, trashDir + getpath(fname, 8)
         delete fname
-        return 0
+        return false
     }
     
     // メモウィンドウの作成（モジュール変数はmemo.hspでグローバル定義）
     newmod memo, MOD_MEMO, fname, jsonText
 
-    return 0
+    return true
 #global
