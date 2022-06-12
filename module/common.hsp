@@ -55,6 +55,7 @@
 	// 生成
 	oncmd 0
 	bgscr g, ginfo_dispx, ginfo_dispy, screen_hide, x, y
+	SetWindowLong hWnd, GWL_EXSTYLE, GetWindowLong(hWnd, GWL_EXSTYLE) | WS_EX_TOOLWINDOW
 	width w, h
 
 	// 影
