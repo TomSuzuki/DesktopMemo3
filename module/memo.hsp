@@ -74,7 +74,7 @@
     mposy = ginfo_my - ginfo_wy1
 
     // マウスが範囲外なら別ウィンドウ
-    // [TODO] 非アクティブ時の幅調節
+    // TODO: 非アクティブ時の幅調節
     if (mposx < -BORDERWIDTH || mposx > ginfo_winx+BORDERWIDTH || mposy < -BORDERWIDTH || mposy > ginfo_winy+BORDERWIDTH) {
         return HTCAPTION
     }
@@ -112,7 +112,7 @@
     gsel wid
     redraw 0
 
-    // 最小幅 [TODO] 画面がちらつく
+    // 最小幅 TODO: 画面がちらつく
     if(MinMemoWidth > ginfo_winx):width MinMemoWidth, ginfo_winy
     if(MinMemoHeight > ginfo_winy):width ginfo_winx, MinMemoHeight
 
@@ -201,9 +201,21 @@
 	}
     return 0
 
-// [TODO] メモの保存
+// TODO: メモの保存
 #modfunc saveMemo
+
+    // 処理待ち
     await
+
+    // テキストファイルが存在するかチェック
+    // TODO: 無ければ内部フォルダの note に新規ファイル → そこに保存
+
+    // 設定データの組み立て
+
+    // 設定の保存
+
+    // テキストの保存
+
     return
 
 // ゲッター

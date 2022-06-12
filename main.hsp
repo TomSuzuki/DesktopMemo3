@@ -1,7 +1,7 @@
 // コンパイルオプション
 #include "hsp3utf.as"
 #cmpopt utf8 1
-#cmpopt optcode 0	// [TODO] モジュールの作成が終わったら最適化する（ONにすると作成途中のモジュールがうまく動かない）
+#cmpopt optcode 0	// TODO: モジュールの作成が終わったら最適化する（ONにすると作成途中のモジュールがうまく動かない）
 #bootopt utf8 1
 
 // ライブラリの読み込み
