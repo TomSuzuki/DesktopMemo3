@@ -133,8 +133,10 @@
     if(MinMemoHeight > ginfo_winy):width ginfo_winx, MinMemoHeight
 
     // 背景色
+	color decRGB(getColor(colorId, ColorTypeBox))
+    boxf
 	color decRGB(getColor(colorId, ColorTypeTheme))
-	boxf
+	boxf 0, 0, ginfo_winx, CaptionHeight
 
     // ボタンの初期化
     if(btnId_Add != 0):clrobj btnId_Add, btnId_Add

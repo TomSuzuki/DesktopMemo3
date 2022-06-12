@@ -34,7 +34,7 @@
 #enum global ButtonTypePinF
 
 // ボタン色
-#define global ButtonColor           0xCCCCCC
+#define global ButtonColor           0x666666
 #define global ButtonClickColor      0xFFFFFF
 #define global ButtonMouseOverColor  0xAAAAAA
 

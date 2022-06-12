@@ -1,42 +1,42 @@
 {
     "0": {
-        "text": "$FFFFFF",
-        "theme": "$FF0000",
-        "box": "$AA5555"
+        "text": "$000000",
+        "theme": "$EEE8AA",
+        "box": "$FFFACD"
     },
     "1": {
-        "text": "$FFFFFF",
-        "theme": "$000000",
-        "box": "$222222"
+        "text": "$000000",
+        "theme": "$00BFFF",
+        "box": "$00B2EE"
     },
     "2": {
         "text": "$FFFFFF",
-        "theme": "$111111",
-        "box": "$222222"
+        "theme": "$828282",
+        "box": "$696969"
     },
     "3": {
-        "text": "$FFFFFF",
-        "theme": "$111111",
-        "box": "$222222"
+        "text": "$000000",
+        "theme": "$FF82AB",
+        "box": "$EE799F"
     },
     "4": {
-        "text": "$FFFFFF",
-        "theme": "$111111",
-        "box": "$222222"
+        "text": "$000000",
+        "theme": "$4EEE94",
+        "box": "$43CD80"
     },
     "5": {
-        "text": "$FFFFFF",
-        "theme": "$111111",
-        "box": "$222222"
+        "text": "$000000",
+        "theme": "$E0E0F0",
+        "box": "$F0F8FF"
     },
     "6": {
-        "text": "$FFFFFF",
-        "theme": "$111111",
-        "box": "$222222"
+        "text": "$000000",
+        "theme": "$96CDCD",
+        "box": "$AEEEEE"
     },
     "7": {
-        "text": "$FFFFFF",
-        "theme": "$111111",
-        "box": "$222222"
+        "text": "$000000",
+        "theme": "$FFBBFF",
+        "box": "$EEAEEE"
     }
 }
