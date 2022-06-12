@@ -90,5 +90,8 @@ dimtype memo, vartype("struct")
 
 // 終了時処理
 *LabelExit
-	await
-	end
+	repeat// 割り込みによる終了回避対策
+		await
+		end
+	loop
+	stop

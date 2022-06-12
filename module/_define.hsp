@@ -12,6 +12,8 @@
 #define global WM_NCHITTEST		0x0084
 #define global WM_ACTIVATE      0x0006
 #define global WM_MOVE          0x0003
+#define global GWL_EXSTYLE -20
+#define global WS_EX_TOOLWINDOW	0x0080
 
 // 画面回り
 #define global HTLEFT			0x000A
