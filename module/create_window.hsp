@@ -1,0 +1,24 @@
+#module
+// 可変枠無しウィンドウ（非表示生成）
+#defcfunc CreateMemoWindow
+
+	// 取得
+	n = ginfo_sel
+	g = ginfo_newid
+
+	// 生成
+	bgscr g, ginfo_dispx, ginfo_dispy, screen_hide
+	SetWindowLong hWnd, GWL_EXSTYLE, GetWindowLong(hWnd, GWL_EXSTYLE) | WS_EX_TOOLWINDOW
+
+	// 影
+	GetClassLong hwnd,GCL_STYLE
+	SetClassLong hwnd,GCL_STYLE, stat | CS_DROPSHADOW
+
+	// 戻す
+	gsel n
+
+	return g
+
+#global
+
+

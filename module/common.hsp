@@ -44,35 +44,3 @@
 
 #global
 
-#module
-// 可変枠無しウィンドウ（非表示生成）
-#defcfunc OverrapBgWin int x, int y, int w, int h, label _resize, label _widthChange, label _move
-
-	// 取得
-	n = ginfo_sel
-	g = ginfo_newid
-
-	// 生成
-	oncmd 0
-	bgscr g, ginfo_dispx, ginfo_dispy, screen_hide, x, y
-	SetWindowLong hWnd, GWL_EXSTYLE, GetWindowLong(hWnd, GWL_EXSTYLE) | WS_EX_TOOLWINDOW
-	width w, h
-
-	// 影
-	GetClassLong hwnd,GCL_STYLE
-	SetClassLong hwnd,GCL_STYLE, stat | CS_DROPSHADOW
-
-	// 登録
-	oncmd gosub _resize, WM_SIZE
-	oncmd gosub _widthChange, WM_NCHITTEST
-	oncmd gosub _move, WM_MOVE
-	oncmd 1
-
-	// 戻す
-	gsel n
-
-	return g
-
-#global
-
-
