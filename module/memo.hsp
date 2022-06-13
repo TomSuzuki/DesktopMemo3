@@ -28,9 +28,10 @@
 #define CaptionHeight ButtonSize
 #define BORDERWIDTH 4
 // コンストラクタ（infoはjson文字列）
-#modinit str _memoPath, str _jsonText
+#modinit str _memoPath, str _jsonText, int _wid
     memoPath = _memoPath
     jsonText = _jsonText
+    wid = _wid
 
     // JSON形式を開く
     jsonopen@ jsonPtr, jsonText
@@ -56,14 +57,22 @@
     if(colorId != limit(colorId, 0, ColorNum))
 
     // ウィンドウ位置・大きさ修正
+    gsel wid
     w = limit(w, MinMemoWidth, w)
     h = limit(h, MinMemoHeight, h)
+    width w, h, x, y
 
-    // ウィンドウ生成
-    wid = OverrapBgWin(x, y, w, h, *OnResize, *OnWidthChange, *OnMove)
-    gsel wid, 1+isPin
+    // 割り込み登録
+    oncmd 0
+	oncmd gosub *OnResize, WM_SIZE
+	oncmd gosub *OnWidthChange, WM_NCHITTEST
+	oncmd gosub *OnMove, WM_MOVE
     DandD_SetLabel *OnDragAndDrop
     DandD_SetWindow true
+	oncmd 1
+
+    // ウィンドウ表示
+    gsel wid, 1+isPin
 	gosub *OnResize
 
     return
@@ -163,7 +172,6 @@
         SetWindowPos hMesbox, 0x27
         CreateSolidBrush hexBGR(getColor(colorId, ColorTypeBox))
         hBrush = stat
-        await
         SetWindowPos hMesbox, 0x27
         sendmsg hMesbox, 0x00B9
         sendmsg hMesbox, 0x00CF, f
@@ -232,9 +240,6 @@
 
 // メモの保存
 #modfunc saveMemo
-
-    // 処理待ち
-    await
 
     // テキストファイルが存在するかチェック
     exist path
