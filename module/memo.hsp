@@ -77,6 +77,18 @@
 
     return
 
+// デストラクタ
+#modterm
+
+    // ウィドウを非表示
+    gsel wid, -1
+
+    // メモリの開放
+    DeleteObject hBrush
+    buffer wid,1,1,2
+    
+    return
+
 #modcfunc WidthChange
 
     // 処理するウィンドウ
@@ -208,13 +220,6 @@
     // ファイルの移動
     bcopy memoPath, trashDir + getpath(memoPath, 8)
     delete memoPath
-
-    // ウィドウを非表示
-    gsel wid, -1
-
-    // メモリの開放
-    DeleteObject hBrush
-    buffer wid,1,1,2
 
     // 削除
     delmod thismod
