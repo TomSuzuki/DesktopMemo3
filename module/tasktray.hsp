@@ -90,7 +90,7 @@ length
 #deffunc _deinit_trayicon_ onexit ;// 終了時に全部のアイコンを削除。
     foreach hIcon : if hIcon.cnt { DestroyTrayIcon cnt } loop : return
 
-#include "./module/tasktrayMenu.hsp"
+#include "./module/tasktray_menu.hsp"
 
 #global
 _init_trayicon_
