@@ -67,6 +67,7 @@
 	oncmd gosub *OnResize, WM_SIZE
 	oncmd gosub *OnWidthChange, WM_NCHITTEST
 	oncmd gosub *OnMove, WM_MOVE
+    oncmd gosub *OnGetMinMaxInfo, WM_GETMINMAXINFO
     DandD_SetLabel *OnDragAndDrop
     DandD_SetWindow true
 	oncmd 1
@@ -144,10 +145,6 @@
     // 処理するウィンドウ
     gsel wid
     redraw 0
-
-    // 最小幅 TODO: 画面がちらつく
-    if(MinMemoWidth > ginfo_winx):width MinMemoWidth, ginfo_winy
-    if(MinMemoHeight > ginfo_winy):width ginfo_winx, MinMemoHeight
 
     // 背景色
 	color decRGB(getColor(colorId, ColorTypeBox))
@@ -339,6 +336,16 @@
     return wid
 
 // ---------------------------------------------------------------------
+// ウィンドウ最小幅回り
+*OnGetMinMaxInfo
+
+    // 最小幅を指定
+    dupptr MinMaxInfo, lParam, 40
+    MinMaxInfo.6 = MinMemoWidth
+    MinMaxInfo.7 = MinMemoHeight
+
+    return
+
 // 色変更ウィンドウの有効化
 *OnButtonCol
 
