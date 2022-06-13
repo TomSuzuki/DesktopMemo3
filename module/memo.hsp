@@ -6,7 +6,7 @@
 #const global MinMemoHeight 240
 
 // メモ管理モジュール
-#module MOD_MEMO jsonText, memoPath, path, text, x, y, w, h, wid, colorId, btnId_Add, btnId_Col, btnId_Pin, btnId_Del, isPin, textAreaId, hMesbox, hBrush
+#module MOD_MEMO jsonText, memoPath, path, text, x, y, w, h, wid, colorId, btnId_Add, btnId_Col, btnId_Pin, btnId_Del, isPin, textAreaId, hMesbox, hBrush, isPinButton
 #uselib "user32"
     #cfunc GetWindowLong "GetWindowLongA" int, int
     #func SetWindowLong "SetWindowLongA" int, int, int
@@ -155,19 +155,48 @@
 	color decRGB(getColor(colorId, ColorTypeTheme))
 	boxf 0, 0, ginfo_winx, CaptionHeight
 
-    // ボタンの初期化
-    if(btnId_Add != 0):clrobj btnId_Add, btnId_Add
-    if(btnId_Col != 0):clrobj btnId_Col, btnId_Col
-    if(btnId_Pin != 0):clrobj btnId_Pin, btnId_Pin
-    if(btnId_Del != 0):clrobj btnId_Del, btnId_Del
-
-    // ボタンの配置
-    CreateButtonImage ButtonTypeAdd, colorId            :pos ButtonSize*0,0         :button gosub "",*OnButtonNew   :btnId_Add = stat
-    CreateButtonImage ButtonTypeCol, colorId            :pos ButtonSize*1,0         :button gosub "",*OnButtonCol  :btnId_Col = stat
-    CreateButtonImage ButtonTypePinT+1-isPin, colorId   :pos ButtonSize*2,0         :button gosub "",*OnButtonPin   :btnId_Pin = stat
-    if(isPin == false){
-        CreateButtonImage ButtonTypeDel, colorId            :pos ginfo_winx-ButtonSize,0:button gosub "",*OnButtonDel   :btnId_Del = stat
+    // 追加ボタン
+    if(btnId_Add == 0){
+        CreateButtonImage ButtonTypeAdd, colorId
+        pos ButtonSize*0,0
+        button gosub "",*OnButtonNew
+        btnId_Add = stat
     }
+
+    // 色変更ボタン
+    if(btnId_Col == 0){
+        CreateButtonImage ButtonTypeCol, colorId
+        pos ButtonSize*1,0
+        button gosub "",*OnButtonCol
+        btnId_Col = stat
+    }
+
+    // ピンボタン（更新時）
+    if(isPinButton != isPin && btnId_Pin != 0){
+        isPinButton = isPin
+        clrobj btnId_Pin, btnId_Pin
+        btnId_Pin = 0
+    }
+
+    // ピンボタン
+    if(btnId_Pin == 0){
+        CreateButtonImage ButtonTypePinT+1-isPin, colorId
+        pos ButtonSize*2,0
+        button gosub "",*OnButtonPin
+        btnId_Pin = stat
+    }
+
+    // 削除ボタン
+    if(btnId_Del == 0 && isPin == false){
+        CreateButtonImage ButtonTypeDel, colorId
+        pos ginfo_winx-ButtonSize,0
+        button gosub "",*OnButtonDel
+        btnId_Del = stat
+    }else:if(btnId_Del != 0 && isPin == true){
+        clrobj btnId_Del, btnId_Del
+        btnId_Del = 0
+    }
+
 
     // テキストエリアの配置
     padding = 5
@@ -293,6 +322,12 @@
     // テキストエリア削除
     clrobj textAreaId, textAreaId
     textAreaId = 0
+
+    // ボタン削除
+    clrobj btnId_Add, btnId_Add:btnId_Add = 0
+    clrobj btnId_Col, btnId_Col:btnId_Col = 0
+    clrobj btnId_Pin, btnId_Pin:btnId_Pin = 0
+    clrobj btnId_Del, btnId_Del:btnId_Del = 0
 
     // リサイズ＋保存
     Resize thismod
