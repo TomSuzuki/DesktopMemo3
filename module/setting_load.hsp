@@ -9,8 +9,13 @@
 #define global SettingKey_fontSize  "font_size"
 #define global SettingKey_fontStyle "font_style"
 
+// 設定項目をグローバルで使えるように登録（取得のみできるように関数にする）
+#define global fontName _application_setting_fontName()
+#define global fontSize _application_setting_fontSize()
+#define global fontStyle _application_setting_fontStyle()
+
 // アプリケーションの設定を読み込む
-#module
+#module application_setting
 #deffunc SettingLoad str fname
 
     // 読み込み
@@ -20,23 +25,23 @@
 
     // JSON形式を開く
     jsonopen@ jsonPtr, jsonText
-    jsongets@ fontName, "font", jsonPtr
-    jsongeti@ fontSize, "font_size", jsonPtr
-    jsongeti@ fontStyle, "font_style", jsonPtr
+    jsongets@ _fontName, "font", jsonPtr
+    jsongeti@ _fontSize, "font_size", jsonPtr
+    jsongeti@ _fontStyle, "font_style", jsonPtr
 
     // JSONを閉じる
     jsonclose@
 
     // デフォルト設定の復元
-    if(fontName == ""):fontName = DefaultSetting_fontName
-    if(fontSize == 0):fontSize = DefaultSetting_fontSize
-    if(fontStyle == 0):fontStyle = DefaultSetting_fontStyle
+    if(_fontName == ""):_fontName = DefaultSetting_fontName
+    if(_fontSize == 0):_fontSize = DefaultSetting_fontSize
+    if(_fontStyle == 0):_fontStyle = DefaultSetting_fontStyle
 
     // 設定をJSONに
     jsonnewobj@ jsonPtr, -1, ""
-    jsonputs@ jsonPtr, "font", fontName
-    jsonputi@ jsonPtr, "font_size", fontSize
-    jsonputi@ jsonPtr, "font_style", fontStyle
+    jsonputs@ jsonPtr, "font", _fontName
+    jsonputi@ jsonPtr, "font_size", _fontSize
+    jsonputi@ jsonPtr, "font_style", _fontStyle
     jsonout@ jsonText, jsonPtr
     jsonclose@
 
@@ -47,5 +52,15 @@
     noteunsel
 
     return
+
+// ゲッター
+#defcfunc _application_setting_fontName
+    return _fontName
+
+#defcfunc _application_setting_fontSize
+    return _fontSize
+
+#defcfunc _application_setting_fontStyle
+    return _fontStyle
 
 #global
