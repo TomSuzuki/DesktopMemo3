@@ -221,7 +221,7 @@
         font fontName, fontSize, fontStyle
         objmode 2,0
         pos padding, ButtonSize+padding
-        mesbox text, ginfo_winx-padding*2, ginfo_winy-padding*2-ButtonSize, 1, -1
+        mesbox text, ginfo_winx-padding*2, ginfo_winy-padding*2-ButtonSize, 1, 0
         Id.TEXTAREA_ID = stat
         hMesbox = objinfo(stat, 2)
         ShowScrollBar hMesbox, 3, 0
