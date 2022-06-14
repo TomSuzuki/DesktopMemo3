@@ -4,6 +4,7 @@
 #enum MenuID_NewMemo = 1
 #enum MenuID_GitHub
 #enum MenuId_Exit
+#enum MenuID_MemoInFron
 
 // メニューの配置
 #deffunc CreateTasktrayMenu
@@ -11,6 +12,7 @@
     CreatePopupMenu
 	hMenu.0 = stat
 		AppendMenu hMenu.0, 0, MenuID_NewMemo, "新しいメモを作成"
+        AppendMenu hMenu.0, 0, MenuID_MemoInFron, "すべてのメモを前面に"
 		AppendMenu hMenu.0, $800, 0, ""
 		AppendMenu hMenu.0, 0, MenuID_GitHub, "GitHub"
 		AppendMenu hMenu.0, $800, 0, ""
@@ -37,6 +39,11 @@
             swbreak
         case MenuID_GitHub
             exec appLink, 16
+            swbreak
+        case MenuID_MemoInFron
+            foreach memo
+                InFront memo.cnt
+            loop
             swbreak
         swend
     }
