@@ -1,5 +1,8 @@
 {
 	"font":	"游ゴシック",
 	"font_size":	14,
-	"font_style":	0
+	"font_style":	0,
+	"button_color":	"$666666",
+	"button_color_click":	"$FFFFFF",
+	"button_color_mouseover":	"$AAAAAA"
 }
