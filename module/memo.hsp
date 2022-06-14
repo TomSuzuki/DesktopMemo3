@@ -6,7 +6,7 @@
 #const global MinMemoHeight 240
 
 // メモ管理モジュール
-#module MOD_MEMO jsonText, memoPath, path, text, x, y, w, h, wid, colorId, btnId_Add, btnId_Col, btnId_Pin, btnId_Del, isPin, textAreaId, hMesbox, hBrush, isPinButton
+#module MOD_MEMO Id, jsonText, memoPath, path, text, x, y, w, h, isPin, hMesbox, hBrush, isPinButton
 #uselib "user32"
     #cfunc GetWindowLong "GetWindowLongA" int, int
     #func SetWindowLong "SetWindowLongA" int, int, int
@@ -27,11 +27,27 @@
 #define BOTTOM		0x00000008
 #define CaptionHeight ButtonSize
 #define BORDERWIDTH 4
+
+// IDコントロール用定数
+#enum WID = 0
+#enum COLOR_ID
+#enum BUTTON_ID_ADD
+#enum BUTTON_ID_COLOR
+#enum BUTTON_ID_PIN
+#enum BUTTON_ID_DELETE
+#enum TEXTAREA_ID
+#enum ID_MAX
+
 // コンストラクタ（infoはjson文字列）
 #modinit str _memoPath, str _jsonText, int _wid
+
+    // ID用配列を初期化
+    dimtype Id, vartype("int"), ID_MAX
+
+    // 引数の受け渡し
     memoPath = _memoPath
     jsonText = _jsonText
-    wid = _wid
+    Id.WID = _wid
 
     // JSON形式を開く
     jsonopen@ jsonPtr, jsonText
@@ -42,7 +58,7 @@
     jsongeti@ y, "y", jsonPtr
     jsongeti@ w, "w", jsonPtr
     jsongeti@ h, "h", jsonPtr
-    jsongeti@ colorId, "color_id", jsonPtr
+    jsongeti@ Id.COLOR_ID, "color_id", jsonPtr
     jsongeti@ isPin, "pin", jsonPtr
 
     // JSONを閉じる
@@ -54,10 +70,10 @@
     noteunsel
 
     // 不正な値を防ぐ
-    if(colorId != limit(colorId, 0, ColorNum))
+    if(Id.COLOR_ID != limit(Id.COLOR_ID, 0, ColorNum))
 
     // ウィンドウ位置・大きさ修正
-    gsel wid
+    gsel Id.WID
     w = limit(w, MinMemoWidth, w)
     h = limit(h, MinMemoHeight, h)
     width w, h, x, y
@@ -73,7 +89,7 @@
 	oncmd 1
 
     // ウィンドウ表示
-    gsel wid, 1+isPin
+    gsel Id.WID, 1+isPin
 	gosub *OnResize
 
     return
@@ -82,7 +98,7 @@
 #modterm
 
     // ウィドウを非表示
-    gsel wid, -1
+    gsel Id.WID, -1
 
     // メモリの開放
     DeleteObject hBrush
@@ -93,7 +109,7 @@
 #modcfunc WidthChange
 
     // 処理するウィンドウ
-    gsel wid
+    gsel Id.WID
 
     // 座標
     mposx = ginfo_mx - ginfo_wx1
@@ -143,82 +159,82 @@
 #modfunc Resize
 
     // 処理するウィンドウ
-    gsel wid
+    gsel Id.WID
     redraw 0
 
     // 背景色
-	color decRGB(getColor(colorId, ColorTypeBox))
+	color decRGB(getColor(Id.COLOR_ID, ColorTypeBox))
     boxf
-	color decRGB(getColor(colorId, ColorTypeTheme))
+	color decRGB(getColor(Id.COLOR_ID, ColorTypeTheme))
 	boxf 0, 0, ginfo_winx, CaptionHeight
 
     // 追加ボタン
-    if(btnId_Add == 0){
-        CreateButtonImage ButtonTypeAdd, colorId
+    if(Id.BUTTON_ID_ADD == 0){
+        CreateButtonImage ButtonTypeAdd, Id.COLOR_ID
         pos ButtonSize*0,0
         button gosub "",*OnButtonNew
-        btnId_Add = stat
+        Id.BUTTON_ID_ADD = stat
     }
 
     // 色変更ボタン
-    if(btnId_Col == 0){
-        CreateButtonImage ButtonTypeCol, colorId
+    if(Id.BUTTON_ID_COLOR == 0){
+        CreateButtonImage ButtonTypeCol, Id.COLOR_ID
         pos ButtonSize*1,0
         button gosub "",*OnButtonCol
-        btnId_Col = stat
+        Id.BUTTON_ID_COLOR = stat
     }
 
     // ピンボタン（更新時）
-    if(isPinButton != isPin && btnId_Pin != 0){
+    if(isPinButton != isPin && Id.BUTTON_ID_PIN != 0){
         isPinButton = isPin
-        clrobj btnId_Pin, btnId_Pin
-        btnId_Pin = 0
+        clrobj Id.BUTTON_ID_PIN, Id.BUTTON_ID_PIN
+        Id.BUTTON_ID_PIN = 0
     }
 
     // ピンボタン
-    if(btnId_Pin == 0){
-        CreateButtonImage ButtonTypePinT+1-isPin, colorId
+    if(Id.BUTTON_ID_PIN == 0){
+        CreateButtonImage ButtonTypePinT+1-isPin, Id.COLOR_ID
         pos ButtonSize*2,0
         button gosub "",*OnButtonPin
-        btnId_Pin = stat
+        Id.BUTTON_ID_PIN = stat
     }
 
     // 削除ボタン
-    if(btnId_Del == 0 && isPin == false){
-        CreateButtonImage ButtonTypeDel, colorId
+    if(Id.BUTTON_ID_DELETE == 0 && isPin == false){
+        CreateButtonImage ButtonTypeDel, Id.COLOR_ID
         pos ginfo_winx-ButtonSize,0
         button gosub "",*OnButtonDel
-        btnId_Del = stat
-    }else:if(btnId_Del != 0 && isPin == true){
-        clrobj btnId_Del, btnId_Del
-        btnId_Del = 0
-    }else:if(btnId_Del != 0 && isPin == false){
+        Id.BUTTON_ID_DELETE = stat
+    }else:if(Id.BUTTON_ID_DELETE != 0 && isPin == true){
+        clrobj Id.BUTTON_ID_DELETE, Id.BUTTON_ID_DELETE
+        Id.BUTTON_ID_DELETE = 0
+    }else:if(Id.BUTTON_ID_DELETE != 0 && isPin == false){
         args = 0, 0, ginfo_winx-ButtonSize, 0
-        resizeobj btnId_Del, args, 2
+        resizeobj Id.BUTTON_ID_DELETE, args, 2
     }
 
 
     // テキストエリアの配置
     padding = 5
-    if(textAreaId == 0){
+    if(Id.TEXTAREA_ID == 0){
         oncmd gosub *OnCtrlEdit, 0x133
         font fontName, fontSize, fontStyle
         objmode 2,0
         pos padding, ButtonSize+padding
         mesbox text, ginfo_winx-padding*2, ginfo_winy-padding*2-ButtonSize, 1, -1
-        textAreaId = stat
+        Id.TEXTAREA_ID = stat
         hMesbox = objinfo(stat, 2)
         ShowScrollBar hMesbox, 3, 0
         SetWindowLong hMesbox,-20, 0x0
         SetWindowPos hMesbox, 0x27
-        CreateSolidBrush hexBGR(getColor(colorId, ColorTypeBox))
+        CreateSolidBrush hexBGR(getColor(Id.COLOR_ID, ColorTypeBox))
         hBrush = stat
         SetWindowPos hMesbox, 0x27
         sendmsg hMesbox, 0x00B9
         sendmsg hMesbox, 0x00CF, f
     }else{
         size = ginfo_winx-padding*2, ginfo_winy-padding*2-ButtonSize, padding, ButtonSize+padding
-        resizeobj textAreaId, size, 0
+        resizeobj Id.TEXTAREA_ID, size, 0
     }
 
     // メモの更新
@@ -238,7 +254,7 @@
     Resize thismod
 
     // 最前面処理（メモの更新）
-    gsel wid, 1+isPin
+    gsel Id.WID, 1+isPin
 
     return
 
@@ -263,9 +279,9 @@
         saveMemo thismod
 
         // 色処理
-        gsel wid
-		SetTextColor _wparam, hexBGR(getColor(colorId, ColorTypeText))
-		SetBkColor _wparam, hexBGR(getColor(colorId, ColorTypeBox))
+        gsel Id.WID
+		SetTextColor _wparam, hexBGR(getColor(Id.COLOR_ID, ColorTypeText))
+		SetBkColor _wparam, hexBGR(getColor(Id.COLOR_ID, ColorTypeBox))
         SetBkMode _wparam, 1
 
 		return hBrush
@@ -287,7 +303,7 @@
     noteunsel
 
     // 情報の更新
-    gsel wid
+    gsel Id.WID
     x = ginfo_wx1
     y = ginfo_wy1
     w = ginfo_sizex
@@ -301,7 +317,7 @@
     jsonputi@ jsonPtr, "y", y
     jsonputi@ jsonPtr, "w", w
     jsonputi@ jsonPtr, "h", h
-    jsonputi@ jsonPtr, "color_id", colorId
+    jsonputi@ jsonPtr, "color_id", Id.COLOR_ID
     jsonputi@ jsonPtr, "pin", isPin
     jsonout@ jsonText, jsonPtr
     jsonclose@
@@ -317,17 +333,23 @@
 #modfunc ColorChange int _colorId
 
     // 色コード変更
-    colorId = _colorId
+    Id.COLOR_ID = _colorId
 
     // テキストエリア削除
-    clrobj textAreaId, textAreaId
-    textAreaId = 0
+    clrobj Id.TEXTAREA_ID, Id.TEXTAREA_ID
+    Id.TEXTAREA_ID = 0
 
     // ボタン削除
-    clrobj btnId_Add, btnId_Add:btnId_Add = 0
-    clrobj btnId_Col, btnId_Col:btnId_Col = 0
-    clrobj btnId_Pin, btnId_Pin:btnId_Pin = 0
-    clrobj btnId_Del, btnId_Del:btnId_Del = 0
+    clrobj Id.BUTTON_ID_ADD, Id.BUTTON_ID_ADD
+    clrobj Id.BUTTON_ID_COLOR, Id.BUTTON_ID_COLOR
+    clrobj Id.BUTTON_ID_PIN, Id.BUTTON_ID_PIN
+    clrobj Id.BUTTON_ID_DELETE, Id.BUTTON_ID_DELETE
+
+    // ボタンID初期化
+    Id.BUTTON_ID_ADD = 0
+    Id.BUTTON_ID_COLOR = 0
+    Id.BUTTON_ID_PIN = 0
+    Id.BUTTON_ID_DELETE = 0
 
     // リサイズ＋保存
     Resize thismod
@@ -336,7 +358,7 @@
 
 // ゲッター
 #modcfunc getWid
-    return wid
+    return Id.WID
 
 // ---------------------------------------------------------------------
 // ウィンドウ最小幅回り
