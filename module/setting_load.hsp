@@ -1,4 +1,14 @@
 
+// デフォルト設定
+#define global DefaultSetting_fontName  "游ゴシック"
+#define global DefaultSetting_fontSize  14
+#define global DefaultSetting_fontStyle 0
+
+// JSONキー値（オートマッパーとか作れないかな...）
+#define global SettingKey_fontName  "font"
+#define global SettingKey_fontSize  "font_size"
+#define global SettingKey_fontStyle "font_style"
+
 // アプリケーションの設定を読み込む
 #module
 #deffunc SettingLoad str fname
@@ -10,7 +20,6 @@
 
     // JSON形式を開く
     jsonopen@ jsonPtr, jsonText
-
     jsongets@ fontName, "font", jsonPtr
     jsongeti@ fontSize, "font_size", jsonPtr
     jsongeti@ fontStyle, "font_style", jsonPtr
@@ -18,7 +27,25 @@
     // JSONを閉じる
     jsonclose@
 
+    // デフォルト設定の復元
+    if(fontName == ""):fontName = DefaultSetting_fontName
+    if(fontSize == 0):fontSize = DefaultSetting_fontSize
+    if(fontStyle == 0):fontStyle = DefaultSetting_fontStyle
+
+    // 設定をJSONに
+    jsonnewobj@ jsonPtr, -1, ""
+    jsonputs@ jsonPtr, "font", fontName
+    jsonputi@ jsonPtr, "font_size", fontSize
+    jsonputi@ jsonPtr, "font_style", fontStyle
+    jsonout@ jsonText, jsonPtr
+    jsonclose@
+
+    // 設定を保存
+    jsonText = cnvatos(jsonText)
+    notesel jsonText
+    notesave fname
+    noteunsel
+
     return
 
-// ゲッター
 #global
