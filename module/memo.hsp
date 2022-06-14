@@ -244,6 +244,17 @@
 
     return
 
+// 前面化
+#modfunc InFront
+
+    // 最前面化
+    gsel Id.WID, 2
+
+    // 前面化
+    gsel Id.WID, 1+isPin
+
+    return
+
 // ピン止め処理
 #modfunc Pin
 
@@ -359,6 +370,9 @@
 // ゲッター
 #modcfunc getWid
     return Id.WID
+
+#modcfunc getMemoPath
+    return path
 
 // ---------------------------------------------------------------------
 // ウィンドウ最小幅回り
