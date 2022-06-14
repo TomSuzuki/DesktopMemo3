@@ -14,6 +14,7 @@
 
 // 定数などを定義
 #include "./module/_define.hsp"
+#include "./module/_message.hsp"
 
 // アプリケーションの設定
 #define global isDebug true

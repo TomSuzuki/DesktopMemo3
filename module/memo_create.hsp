@@ -15,6 +15,22 @@
         noteunsel
     }
 
+    // 同一リンクファイルなら生成しない
+    isLinked = false
+    foreach memo
+        if(fname == getMemoPath(memo.cnt)){
+            isLinked = true
+            InFront memo.cnt
+            break
+        }
+    loop
+
+    // リンクファイルが無効なら返す
+    if(isLinked){
+        dialog MESSAGE_IS_ALREADY_LOAD
+        return
+    }
+
     // 初期設定の作成
     jsonnewobj@ jsonPtr
     jsonputs@ jsonPtr, "path", fname
