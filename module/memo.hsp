@@ -192,6 +192,9 @@
     }else:if(btnId_Del != 0 && isPin == true){
         clrobj btnId_Del, btnId_Del
         btnId_Del = 0
+    }else:if(btnId_Del != 0 && isPin == false){
+        args = 0, 0, ginfo_winx-ButtonSize, 0
+        resizeobj btnId_Del, args, 2
     }
 
 
