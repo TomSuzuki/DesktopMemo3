@@ -44,9 +44,6 @@
 
 // グローバル変数
 #define global memo _memo@
-#define global fontName _fontName@
-#define global fontSize _fontSize@
-#define global fontStyle _fontStyle@
 
 // メモの定義
 dimtype memo, vartype("struct")
@@ -57,6 +54,7 @@ dimtype memo, vartype("struct")
 // 各パーツの読み込み
 #include "./module/common.hsp"
 #include "./module/drag_and_drop.hsp"
+#include "./module/setting_load.hsp"
 #include "./module/color_load.hsp"
 #include "./module/create_object.hsp"
 #include "./module/create_window.hsp"
@@ -64,7 +62,6 @@ dimtype memo, vartype("struct")
 #include "./module/memo_load.hsp"
 #include "./module/memo_create.hsp"
 #include "./module/color_window.hsp"
-#include "./module/setting_load.hsp"
 #include "./module/app_initialize.hsp"
 
 // 起動時処理

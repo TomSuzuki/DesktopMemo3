@@ -38,9 +38,6 @@
 #define global ButtonClickColor      0xFFFFFF
 #define global ButtonMouseOverColor  0xAAAAAA
 
-// ボタンのバッファベースID
-#define global ButtonBufferBaseID _ButtonBufferBaseID@
-
 // ボタン関連の処理
 #module AREA_BUTTON
 // ボタン画像の作成
