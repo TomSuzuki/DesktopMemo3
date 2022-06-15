@@ -22,9 +22,10 @@
 	CreateTasktrayMenu
 
 // ディレクトリの作成
-	MakeDirectory "./note"
-	MakeDirectory "./memo"
-	MakeDirectory "./trash"
+	MakeDirectory noteDir
+	MakeDirectory memoDir
+	MakeDirectory trashDir
+	MakeDirectory backupDir
 
 	return
 #global

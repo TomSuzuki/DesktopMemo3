@@ -1,0 +1,13 @@
+
+#module
+// バックアップファイルを作成する
+#deffunc FileBackup str _fname
+
+// バックアップ名
+    backupName = backupDir + stringDate + "-" + getpath(_fname, 8)
+
+// コピー
+    bcopy _fname, backupName
+
+    return
+#global

@@ -11,10 +11,16 @@
 // 命令定義・関数定義
 #module
 // MakeDirectory ...ディレクトリが無い場合に作成します（一階層上までないと失敗します？）。
-#deffunc MakeDirectory str p1
-	dirlist list, p1, 5
+#deffunc MakeDirectory str _dirName
+
+// パスを修正
+	dirName = _dirName
+	dirName = strtrim(dirName, 2, '/')
+
+// 作成
+	dirlist list, dirName, 5
 	if (stat == 0) {
-		mkdir p1
+		mkdir dirName
 	}
 	return
 
