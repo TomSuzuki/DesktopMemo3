@@ -26,11 +26,11 @@
 
 // NewBuffer ...新しいバッファを作成する。戻り値はバッファID。
 #defcfunc NewBuffer int p1,int p2
-	// 取得
+// 取得
 	n = ginfo_sel
 	g = ginfo_newid
 
-	// メイン
+// メイン
 	screen g, p1, p2, screen_fixedsize + screen_hide
 	gsel n
 
@@ -38,12 +38,12 @@
 
 // ImgLoad ...画像をロードし、バッファIDを返す。
 #defcfunc ImgLoad str p1
-	// 取得
+// 取得
 	n = ginfo_sel
 	g = ginfo_newid
 	file = p1
 
-	// メイン
+// メイン
 	buffer g:picload file
 	gsel n
 	return g

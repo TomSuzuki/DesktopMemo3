@@ -64,9 +64,9 @@
 // JSONを閉じる
 	jsonclose@
 
-// ファイルをバックアップファイル
-    FileBackup path
-
+// バックアップの作成
+  FileBackup path
+    
 // 読み込み
 	notesel text
 	noteload path

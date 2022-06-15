@@ -4,24 +4,24 @@
 // 起動時に一度だけ行う処理
 #deffunc AppInitialize
 
-	// 多重起動防止
+// 多重起動防止
 	aplsel@ appTitle
 	if (stat != true) {
 		end
 	}
 
-	// ウィンドウ設定
+// ウィンドウ設定
 	gsel 0, -1
 	title appTitle
 
-	// タスクトレイ
+// タスクトレイ
 	SetTrayIconFile tasktrayIcon
 	CreateTrayIcon appTitle, 0, 0
 
-	// タスクトレイのメニューを設定
+// タスクトレイのメニューを設定
 	CreateTasktrayMenu
 
-	// ディレクトリの作成
+// ディレクトリの作成
 	MakeDirectory noteDir
 	MakeDirectory memoDir
 	MakeDirectory trashDir
