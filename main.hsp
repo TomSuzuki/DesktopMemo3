@@ -22,37 +22,37 @@
 #define global appLink "https://github.com/TomSuzuki/DesktopMemo3"
 
 // パス設定
-#define global trashDir "./trash/" 
+#define global backupDir "./backup/"
+#define global trashDir "./trash/"
 #define global memoDir "./memo/"
 #define global noteDir "./note/"
 #define global appSetting "./setting.json"
 #define global colorSetting "./color.json"
-#define global memoFileMask memoDir + "*.json" 
-#define global memoNewFileName getMemoNewFileName()
-#define global noteNewFileName getNoteNewFileName()
+#define global memoFileMask memoDir + "*.json"
+#define global stringDate _stringDate()
+#define global memoNewFileName memoDir + _stringDate() + ".json"
+#define global noteNewFileName noteDir + _stringDate() + ".txt"
 #define global tasktrayIcon "./img/app.ico"
 #define global tasktrayIconSize	32
 
 // 重大なエラー回避（マクロ文字列で%が使えない）
 #module
-#defcfunc getMemoNewFileName
-	return strf("%s%04d_%02d%02d_%02d%02d_%02d_%03d.json", memoDir, gettime(0), gettime(1), gettime(3), gettime(4), gettime(5), gettime(6), gettime(7))
-#defcfunc getNoteNewFileName
-	return strf("%s%04d_%02d%02d_%02d%02d_%02d_%03d.txt", noteDir, gettime(0), gettime(1), gettime(3), gettime(4), gettime(5), gettime(6), gettime(7))
+#defcfunc _stringDate
+	return strf("%04d_%02d%02d_%02d%02d_%02d_%03d", gettime(0), gettime(1), gettime(3), gettime(4), gettime(5), gettime(6), gettime(7))
 #global
-
 
 // グローバル変数
 #define global memo _memo@
 
 // メモの定義
-dimtype memo, vartype("struct")
+	dimtype memo, vartype("struct")
 
 // モジュール読み込み
 #include "./module/tasktray.hsp"
 
 // 各パーツの読み込み
 #include "./module/common.hsp"
+#include "./module/backup.hsp"
 #include "./module/drag_and_drop.hsp"
 #include "./module/setting_load.hsp"
 #include "./module/color_load.hsp"

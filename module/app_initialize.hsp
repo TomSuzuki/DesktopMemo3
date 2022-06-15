@@ -6,7 +6,7 @@
 
 	// 多重起動防止
 	aplsel@ appTitle
-	if(stat != true){
+	if (stat != true) {
 		end
 	}
 
@@ -22,9 +22,10 @@
 	CreateTasktrayMenu
 
 	// ディレクトリの作成
-	MakeDirectory "./note"
-	MakeDirectory "./memo"
-	MakeDirectory "./trash"
+	MakeDirectory noteDir
+	MakeDirectory memoDir
+	MakeDirectory trashDir
+	MakeDirectory backupDir
 
 	return
 #global

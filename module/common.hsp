@@ -1,20 +1,26 @@
 
 // デバッグ時のみコンパイル
 #if isDebug
-	exist "hsptmp":if strsize!-1:delete "hsptmp"
-	exist "obj":if strsize!-1:delete "obj"
-	exist "packfile":if strsize!-1:delete "packfile"
-	exist "hsptmp.exe":if strsize!-1:delete "hsptmp.exe"
-	exist "start.ax":if strsize!-1:delete "start.ax"
+	exist "hsptmp":if strsize ! -1:delete "hsptmp"
+	exist "obj":if strsize ! -1:delete "obj"
+	exist "packfile":if strsize ! -1:delete "packfile"
+	exist "hsptmp.exe":if strsize ! -1:delete "hsptmp.exe"
+	exist "start.ax":if strsize ! -1:delete "start.ax"
 #endif
 
 // 命令定義・関数定義
 #module
 // MakeDirectory ...ディレクトリが無い場合に作成します（一階層上までないと失敗します？）。
-#deffunc MakeDirectory str p1
-	dirlist list,p1,5
-	if(stat == 0){
-		mkdir p1
+#deffunc MakeDirectory str _dirName
+
+// パスを修正
+	dirName = _dirName
+	dirName = strtrim(dirName, 2, '/')
+
+// 作成
+	dirlist list, dirName, 5
+	if (stat == 0) {
+		mkdir dirName
 	}
 	return
 
@@ -25,7 +31,7 @@
 	g = ginfo_newid
 
 	// メイン
-	screen g,p1,p2,screen_fixedsize+screen_hide
+	screen g, p1, p2, screen_fixedsize + screen_hide
 	gsel n
 
 	return g
@@ -43,4 +49,3 @@
 	return g
 
 #global
-
