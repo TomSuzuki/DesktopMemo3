@@ -1,3 +1,2 @@
 // リソース
-
 #define global MESSAGE_IS_ALREADY_LOAD "すでに読み込まれているメモです"

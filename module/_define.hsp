@@ -30,6 +30,3 @@
 
 #define global GCL_STYLE		-26
 #define global CS_DROPSHADOW	0x00020000
-
-
-

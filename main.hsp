@@ -22,12 +22,12 @@
 #define global appLink "https://github.com/TomSuzuki/DesktopMemo3"
 
 // パス設定
-#define global trashDir "./trash/" 
+#define global trashDir "./trash/"
 #define global memoDir "./memo/"
 #define global noteDir "./note/"
 #define global appSetting "./setting.json"
 #define global colorSetting "./color.json"
-#define global memoFileMask memoDir + "*.json" 
+#define global memoFileMask memoDir + "*.json"
 #define global memoNewFileName getMemoNewFileName()
 #define global noteNewFileName getNoteNewFileName()
 #define global tasktrayIcon "./img/app.ico"
@@ -46,7 +46,7 @@
 #define global memo _memo@
 
 // メモの定義
-dimtype memo, vartype("struct")
+	dimtype memo, vartype("struct")
 
 // モジュール読み込み
 #include "./module/tasktray.hsp"

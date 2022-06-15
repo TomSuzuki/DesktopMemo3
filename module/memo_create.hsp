@@ -2,49 +2,49 @@
 #module
 #deffunc createNewMemo str _fname
 
-    // 設定ファイル名の決定
-    memoPath = memoNewFileName
+// 設定ファイル名の決定
+	memoPath = memoNewFileName
 
-    // リンクファイルの処理（無ければ作成）
-    fname = _fname
-    if(fname == "") {
-        fname = noteNewFileName
-        notedata = ""
-        notesel notedata
-        notesave fname
-        noteunsel
-    }
+// リンクファイルの処理（無ければ作成）
+	fname = _fname
+	if (fname == "") {
+		fname = noteNewFileName
+		notedata = ""
+		notesel notedata
+		notesave fname
+		noteunsel
+	}
 
-    // 同一リンクファイルなら生成しない
-    isLinked = false
-    foreach memo
-        if(fname == getMemoPath(memo.cnt)){
-            isLinked = true
-            InFront memo.cnt
-            break
-        }
-    loop
+// 同一リンクファイルなら生成しない
+	isLinked = false
+	foreach memo
+		if (fname == getMemoPath(memo.cnt)) {
+			isLinked = true
+			InFront memo.cnt
+			break
+		}
+	loop
 
-    // リンクファイルが無効なら返す
-    if(isLinked){
-        dialog MESSAGE_IS_ALREADY_LOAD
-        return
-    }
+// リンクファイルが無効なら返す
+	if (isLinked) {
+		dialog MESSAGE_IS_ALREADY_LOAD
+		return
+	}
 
-    // 初期設定の作成
-    jsonnewobj@ jsonPtr
-    jsonputs@ jsonPtr, "path", fname
-    jsonout@ jsonText, jsonPtr
-    jsonclose@
+// 初期設定の作成
+	jsonnewobj@ jsonPtr
+	jsonputs@ jsonPtr, "path", fname
+	jsonout@ jsonText, jsonPtr
+	jsonclose@
 
-    // 設定ファイルの保存
-    notesel jsonText
-    notesave memoPath
-    noteunsel
+// 設定ファイルの保存
+	notesel jsonText
+	notesave memoPath
+	noteunsel
 
-    // メモとして読み込み
-    temp = LoadMemoFile(memoPath)
+// メモとして読み込み
+	temp = LoadMemoFile(memoPath)
 
-    return
+	return
 
 #global
