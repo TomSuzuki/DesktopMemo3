@@ -29,17 +29,11 @@
 #define global appSetting "./setting.json"
 #define global colorSetting "./color.json"
 #define global memoFileMask memoDir + "*.json"
-#define global stringDate _stringDate()
+#define global stringDate strf("%%04d_%%02d%%02d_%%02d%%02d_%%02d_%%03d", gettime(0), gettime(1), gettime(3), gettime(4), gettime(5), gettime(6), gettime(7))
 #define global memoNewFileName memoDir + _stringDate() + ".json"
 #define global noteNewFileName noteDir + _stringDate() + ".txt"
 #define global tasktrayIcon "./img/app.ico"
 #define global tasktrayIconSize	32
-
-// 重大なエラー回避（マクロ文字列で%が使えない）
-#module
-#defcfunc _stringDate
-	return strf("%04d_%02d%02d_%02d%02d_%02d_%03d", gettime(0), gettime(1), gettime(3), gettime(4), gettime(5), gettime(6), gettime(7))
-#global
 
 // グローバル変数
 #define global memo _memo@
