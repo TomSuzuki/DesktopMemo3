@@ -308,7 +308,6 @@
 		gsel Id.WID
 		SetTextColor _wparam, hexBGR(getColor(Id.COLOR_ID, ColorTypeText))
 		SetBkColor _wparam, hexBGR(getColor(Id.COLOR_ID, ColorTypeBox))
-		SetBkMode _wparam, 1
 
 		return hBrush
 	}
@@ -442,9 +441,11 @@
 // テキストエリアの処理
 *OnCtrlEdit
 	n = 0
+	__lparam = lparam
+	__wparam = wparam
 	foreach memo
 // テキストエリアの処理
-		n = TextArea(memo.cnt, lparam, wparam)
+		n = TextArea(memo.cnt, __lparam, __wparam)
 		if (n != 0):break
 	loop
 	return n
