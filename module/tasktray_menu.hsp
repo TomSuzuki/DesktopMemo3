@@ -1,0 +1,70 @@
+
+#include "_main.hsp"
+
+#ifndef _INCLUDE_TASKTRY_MENU_
+#define global _INCLUDE_TASKTRY_MENU_
+
+// タスクトレイのメニュー
+// モジュール内に結合する
+
+#enum MenuID_NewMemo = 1
+#enum MenuID_GitHub
+#enum MenuId_Exit
+#enum MenuID_MemoInFron
+#enum MenuID_Alignment
+
+// メニューの配置
+#deffunc CreateTasktrayMenu
+
+	CreatePopupMenu
+	hMenu.0 = stat
+	AppendMenu hMenu.0, 0, MenuID_NewMemo, "新しいメモを作成"
+	AppendMenu hMenu.0, 0, MenuID_MemoInFron, "すべてのメモを前面に"
+	AppendMenu hMenu.0, 0, MenuID_Alignment, "メモを整列"
+	AppendMenu hMenu.0, $800, 0, ""
+	AppendMenu hMenu.0, 0, MenuID_GitHub, "GitHub"
+	AppendMenu hMenu.0, $800, 0, ""
+	AppendMenu hMenu.0, 0, MenuId_Exit, "終了"
+
+	return
+
+// メニュー処理
+*onTrayIconEvent
+
+// メニュー表示
+	if lparam == 0x0202 || lparam == 0x0205 {
+		gsel 0
+		TrackPopupMenu hMenu.0, $100, ginfo(0), ginfo(1), 0, hwnd, 0
+		if stat = 0:return
+
+// 各メニューの処理
+		switch stat
+			case MenuID_NewMemo
+				createNewMemo ""
+				swbreak
+			case MenuId_Exit
+				gosub *LabelExit@
+				swbreak
+			case MenuID_GitHub
+				exec appLink, 16
+				swbreak
+			case MenuID_MemoInFron
+				foreach memo
+					InFront memo.cnt
+				loop
+				swbreak
+			case MenuID_Alignment
+				x = ButtonSize
+				y = ButtonSize
+				foreach memo
+					Alignment memo.cnt, x, y
+					x += ButtonSize
+					y += ButtonSize
+				loop
+				swbreak
+		swend
+	}
+
+	return
+
+#endif

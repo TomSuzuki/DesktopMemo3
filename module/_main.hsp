@@ -1,0 +1,8 @@
+// モジュールからメインを起動
+#ifndef _INCLUDE_MAIN_
+
+	chdir "../"
+
+#addition "../main.hsp"
+
+#endif

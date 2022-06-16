@@ -1,3 +1,9 @@
+
+#include "_main.hsp"
+
+#ifndef _INCLUDE_MEMO_
+#define global _INCLUDE_MEMO_
+
 // modfunc, modcfunc ...publicメソッド扱い
 // label ...staticメソッド扱い
 
@@ -6,17 +12,17 @@
 #const global MinMemoHeight 240
 
 // メモ管理モジュール
-#module MOD_MEMO jsonText, memoPath, path, text, x, y, w, h, wid, colorId, btnId_Add, btnId_Col, btnId_Pin, btnId_Del, isPin, textAreaId, hMesbox, hBrush
+#module MOD_MEMO Id, jsonText, memoPath, path, text, x, y, w, h, isPin, hMesbox, hBrush, isPinButton, beRedraw
 #uselib "user32"
-    #cfunc GetWindowLong "GetWindowLongA" int, int
-    #func SetWindowLong "SetWindowLongA" int, int, int
-	#func SetWindowPos "SetWindowPos" int, nullptr, nullptr, nullptr, nullptr, nullptr, int
+#cfunc GetWindowLong "GetWindowLongA" int, int
+#func SetWindowLong "SetWindowLongA" int, int, int
+#func SetWindowPos "SetWindowPos" int, nullptr, nullptr, nullptr, nullptr, nullptr, int
 #uselib "gdi32"
-    #func CreateSolidBrush "CreateSolidBrush" sptr
-	#func DeleteObject "DeleteObject" sptr
-	#func SetBkColor "SetBkColor" sptr,sptr
-	#func SetBkMode "SetBkMode" sptr,sptr
-	#func SetTextColor "SetTextColor" sptr,sptr
+#func CreateSolidBrush "CreateSolidBrush" sptr
+#func DeleteObject "DeleteObject" sptr
+#func SetBkColor "SetBkColor" sptr,sptr
+#func SetBkMode "SetBkMode" sptr,sptr
+#func SetTextColor "SetTextColor" sptr,sptr
 #define ctype BGR(%1,%2,%3) (%1 | %2 << 8 | %3 << 16)
 #define GWL_STYLE	$FFFFFFF0
 #define GWL_EXSTYLE -20
@@ -27,378 +33,492 @@
 #define BOTTOM		0x00000008
 #define CaptionHeight ButtonSize
 #define BORDERWIDTH 4
+
+// IDコントロール用定数
+#enum WID = 0
+#enum COLOR_ID
+#enum BUTTON_ID_ADD
+#enum BUTTON_ID_COLOR
+#enum BUTTON_ID_PIN
+#enum BUTTON_ID_DELETE
+#enum TEXTAREA_ID
+#enum ID_MAX
+
 // コンストラクタ（infoはjson文字列）
-#modinit str _memoPath, str _jsonText
-    memoPath = _memoPath
-    jsonText = _jsonText
+#modinit str _memoPath, str _jsonText, int _wid
 
-    // JSON形式を開く
-    jsonopen@ jsonPtr, jsonText
+// ID用配列を初期化
+	dimtype Id, vartype("int"), ID_MAX
 
-    // 読み込み
-    jsongets@ path, "path", jsonPtr
-    jsongeti@ x, "x", jsonPtr
-    jsongeti@ y, "y", jsonPtr
-    jsongeti@ w, "w", jsonPtr
-    jsongeti@ h, "h", jsonPtr
-    jsongeti@ colorId, "color_id", jsonPtr
-    jsongeti@ isPin, "pin", jsonPtr
+// 引数の受け渡し
+	memoPath = _memoPath
+	jsonText = _jsonText
+	Id.WID = _wid
 
-    // JSONを閉じる
-    jsonclose@
+// JSON形式を開く
+	jsonopen@ jsonPtr, jsonText
 
-    // 読み込み
-    notesel text
-    noteload path
-    noteunsel
+// 読み込み
+	jsongets@ path, "path", jsonPtr
+	jsongeti@ x, "x", jsonPtr
+	jsongeti@ y, "y", jsonPtr
+	jsongeti@ w, "w", jsonPtr
+	jsongeti@ h, "h", jsonPtr
+	jsongeti@ Id.COLOR_ID, "color_id", jsonPtr
+	jsongeti@ isPin, "pin", jsonPtr
 
-    // 不正な値を防ぐ
-    if(colorId != limit(colorId, 0, ColorNum))
+// JSONを閉じる
+	jsonclose@
 
-    // ウィンドウ位置・大きさ修正
-    w = limit(w, MinMemoWidth, w)
-    h = limit(h, MinMemoHeight, h)
+// バックアップの作成
+  FileBackup path
 
-    // ウィンドウ生成
-    wid = OverrapBgWin(x, y, w, h, *OnResize, *OnWidthChange, *OnMove)
-    gsel wid, 1+isPin
-    DandD_SetLabel *OnDragAndDrop
-    DandD_SetWindow true
+// 読み込み
+	notesel text
+	noteload path
+	noteunsel
+
+// 不正な値を防ぐ
+	Id.COLOR_ID = limit(Id.COLOR_ID, 0, ColorNum)
+
+// ウィンドウ位置・大きさ修正
+	gsel Id.WID
+	w = limit(w, MinMemoWidth, w)
+	h = limit(h, MinMemoHeight, h)
+	width w, h, x, y
+
+// 割り込み登録
+	oncmd 0
+	oncmd gosub *OnResize, WM_SIZE
+	oncmd gosub *OnWidthChange, WM_NCHITTEST
+	oncmd gosub *OnMove, WM_MOVE
+	oncmd gosub *OnGetMinMaxInfo, WM_GETMINMAXINFO
+	DandD_SetLabel *OnDragAndDrop
+	DandD_SetWindow true
+	oncmd 1
+
+// 初期値設定
+	beRedraw = true
+
+// ウィンドウ表示
+	gsel Id.WID, 1 + isPin
 	gosub *OnResize
 
-    return
+	return
+
+// デストラクタ
+#modterm
+
+// ウィドウを非表示
+	gsel Id.WID, -1
+
+// メモリの開放
+	DeleteObject hBrush
+	buffer wid, 1, 1, 2
+
+	return
 
 #modcfunc WidthChange
 
-    // 処理するウィンドウ
-    gsel wid
+// 処理するウィンドウ
+	gsel Id.WID
 
-    // 座標
-    mposx = ginfo_mx - ginfo_wx1
-    mposy = ginfo_my - ginfo_wy1
+// 座標
+	mposx = ginfo_mx - ginfo_wx1
+	mposy = ginfo_my - ginfo_wy1
 
-    // マウスが範囲外なら別ウィンドウ
-    // TODO: 非アクティブ時の幅調節
-    if (mposx < -BORDERWIDTH || mposx > ginfo_winx+BORDERWIDTH || mposy < -BORDERWIDTH || mposy > ginfo_winy+BORDERWIDTH) {
-        return HTCAPTION
-    }
+// マウスが範囲外なら別ウィンドウ
+// TODO: 非アクティブ時の幅調節
+	if (mposx < -BORDERWIDTH || mposx > ginfo_winx + BORDERWIDTH || mposy < -BORDERWIDTH || mposy > ginfo_winy + BORDERWIDTH) {
+		return HTCAPTION
+	}
 
-    // マウスのポジション
-    dim area
-    if (mposx <= BORDERWIDTH)             : area |= LEFT
-    if (mposx >= ginfo_winx - BORDERWIDTH): area |= RIGHT
-    if (mposy <= BORDERWIDTH)             : area |= TOP
-    if (mposy >= ginfo_winy - BORDERWIDTH): area |= BOTTOM
+// マウスのポジション
+	dim area
+	if (mposx <= BORDERWIDTH)             : area |= LEFT
+	if (mposx >= ginfo_winx - BORDERWIDTH): area |= RIGHT
+	if (mposy <= BORDERWIDTH)             : area |= TOP
+	if (mposy >= ginfo_winy - BORDERWIDTH): area |= BOTTOM
 
-    // 各方向ごとの処理
-    if (area & LEFT) {
-        if (area & TOP)    : return HTTOPLEFT
-        if (area & BOTTOM) : return HTBOTTOMLEFT
-        return HTLEFT
-    }
-    if (area & RIGHT) {
-        if (area & TOP)    : return HTTOPRIGHT
-        if (area & BOTTOM) : return HTBOTTOMRIGHT
-        return HTRIGHT
-    }
-    if (area & TOP)    : return HTTOP
-    if (area & BOTTOM) : return HTBOTTOM
+// 各方向ごとの処理
+	if (area & LEFT) {
+		if (area & TOP)    : return HTTOPLEFT
+		if (area & BOTTOM) : return HTBOTTOMLEFT
+		return HTLEFT
+	}
+	if (area & RIGHT) {
+		if (area & TOP)    : return HTTOPRIGHT
+		if (area & BOTTOM) : return HTBOTTOMRIGHT
+		return HTRIGHT
+	}
+	if (area & TOP)    : return HTTOP
+	if (area & BOTTOM) : return HTBOTTOM
 
-    // マウス座標がタイトルバーなら移動
-    if (mposy <= CaptionHeight) : return HTCAPTION
+// マウス座標がタイトルバーなら移動
+	if (mposy <= CaptionHeight) : return HTCAPTION
 
-    return 0
+	return 0
 
 // 移動時
 #modfunc Move
 
-    // メモの更新
-    saveMemo thismod
+// メモの更新
+	saveMemo thismod
 
-    return
+	return
 
 // 再描画
 #modfunc Resize
 
-    // 処理するウィンドウ
-    gsel wid
-    redraw 0
+// 処理するウィンドウ
+	gsel Id.WID
+	redraw 0
 
-    // 最小幅 TODO: 画面がちらつく
-    if(MinMemoWidth > ginfo_winx):width MinMemoWidth, ginfo_winy
-    if(MinMemoHeight > ginfo_winy):width ginfo_winx, MinMemoHeight
+// 背景色
+	if (beRedraw) {
+		color decRGB(getColor(Id.COLOR_ID, ColorTypeBox))
+		boxf
+		color decRGB(getColor(Id.COLOR_ID, ColorTypeTheme))
+		boxf 0, 0, ginfo_sx, CaptionHeight
+		beRedraw = false
+	}
 
-    // 背景色
-	color decRGB(getColor(colorId, ColorTypeBox))
-    boxf
-	color decRGB(getColor(colorId, ColorTypeTheme))
-	boxf 0, 0, ginfo_winx, CaptionHeight
+// 追加ボタン
+	if (Id.BUTTON_ID_ADD == 0) {
+		CreateButtonImage ButtonTypeAdd, Id.COLOR_ID
+		pos ButtonSize * 0, 0
+		button gosub "", *OnButtonNew
+		Id.BUTTON_ID_ADD = stat
+	}
 
-    // ボタンの初期化
-    if(btnId_Add != 0):clrobj btnId_Add, btnId_Add
-    if(btnId_Col != 0):clrobj btnId_Col, btnId_Col
-    if(btnId_Pin != 0):clrobj btnId_Pin, btnId_Pin
-    if(btnId_Del != 0):clrobj btnId_Del, btnId_Del
+// 色変更ボタン
+	if (Id.BUTTON_ID_COLOR == 0) {
+		CreateButtonImage ButtonTypeCol, Id.COLOR_ID
+		pos ButtonSize * 1, 0
+		button gosub "", *OnButtonCol
+		Id.BUTTON_ID_COLOR = stat
+	}
 
-    // ボタンの配置
-    CreateButtonImage ButtonTypeAdd, colorId            :pos ButtonSize*0,0         :button gosub "",*OnButtonNew   :btnId_Add = stat
-    CreateButtonImage ButtonTypeCol, colorId            :pos ButtonSize*1,0         :button gosub "",*OnButtonCol  :btnId_Col = stat
-    CreateButtonImage ButtonTypePinT+1-isPin, colorId   :pos ButtonSize*2,0         :button gosub "",*OnButtonPin   :btnId_Pin = stat
-    if(isPin == false){
-        CreateButtonImage ButtonTypeDel, colorId            :pos ginfo_winx-ButtonSize,0:button gosub "",*OnButtonDel   :btnId_Del = stat
-    }
+// ピンボタン（更新時）
+	if (isPinButton != isPin && Id.BUTTON_ID_PIN != 0) {
+		isPinButton = isPin
+		clrobj Id.BUTTON_ID_PIN, Id.BUTTON_ID_PIN
+		Id.BUTTON_ID_PIN = 0
+	}
 
-    // テキストエリアの配置
-    padding = 5
-    if(textAreaId == 0){
-        oncmd gosub *OnCtrlEdit, 0x133
-        font fontName, fontSize, fontStyle
-        objmode 2,0
-        pos padding, ButtonSize+padding
-        mesbox text, ginfo_winx-padding*2, ginfo_winy-padding*2-ButtonSize, 1, -1
-        textAreaId = stat
-        hMesbox = objinfo(stat, 2)
-        ShowScrollBar hMesbox, 3, 0
-        SetWindowLong hMesbox,-20, 0x0
-        SetWindowPos hMesbox, 0x27
-        CreateSolidBrush hexBGR(getColor(colorId, ColorTypeBox))
-        hBrush = stat
-        await
-        SetWindowPos hMesbox, 0x27
-        sendmsg hMesbox, 0x00B9
-        sendmsg hMesbox, 0x00CF, f
-    }else{
-        size = ginfo_winx-padding*2, ginfo_winy-padding*2-ButtonSize, padding, ButtonSize+padding
-        resizeobj textAreaId, size, 0
-    }
+// ピンボタン
+	if (Id.BUTTON_ID_PIN == 0) {
+		CreateButtonImage ButtonTypePinT + 1 - isPin, Id.COLOR_ID
+		pos ButtonSize * 2, 0
+		button gosub "", *OnButtonPin
+		Id.BUTTON_ID_PIN = stat
+	}
 
-    // メモの更新
-    saveMemo thismod
+// 削除ボタン
+	if (Id.BUTTON_ID_DELETE == 0 && isPin == false) {
+		CreateButtonImage ButtonTypeDel, Id.COLOR_ID
+		pos ginfo_winx - ButtonSize, 0
+		button gosub "", *OnButtonDel
+		Id.BUTTON_ID_DELETE = stat
+	} else:if (Id.BUTTON_ID_DELETE != 0 && isPin == true) {
+		clrobj Id.BUTTON_ID_DELETE, Id.BUTTON_ID_DELETE
+		Id.BUTTON_ID_DELETE = 0
+	} else:if (Id.BUTTON_ID_DELETE != 0 && isPin == false) {
+		args = 0, 0, ginfo_winx - ButtonSize, 0
+		resizeobj Id.BUTTON_ID_DELETE, args, 2
+	}
 
-    redraw 1
 
-    return
+// テキストエリアの配置
+	padding = 5
+	if (Id.TEXTAREA_ID == 0) {
+		oncmd gosub *OnCtrlEdit, 0x133
+		font fontName, fontSize, fontStyle
+		objmode 2, 0
+		pos padding, ButtonSize + padding
+		mesbox text, ginfo_winx - padding * 2, ginfo_winy - padding * 2 - ButtonSize, 1, 0
+		Id.TEXTAREA_ID = stat
+		hMesbox = objinfo(stat, 2)
+		ShowScrollBar hMesbox, 3, 0
+		SetWindowLong hMesbox, -20, 0x0
+		SetWindowPos hMesbox, 0x27
+		CreateSolidBrush hexBGR(getColor(Id.COLOR_ID, ColorTypeBox))
+		hBrush = stat
+		SetWindowPos hMesbox, 0x27
+		sendmsg hMesbox, 0x00B9
+		sendmsg hMesbox, 0x00CF, f
+	} else {
+		size = ginfo_winx - padding * 2, ginfo_winy - padding * 2 - ButtonSize, padding, ButtonSize + padding
+		resizeobj Id.TEXTAREA_ID, size, 0
+	}
+
+// メモの更新
+	saveMemo thismod
+
+	redraw 1
+
+	return
+
+// 前面化
+#modfunc InFront
+
+// 最前面化
+	gsel Id.WID, 2
+
+// 前面化
+	gsel Id.WID, 1 + isPin
+
+	return
 
 // ピン止め処理
 #modfunc Pin
 
-    // ピン設定の更新
-    isPin = isPin == false
+// ピン設定の更新
+	isPin = isPin == false
 
-    // 再描画
-    Resize thismod
+// 再描画
+	Resize thismod
 
-    // 最前面処理（メモの更新）
-    gsel wid, 1+isPin
+// 最前面処理（メモの更新）
+	gsel Id.WID, 1 + isPin
 
-    return
+	return
 
 
 // メモの削除
 #modfunc DelMemo
 
-    // ファイルの移動
-    bcopy memoPath, trashDir + getpath(memoPath, 8)
-    delete memoPath
+// ファイルの移動
+	bcopy memoPath, trashDir + getpath(memoPath, 8)
+	delete memoPath
 
-    // ウィドウを非表示
-    gsel wid, -1
+// 削除
+	delmod thismod
 
-    // メモリの開放
-    DeleteObject hBrush
-    buffer wid,1,1,2
-
-    // 削除
-    delmod thismod
-
-    return
+	return
 
 // テキストエリアの処理（更新）
 #modcfunc TextArea int _lparam, int _wparam
 	if hMesbox = _lparam {
 
-        // ファイル更新
-        saveMemo thismod
+// ファイル更新
+		saveMemo thismod
 
-        // 色処理
-        gsel wid
-		SetTextColor _wparam, hexBGR(getColor(colorId, ColorTypeText))
-		SetBkColor _wparam, hexBGR(getColor(colorId, ColorTypeBox))
-        SetBkMode _wparam, 1
+// 色処理
+		gsel Id.WID
+		SetTextColor _wparam, hexBGR(getColor(Id.COLOR_ID, ColorTypeText))
+		SetBkColor _wparam, hexBGR(getColor(Id.COLOR_ID, ColorTypeBox))
 
 		return hBrush
 	}
-    return 0
+	return 0
 
 // メモの保存
 #modfunc saveMemo
 
-    // 処理待ち
-    await
+// テキストファイルが存在するかチェック
+	exist path
+	if (strsize == -1) {
+		path = noteNewFileName
+	}
 
-    // テキストファイルが存在するかチェック
-    exist path
-    if(strsize == -1){
-        path = noteNewFileName
-    }
+// テキストの保存
+	notesel text
+	notesave path
+	noteunsel
 
-    // テキストの保存
-    notesel text
-    notesave path
-    noteunsel
+// 情報の更新
+	gsel Id.WID
+	x = ginfo_wx1
+	y = ginfo_wy1
+	w = ginfo_sizex
+	h = ginfo_sizey
 
-    // 情報の更新
-    gsel wid
-    x = ginfo_wx1
-    y = ginfo_wy1
-    w = ginfo_sizex
-    h = ginfo_sizey
+// 設定データの組み立て
+	sdim jsonText
+	jsonnewobj@ jsonPtr
+	jsonputs@ jsonPtr, "path", path
+	jsonputi@ jsonPtr, "x", x
+	jsonputi@ jsonPtr, "y", y
+	jsonputi@ jsonPtr, "w", w
+	jsonputi@ jsonPtr, "h", h
+	jsonputi@ jsonPtr, "color_id", Id.COLOR_ID
+	jsonputi@ jsonPtr, "pin", isPin
+	jsonout@ jsonText, jsonPtr
+	jsonclose@
 
-    // 設定データの組み立て
-    sdim jsonText
-    jsonnewobj@ jsonPtr
-    jsonputs@ jsonPtr, "path", path
-    jsonputi@ jsonPtr, "x", x
-    jsonputi@ jsonPtr, "y", y
-    jsonputi@ jsonPtr, "w", w
-    jsonputi@ jsonPtr, "h", h
-    jsonputi@ jsonPtr, "color_id", colorId
-    jsonputi@ jsonPtr, "pin", isPin
-    jsonout@ jsonText, jsonPtr
-    jsonclose@
+// 設定の保存
+	notesel jsonText
+	notesave memoPath
+	noteunsel
 
-    // 設定の保存
-    notesel jsonText
-    notesave memoPath
-    noteunsel
-
-    return
+	return
 
 // 色変更処理
 #modfunc ColorChange int _colorId
 
-    // 色コード変更
-    colorId = _colorId
+// 色コード変更
+	Id.COLOR_ID = _colorId
 
-    // テキストエリア削除
-    clrobj textAreaId, textAreaId
-    textAreaId = 0
+// テキストエリア削除
+	clrobj Id.TEXTAREA_ID, Id.TEXTAREA_ID
+	Id.TEXTAREA_ID = 0
 
-    // リサイズ＋保存
-    Resize thismod
+// ボタン削除
+	clrobj Id.BUTTON_ID_ADD, Id.BUTTON_ID_ADD
+	clrobj Id.BUTTON_ID_COLOR, Id.BUTTON_ID_COLOR
+	clrobj Id.BUTTON_ID_PIN, Id.BUTTON_ID_PIN
+	clrobj Id.BUTTON_ID_DELETE, Id.BUTTON_ID_DELETE
 
-    return
+// ボタンID初期化
+	Id.BUTTON_ID_ADD = 0
+	Id.BUTTON_ID_COLOR = 0
+	Id.BUTTON_ID_PIN = 0
+	Id.BUTTON_ID_DELETE = 0
+
+// 描画オプション変更
+	beRedraw = true
+
+// リサイズ＋保存
+	Resize thismod
+
+	return
+
+// 場所移動
+#modfunc Alignment int _x, int _y
+
+	gsel Id.WID
+	width -1, -1, _x, _y
+
+	return
 
 // ゲッター
 #modcfunc getWid
-    return wid
+	return Id.WID
+
+#modcfunc getMemoPath
+	return path
 
 // ---------------------------------------------------------------------
+// ウィンドウ最小幅回り
+*OnGetMinMaxInfo
+
+// 最小幅を指定
+	dupptr MinMaxInfo, lParam, 40
+	MinMaxInfo.6 = MinMemoWidth
+	MinMaxInfo.7 = MinMemoHeight
+
+	return
+
 // 色変更ウィンドウの有効化
 *OnButtonCol
 
-    // 色変更ウィンドウの配置
-    DisplayColorWindow ginfo(2)
+// 色変更ウィンドウの配置
+	DisplayColorWindow ginfo(2)
 
-    return
+	return
 
 // 移動時の処理
 *OnMove
-    foreach memo
-        // アクティブウィンドウを探す
-        if(ginfo(2) != getWid(memo.cnt)){
-            continue
-        }
+	foreach memo
+// アクティブウィンドウを探す
+		if (ginfo(2) != getWid(memo.cnt)) {
+			continue
+		}
 
-        // 移動時処理
-        Move memo.cnt
-        break
-    loop
-    return
+// 移動時処理
+		Move memo.cnt
+		break
+	loop
+	return
 
 // D&D時の処理
 *OnDragAndDrop
 
-    // 情報の取得
-    fileNum = DandD_GetInfo(0)
+// 情報の取得
+	fileNum = DandD_GetInfo(0)
 
-    // 各ファイルの処理
-    repeat fileNum
-        fname = DandD_GetPath(cnt)
-        createNewMemo fname
-    loop
+// 各ファイルの処理
+	repeat fileNum
+		fname = DandD_GetPath(cnt)
+		createNewMemo fname
+	loop
 
-    return
+	return
 
 // テキストエリアの処理
 *OnCtrlEdit
-    n = 0
-    foreach memo
-        // テキストエリアの処理
-        n = TextArea(memo.cnt, lparam, wparam)
-        if(n != 0):break
-    loop
-    return n
+	n = 0
+	__lparam = lparam
+	__wparam = wparam
+	foreach memo
+// テキストエリアの処理
+		n = TextArea(memo.cnt, __lparam, __wparam)
+		if (n != 0):break
+	loop
+	return n
 
 // 新規メモ追加
 *OnButtonNew
-    createNewMemo ""
-    return
+	createNewMemo ""
+	return
 
 // 削除ボタンの処理
 *OnButtonDel
-    foreach memo
-        // アクティブウィンドウを探す
-        if(ginfo(2) != getWid(memo.cnt)){
-            continue
-        }
+	foreach memo
+// アクティブウィンドウを探す
+		if (ginfo(2) != getWid(memo.cnt)) {
+			continue
+		}
 
-        // ピン止めの処理
-        DelMemo memo.cnt
-        break
-    loop
-    return
+// ピン止めの処理
+		DelMemo memo.cnt
+		break
+	loop
+	return
 
 // ピン止めボタンの処理
 *OnButtonPin
-    foreach memo
-        // アクティブウィンドウを探す
-        if(ginfo(2) != getWid(memo.cnt)){
-            continue
-        }
+	foreach memo
+// アクティブウィンドウを探す
+		if (ginfo(2) != getWid(memo.cnt)) {
+			continue
+		}
 
-        // ピン止めの処理
-        Pin memo.cnt
-        break
-    loop
-    return
+// ピン止めの処理
+		Pin memo.cnt
+		break
+	loop
+	return
 
 // 画面リサイズ時＋初期化表示
 *OnResize
-    foreach memo
-        // アクティブウィンドウを探す
-        if(ginfo(2) != getWid(memo.cnt)){
-            continue
-        }
+	foreach memo
+// アクティブウィンドウを探す
+		if (ginfo(2) != getWid(memo.cnt)) {
+			continue
+		}
 
-        // リサイズ時の処理
-        Resize memo.cnt
-        break
-    loop
-    return
+// リサイズ時の処理
+		Resize memo.cnt
+		break
+	loop
+	return
 
 // 画面リサイズ用の動き
 *OnWidthChange
-    n = HTCAPTION
-    foreach memo
-        // アクティブウィンドウを探す
-        if(ginfo(2) != getWid(memo.cnt)){
-            continue
-        }
+	n = HTCAPTION
+	foreach memo
+// アクティブウィンドウを探す
+		if (ginfo(2) != getWid(memo.cnt)) {
+			continue
+		}
 
-        // リサイズ用の処理
-        n = WidthChange(memo.cnt)
-        break
-    loop
-    return n
+// リサイズ用の処理
+		n = WidthChange(memo.cnt)
+		break
+	loop
+	return n
 #global
+
+#endif

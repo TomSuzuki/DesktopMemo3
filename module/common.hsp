@@ -1,77 +1,58 @@
 
+#include "_main.hsp"
+
+#ifndef _INCLUDE_COMMON_
+#define global _INCLUDE_COMMON_
+
 // デバッグ時のみコンパイル
 #if isDebug
-	exist "hsptmp":if strsize!-1:delete "hsptmp"
-	exist "obj":if strsize!-1:delete "obj"
-	exist "packfile":if strsize!-1:delete "packfile"
-	exist "hsptmp.exe":if strsize!-1:delete "hsptmp.exe"
-	exist "start.ax":if strsize!-1:delete "start.ax"
+	exist "hsptmp":if strsize ! -1:delete "hsptmp"
+	exist "obj":if strsize ! -1:delete "obj"
+	exist "packfile":if strsize ! -1:delete "packfile"
+	exist "hsptmp.exe":if strsize ! -1:delete "hsptmp.exe"
+	exist "start.ax":if strsize ! -1:delete "start.ax"
 #endif
 
 // 命令定義・関数定義
 #module
 // MakeDirectory ...ディレクトリが無い場合に作成します（一階層上までないと失敗します？）。
-#deffunc MakeDirectory str p1
-	dirlist list,p1,5
-	if(stat == 0){
-		mkdir p1
+#deffunc MakeDirectory str _dirName
+
+// パスを修正
+	dirName = _dirName
+	dirName = strtrim(dirName, 2, '/')
+
+// 作成
+	dirlist list, dirName, 5
+	if (stat == 0) {
+		mkdir dirName
 	}
 	return
 
 // NewBuffer ...新しいバッファを作成する。戻り値はバッファID。
 #defcfunc NewBuffer int p1,int p2
-	// 取得
+// 取得
 	n = ginfo_sel
 	g = ginfo_newid
 
-	// メイン
-	screen g,p1,p2,screen_fixedsize+screen_hide
+// メイン
+	screen g, p1, p2, screen_fixedsize + screen_hide
 	gsel n
 
 	return g
 
 // ImgLoad ...画像をロードし、バッファIDを返す。
 #defcfunc ImgLoad str p1
-	// 取得
+// 取得
 	n = ginfo_sel
 	g = ginfo_newid
 	file = p1
 
-	// メイン
+// メイン
 	buffer g:picload file
 	gsel n
 	return g
 
 #global
 
-#module
-// 可変枠無しウィンドウ（非表示生成）
-#defcfunc OverrapBgWin int x, int y, int w, int h, label _resize, label _widthChange, label _move
-
-	// 取得
-	n = ginfo_sel
-	g = ginfo_newid
-
-	// 生成
-	oncmd 0
-	bgscr g, ginfo_dispx, ginfo_dispy, screen_hide, x, y
-	width w, h
-
-	// 影
-	GetClassLong hwnd,GCL_STYLE
-	SetClassLong hwnd,GCL_STYLE, stat | CS_DROPSHADOW
-
-	// 登録
-	oncmd gosub _resize, WM_SIZE
-	oncmd gosub _widthChange, WM_NCHITTEST
-	oncmd gosub _move, WM_MOVE
-	oncmd 1
-
-	// 戻す
-	gsel n
-
-	return g
-
-#global
-
-
+#endif
