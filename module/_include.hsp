@@ -8,10 +8,6 @@
 #addition "./module/_message.hsp"
 #addition "./_message.hsp"
 
-// モジュール読み込み
-#addition "./module/tasktray.hsp"
-#addition "./tasktray.hsp"
-
 // 各パーツの読み込み
 #addition "./module/common.hsp"
 #addition "./common.hsp"
@@ -48,3 +44,6 @@
 
 #addition "./module/app_initialize.hsp"
 #addition "./app_initialize.hsp"
+
+#addition "./module/tasktray.hsp"
+#addition "./tasktray.hsp"

@@ -79,7 +79,7 @@
 	noteunsel
 
 // 不正な値を防ぐ
-	if (Id.COLOR_ID != limit(Id.COLOR_ID, 0, ColorNum))
+	Id.COLOR_ID = limit(Id.COLOR_ID, 0, ColorNum)
 
 // ウィンドウ位置・大きさ修正
 	gsel Id.WID
@@ -381,6 +381,14 @@
 
 // リサイズ＋保存
 	Resize thismod
+
+	return
+
+// 場所移動
+#modfunc Alignment int _x, int _y
+
+	gsel Id.WID
+	width -1, -1, _x, _y
 
 	return
 
