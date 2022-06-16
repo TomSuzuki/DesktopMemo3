@@ -42,7 +42,7 @@
 
 // モジュールの一括読み込み
 #addition "./_include.hsp"
-#addition "../_include.hsp"
+#addition "./module/_include.hsp"
 
 // メモの定義
 	dimtype memo, vartype("struct")

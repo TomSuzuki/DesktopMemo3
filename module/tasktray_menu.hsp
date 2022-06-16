@@ -11,6 +11,7 @@
 #enum MenuID_GitHub
 #enum MenuId_Exit
 #enum MenuID_MemoInFron
+#enum MenuID_Alignment
 
 // メニューの配置
 #deffunc CreateTasktrayMenu
@@ -19,6 +20,7 @@
 	hMenu.0 = stat
 	AppendMenu hMenu.0, 0, MenuID_NewMemo, "新しいメモを作成"
 	AppendMenu hMenu.0, 0, MenuID_MemoInFron, "すべてのメモを前面に"
+	AppendMenu hMenu.0, 0, MenuID_Alignment, "メモを整列"
 	AppendMenu hMenu.0, $800, 0, ""
 	AppendMenu hMenu.0, 0, MenuID_GitHub, "GitHub"
 	AppendMenu hMenu.0, $800, 0, ""
@@ -49,6 +51,15 @@
 			case MenuID_MemoInFron
 				foreach memo
 					InFront memo.cnt
+				loop
+				swbreak
+			case MenuID_Alignment
+				x = ButtonSize
+				y = ButtonSize
+				foreach memo
+					Alignment memo.cnt, x, y
+					x += ButtonSize
+					y += ButtonSize
 				loop
 				swbreak
 		swend
