@@ -1,3 +1,9 @@
+
+#include "_main.hsp"
+
+#ifndef _INCLUDE_DRAG_AND_DROP_
+#define global _INCLUDE_DRAG_AND_DROP_
+
 /*
 * 参考元
 * http://menyukko.ifdef.jp/cauldron/hmdandd.html
@@ -61,3 +67,5 @@
 	return cnvwtos(ddList(i))
 
 #global
+
+#endif

@@ -1,4 +1,9 @@
 
+#include "_main.hsp"
+
+#ifndef _INCLUDE_COLOR_LOAD_
+#define global _INCLUDE_COLOR_LOAD_
+
 #const global ColorNum 8
 #enum global ColorTypeText 0
 #enum global ColorTypeTheme
@@ -60,3 +65,5 @@
 	if (_type == ColorTypeBox)   :c = getObjBoxColor(color_obj._id)
 	return c
 #global
+
+#endif

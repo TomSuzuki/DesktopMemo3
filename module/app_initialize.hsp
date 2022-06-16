@@ -1,3 +1,7 @@
+#include "_main.hsp"
+
+#ifndef _INCLUDE_APP_INITIALIZE_
+#define global _INCLUDE_APP_INITIALIZE_
 
 // 起動時処理
 #module
@@ -29,3 +33,5 @@
 
 	return
 #global
+
+#endif

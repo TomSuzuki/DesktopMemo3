@@ -1,3 +1,7 @@
+#include "_main.hsp"
+
+#ifndef _INCLUDE_BACKUP_
+#define global _INCLUDE_BACKUP_
 
 #module
 // バックアップファイルを作成する
@@ -11,3 +15,5 @@
 
     return
 #global
+
+#endif

@@ -1,3 +1,9 @@
+
+#include "_main.hsp"
+
+#ifndef _INCLUDE_TASKTRY_MENU_
+#define global _INCLUDE_TASKTRY_MENU_
+
 // タスクトレイのメニュー
 // モジュール内に結合する
 
@@ -49,3 +55,5 @@
 	}
 
 	return
+
+#endif
