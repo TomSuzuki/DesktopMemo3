@@ -12,7 +12,7 @@
 #const global MinMemoHeight 240
 
 // メモ管理モジュール
-#module MOD_MEMO Id, jsonText, memoPath, path, text, x, y, w, h, isPin, hMesbox, hBrush, isPinButton
+#module MOD_MEMO Id, jsonText, memoPath, path, text, x, y, w, h, isPin, hMesbox, hBrush, isPinButton, beRedraw
 #uselib "user32"
 #cfunc GetWindowLong "GetWindowLongA" int, int
 #func SetWindowLong "SetWindowLongA" int, int, int
@@ -97,6 +97,9 @@
 	DandD_SetWindow true
 	oncmd 1
 
+// 初期値設定
+	beRedraw = true
+
 // ウィンドウ表示
 	gsel Id.WID, 1 + isPin
 	gosub *OnResize
@@ -172,10 +175,13 @@
 	redraw 0
 
 // 背景色
-	color decRGB(getColor(Id.COLOR_ID, ColorTypeBox))
-	boxf
-	color decRGB(getColor(Id.COLOR_ID, ColorTypeTheme))
-	boxf 0, 0, ginfo_winx, CaptionHeight
+	if (beRedraw) {
+		color decRGB(getColor(Id.COLOR_ID, ColorTypeBox))
+		boxf
+		color decRGB(getColor(Id.COLOR_ID, ColorTypeTheme))
+		boxf 0, 0, ginfo_sx, CaptionHeight
+		beRedraw = false
+	}
 
 // 追加ボタン
 	if (Id.BUTTON_ID_ADD == 0) {
@@ -370,6 +376,9 @@
 	Id.BUTTON_ID_COLOR = 0
 	Id.BUTTON_ID_PIN = 0
 	Id.BUTTON_ID_DELETE = 0
+
+// 描画オプション変更
+	beRedraw = true
 
 // リサイズ＋保存
 	Resize thismod
