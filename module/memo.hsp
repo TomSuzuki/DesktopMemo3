@@ -1,3 +1,9 @@
+
+#include "_main.hsp"
+
+#ifndef _INCLUDE_MEMO_
+#define global _INCLUDE_MEMO_
+
 // modfunc, modcfunc ...publicメソッド扱い
 // label ...staticメソッド扱い
 
@@ -66,7 +72,7 @@
 
 // バックアップの作成
   FileBackup path
-    
+
 // 読み込み
 	notesel text
 	noteload path
@@ -496,3 +502,5 @@
 	loop
 	return n
 #global
+
+#endif

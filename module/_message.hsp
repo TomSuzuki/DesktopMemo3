@@ -1,2 +1,10 @@
+
+#include "_main.hsp"
+
+#ifndef _INCLUDE_MESSAGE_
+#define global _INCLUDE_MESSAGE_
+
 // リソース
 #define global MESSAGE_IS_ALREADY_LOAD "すでに読み込まれているメモです"
+
+#endif

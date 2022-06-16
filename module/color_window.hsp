@@ -1,3 +1,7 @@
+#include "_main.hsp"
+
+#ifndef _INCLUDE_COLOR_WINDOW_
+#define global _INCLUDE_COLOR_WINDOW_
 
 #module
 #define colorButtonWidth 48
@@ -86,3 +90,5 @@
 	return
 
 #global
+
+#endif

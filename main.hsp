@@ -1,8 +1,14 @@
+// インクルードガード（メイン用）
+#ifndef _INCLUDE_MAIN_
+#define global _INCLUDE_MAIN_
+
 // コンパイルオプション
 #include "hsp3utf.as"
 #cmpopt utf8 1
-#cmpopt optcode 0	// TODO: モジュールの作成が終わったら最適化する（ONにすると作成途中のモジュールがうまく動かない）
+#cmpopt optcode 0
+#cmpopt optprm 0
 #bootopt utf8 1
+#packopt hide 1
 
 // ライブラリの読み込み
 #include "./user32.as"
@@ -12,12 +18,8 @@
 #include "./hspinet.as"
 #include "./obj.as"
 
-// 定数などを定義
-#include "./module/_define.hsp"
-#include "./module/_message.hsp"
-
 // アプリケーションの設定
-#define global isDebug true
+#define global isDebug 1
 #define global appTitle "Desktop Memo 3"
 #define global appLink "https://github.com/TomSuzuki/DesktopMemo3"
 
@@ -30,33 +32,20 @@
 #define global colorSetting "./color.json"
 #define global memoFileMask memoDir + "*.json"
 #define global stringDate strf("%%04d_%%02d%%02d_%%02d%%02d_%%02d_%%03d", gettime(0), gettime(1), gettime(3), gettime(4), gettime(5), gettime(6), gettime(7))
-#define global memoNewFileName memoDir + _stringDate() + ".json"
-#define global noteNewFileName noteDir + _stringDate() + ".txt"
+#define global memoNewFileName memoDir + stringDate + ".json"
+#define global noteNewFileName noteDir + stringDate + ".txt"
 #define global tasktrayIcon "./img/app.ico"
 #define global tasktrayIconSize	32
 
 // グローバル変数
 #define global memo _memo@
 
+// モジュールの一括読み込み
+#addition "./_include.hsp"
+#addition "../_include.hsp"
+
 // メモの定義
 	dimtype memo, vartype("struct")
-
-// モジュール読み込み
-#include "./module/tasktray.hsp"
-
-// 各パーツの読み込み
-#include "./module/common.hsp"
-#include "./module/backup.hsp"
-#include "./module/drag_and_drop.hsp"
-#include "./module/setting_load.hsp"
-#include "./module/color_load.hsp"
-#include "./module/create_object.hsp"
-#include "./module/create_window.hsp"
-#include "./module/memo.hsp"
-#include "./module/memo_load.hsp"
-#include "./module/memo_create.hsp"
-#include "./module/color_window.hsp"
-#include "./module/app_initialize.hsp"
 
 // 起動時処理
 	AppInitialize
@@ -83,3 +72,5 @@
 		end
 	loop
 	stop
+
+#endif

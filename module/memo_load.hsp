@@ -1,4 +1,9 @@
 
+#include "_main.hsp"
+
+#ifndef _INCLUDE_MEMO_LOAD_
+#define global _INCLUDE_MEMO_LOAD_
+
 // メモの読み込み処理
 #module AREA_MEMO1
 // メモの読み込み（すべて）
@@ -71,3 +76,5 @@
 
 	return true
 #global
+
+#endif

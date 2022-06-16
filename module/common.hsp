@@ -1,4 +1,9 @@
 
+#include "_main.hsp"
+
+#ifndef _INCLUDE_COMMON_
+#define global _INCLUDE_COMMON_
+
 // デバッグ時のみコンパイル
 #if isDebug
 	exist "hsptmp":if strsize ! -1:delete "hsptmp"
@@ -49,3 +54,5 @@
 	return g
 
 #global
+
+#endif

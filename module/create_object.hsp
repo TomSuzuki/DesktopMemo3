@@ -1,3 +1,7 @@
+#include "_main.hsp"
+
+#ifndef _INCLUDE_COLOR_OBJECT_
+#define global _INCLUDE_COLOR_OBJECT_
 
 // ボタンのファイル
 #define global PathAdd "./img/add.gif"
@@ -104,3 +108,5 @@
 
 	return
 #global
+
+#endif

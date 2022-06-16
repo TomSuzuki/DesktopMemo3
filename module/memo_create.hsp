@@ -1,4 +1,9 @@
 
+#include "_main.hsp"
+
+#ifndef _INCLUDE_MEMO_CREATE_
+#define global _INCLUDE_MEMO_CREATE_
+
 #module
 #deffunc createNewMemo str _fname
 
@@ -48,3 +53,5 @@
 	return
 
 #global
+
+#endif

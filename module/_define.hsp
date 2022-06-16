@@ -1,4 +1,9 @@
 
+#include "_main.hsp"
+
+#ifndef _INCLUDE_DEFINE_
+#define global _INCLUDE_DEFINE_
+
 // 定数
 #const global true 1
 #const global false 0
@@ -30,3 +35,5 @@
 
 #define global GCL_STYLE		-26
 #define global CS_DROPSHADOW	0x00020000
+
+#endif

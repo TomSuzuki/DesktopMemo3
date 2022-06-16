@@ -1,3 +1,9 @@
+
+#include "_main.hsp"
+
+#ifndef _INCLUDE_CREATE_WINDOW_
+#define global _INCLUDE_CREATE_WINDOW_
+
 #module
 // 可変枠無しウィンドウ（非表示生成）
 #defcfunc CreateMemoWindow
@@ -20,3 +26,5 @@
 	return g
 
 #global
+
+#endif

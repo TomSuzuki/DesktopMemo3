@@ -1,4 +1,9 @@
 
+#include "_main.hsp"
+
+#ifndef _INCLUDE_SETTING_LOAD_
+#define global _INCLUDE_SETTING_LOAD_
+
 // デフォルト設定
 #define global DefaultSetting_fontName  "游ゴシック"
 #define global DefaultSetting_fontSize  14
@@ -90,3 +95,5 @@
 #defcfunc _application_setting_buttonColor3
 	return int(_buttonColor3)
 #global
+
+#endif
