@@ -99,6 +99,7 @@
 
 // 初期値設定
 	beRedraw = true
+	isPinButton = isPin
 
 // ウィンドウ表示
 	gsel Id.WID, 1 + isPin
