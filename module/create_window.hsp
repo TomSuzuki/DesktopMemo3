@@ -14,7 +14,8 @@
 
 // 生成
 	bgscr g, ginfo_dispx, ginfo_dispy, screen_hide
-	SetWindowLong hWnd, GWL_EXSTYLE, GetWindowLong(hWnd, GWL_EXSTYLE) | WS_EX_TOOLWINDOW
+	gsel g
+	SetWindowLong hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) | WS_EX_TOOLWINDOW
 
 // 影
 	GetClassLong hwnd, GCL_STYLE
