@@ -12,7 +12,7 @@
 #const global MinMemoHeight 240
 
 // メモ管理モジュール
-#module MOD_MEMO Id, jsonText, memoPath, path, text, x, y, w, h, isPin, hMesbox, hBrush, isPinButton, beRedraw
+#module MOD_MEMO Id, jsonText, memoPath, path, text, x, y, w, h, isPin, hMesbox, hBrush, isPinButton, beRedraw, mousePos
 #uselib "user32"
 #cfunc GetWindowLong "GetWindowLongA" int, int
 #func SetWindowLong "SetWindowLongA" int, int, int
@@ -44,11 +44,17 @@
 #enum TEXTAREA_ID
 #enum ID_MAX
 
+// マウス座標記録用
+#enum MOUSE_X = 0
+#enum MOUSE_Y
+#enum MOUSE_MAX
+
 // コンストラクタ（infoはjson文字列）
 #modinit str _memoPath, str _jsonText, int _wid
 
 // ID用配列を初期化
-	dimtype Id, vartype("int"), ID_MAX
+    dimtype Id, vartype("int"), ID_MAX
+	dimtype mousePos, vartype("int"), MOUSE_MAX
 
 // 引数の受け渡し
 	memoPath = _memoPath
@@ -121,6 +127,12 @@
 
 #modcfunc WidthChange
 
+// マウスに動きがあるウィンドウであるかを確認
+	logmes "" + TargetWID
+	if (isOnMouse(thismod) == false && TargetWID != Id.WID) {
+		return -1
+	}
+
 // 処理するウィンドウ
 	gsel Id.WID
 
@@ -129,10 +141,12 @@
 	mposy = ginfo_my - ginfo_wy1
 
 // マウスが範囲外なら別ウィンドウ
-// TODO: 非アクティブ時の幅調節
 	if (mposx < -BORDERWIDTH || mposx > ginfo_winx + BORDERWIDTH || mposy < -BORDERWIDTH || mposy > ginfo_winy + BORDERWIDTH) {
-		return HTCAPTION
+		return -1
 	}
+
+// ターゲットを記録
+	TargetWID = Id.WID
 
 // マウスのポジション
 	dim area
@@ -158,7 +172,26 @@
 // マウス座標がタイトルバーなら移動
 	if (mposy <= CaptionHeight) : return HTCAPTION
 
-	return 0
+	return -1
+
+// マウスが乗っているかの判定
+#modcfunc isOnMouse
+
+	// 座標を取得
+	gsel Id.WID
+	px = ginfo_mx
+	py = ginfo_my
+
+	// 記録されている座標と同じなら乗っていない
+	if (mousePos.MOUSE_X == px && mousePos.MOUSE_Y == py) {
+		return false
+	}
+
+	// 記録
+	mousePos.MOUSE_X = px
+	mousePos.MOUSE_Y = py
+
+	return true
 
 // 移動時
 #modfunc Move
@@ -510,14 +543,10 @@
 *OnWidthChange
 	n = HTCAPTION
 	foreach memo
-// アクティブウィンドウを探す
-		if (ginfo(2) != getWid(memo.cnt)) {
-			continue
-		}
-
-// リサイズ用の処理
 		n = WidthChange(memo.cnt)
-		break
+		if (n != -1) {
+			break
+		}
 	loop
 	return n
 #global
