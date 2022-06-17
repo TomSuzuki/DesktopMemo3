@@ -2,6 +2,12 @@
 #ifndef _INCLUDE_MAIN_
 #define global _INCLUDE_MAIN_
 
+// アプリケーションの設定
+#define global isDebug 1
+#define global appTitle "Desktop Memo 3"
+#define global appLink "https://github.com/TomSuzuki/DesktopMemo3"
+#define global appIcon "./img/app.ico"
+
 // コンパイルオプション
 #include "hsp3utf.as"
 #cmpopt utf8 1
@@ -9,6 +15,8 @@
 #cmpopt optprm 0
 #bootopt utf8 1
 #packopt hide 1
+#packopt name appTitle
+#packopt icon appIcon
 
 // ライブラリの読み込み
 #include "./user32.as"
@@ -17,11 +25,6 @@
 #include "./hspext.as"
 #include "./hspinet.as"
 #include "./obj.as"
-
-// アプリケーションの設定
-#define global isDebug 1
-#define global appTitle "Desktop Memo 3"
-#define global appLink "https://github.com/TomSuzuki/DesktopMemo3"
 
 // パス設定
 #define global backupDir "./backup/"
