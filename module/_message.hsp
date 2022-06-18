@@ -14,4 +14,10 @@
 #define global MENU_MESSAGE_Alignment "メモを整列"
 #define global MENU_MESSAGE_Exit "終了"
 
+// エラー
+#define global ERROR_MESSAGE_CODE strf("CODE: %%d, LINE: %%d\n", wparam, lparam)
+#define global ERROR_MESSAGE_38 "外部DLLの呼び出しに失敗しました。"
+#define global ERROR_MESSAGE_13 "画像ファイルの読み込みに失敗しました。"
+#define global ERROR_MESSAGE_00 "不明なエラーが発生しました。"
+
 #endif

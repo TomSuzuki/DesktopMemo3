@@ -1,0 +1,35 @@
+
+#include "_main.hsp"
+
+#ifndef _INCLUDE_ERROR_
+#define global _INCLUDE_ERROR_
+
+#module error_dialog
+
+// エラー時のダイアログ（復帰せずに終了）
+*OnErrorExit
+
+    // メッセージの作成
+    msg = ERROR_MESSAGE_CODE
+    switch err
+    case 13
+        msg += ERROR_MESSAGE_13
+        swbreak
+    case 38
+        msg += ERROR_MESSAGE_38
+        swbreak
+    default
+        msg += ERROR_MESSAGE_00
+    swend
+
+    // ダイアログ
+    dialog msg, 1
+
+    end
+
+#global
+
+// 登録
+	onerror *OnErrorExit@error_dialog
+
+#endif
