@@ -8,6 +8,9 @@
 #addition "./module/_message.hsp"
 #addition "./_message.hsp"
 
+#addition "./module/_error.hsp"
+#addition "./_error.hsp"
+
 // 各パーツの読み込み
 #addition "./module/common.hsp"
 #addition "./common.hsp"
