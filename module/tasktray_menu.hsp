@@ -34,6 +34,7 @@
 // メニュー表示
 	if lparam == 0x0202 || lparam == 0x0205 {
 		gsel 0
+		SetForegroundWindow hwnd
 		TrackPopupMenu hMenu.0, $100, ginfo(0), ginfo(1), 0, hwnd, 0
 		if stat = 0:return
 
