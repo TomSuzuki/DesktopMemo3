@@ -1,4 +1,4 @@
-
+#include "hsp3utf.as"
 #include "_main.hsp"
 
 #ifndef _INCLUDE_MESSAGE_

@@ -1,3 +1,5 @@
+#include "hsp3utf.as"
+
 // インクルードガード（メイン用）
 #ifndef _INCLUDE_MAIN_
 #define global _INCLUDE_MAIN_
@@ -9,7 +11,6 @@
 #define global appIcon "./img/app.ico"
 
 // コンパイルオプション
-#include "hsp3utf.as"
 #cmpopt utf8 1
 #cmpopt optcode 0
 #cmpopt optprm 0
@@ -17,6 +18,7 @@
 #packopt hide 1
 #packopt name appTitle
 #packopt icon appIcon
+#runtime "hsp3utf"
 
 // ライブラリの読み込み
 #include "./user32.as"
@@ -39,6 +41,11 @@
 #define global noteNewFileName noteDir + stringDate + ".txt"
 #define global tasktrayIcon "./img/app.ico"
 #define global tasktrayIconSize	32
+
+// モジュール開始用ディレクトリ変更
+#ifdef _MODULE_EXEC_
+	chdir "../"
+#endif
 
 // グローバル変数
 #define global memo _memo@
