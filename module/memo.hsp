@@ -72,6 +72,7 @@
 	jsongeti@ h, "h", jsonPtr
 	jsongeti@ Id.COLOR_ID, "color_id", jsonPtr
 	jsongeti@ isPin, "pin", jsonPtr
+	path = cnvatos(path)
 
 // JSONを閉じる
 	jsonclose@

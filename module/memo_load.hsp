@@ -58,12 +58,12 @@
 
 // 読み込み
 	jsongets@ path, "path", jsonPtr
+	path = cnvatos(path)
 
 // JSONを閉じる
 	jsonclose@
 
 // リンク先メモが存在しなかったらゴミ箱に入れる
-	exist path
 	if (strsize == -1) {
 		bcopy fname, trashDir + getpath(fname, 8)
 		delete fname
