@@ -66,14 +66,21 @@
 // メモ読み込み
 	LoadAllMemo memoFileMask
 
+// 割り込み待ち
 	stop
 
 // 終了時処理
 *LabelExit
-	repeat// 割り込みによる終了回避対策
-		await
-		end
+
+// メモを削除
+	foreach memo
+		delmod memo.cnt
 	loop
-	stop
+
+// 割り込みをオフにする
+	oncmd 0
+
+// 終了
+	end
 
 #endif
