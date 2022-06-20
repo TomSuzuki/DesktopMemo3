@@ -1,4 +1,4 @@
-# DesktopMemo3 v1.0.1
+# DesktopMemo3 v1.0.2
 デスクトップに貼るメモ。
 Windows上でのみ動作確認を行っています。
 
