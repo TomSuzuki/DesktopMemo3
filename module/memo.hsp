@@ -427,6 +427,17 @@
 
 	return
 
+// 非表示
+#modfunc MemoHidden int _isHidden
+
+	if (_isHidden) {
+		gsel Id.WID, -1
+	} else {
+		InFront thismod
+	}
+
+	return
+
 // ゲッター
 #modcfunc getWid
 	return Id.WID

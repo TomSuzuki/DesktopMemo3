@@ -12,6 +12,7 @@
 #define global MENU_MESSAGE_NewMemo "新しいメモを作成"
 #define global MENU_MESSAGE_MemoInFron "すべてのメモを前面に"
 #define global MENU_MESSAGE_Alignment "メモを整列"
+#define global MENU_MESSAGE_Hidden "メモを非表示"
 #define global MENU_MESSAGE_Exit "終了"
 
 // エラー

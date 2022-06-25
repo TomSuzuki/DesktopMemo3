@@ -12,6 +12,7 @@
 #enum MenuId_Exit
 #enum MenuID_MemoInFron
 #enum MenuID_Alignment
+#enum MenuID_MemoHidden
 
 // メニューの配置
 #deffunc CreateTasktrayMenu
@@ -21,10 +22,13 @@
 	AppendMenu hMenu.0, 0, MenuID_NewMemo, MENU_MESSAGE_NewMemo
 	AppendMenu hMenu.0, 0, MenuID_MemoInFron, MENU_MESSAGE_MemoInFron
 	AppendMenu hMenu.0, 0, MenuID_Alignment, MENU_MESSAGE_Alignment
+	AppendMenu hMenu.0, 0, MenuID_MemoHidden, MENU_MESSAGE_Hidden
 	AppendMenu hMenu.0, $800, 0, ""
 	AppendMenu hMenu.0, 0, MenuID_GitHub, MENU_MESSAGE_GitHub
 	AppendMenu hMenu.0, $800, 0, ""
 	AppendMenu hMenu.0, 0, MenuId_Exit, MENU_MESSAGE_Exit
+
+	CheckMenuItem hMenu.0, MenuID_MemoHidden, 0
 
 	return
 
@@ -48,6 +52,21 @@
 				swbreak
 			case MenuID_GitHub
 				exec appLink, 16
+				swbreak
+			case MenuID_MemoHidden
+				// チェック
+				isMemoHidden = (isMemoHidden == 0)
+				CheckMenuItem hMenu.0, MenuID_MemoHidden, isMemoHidden * $8
+
+				// 無効化
+				EnableMenuItem hMenu.0, MenuID_NewMemo, isMemoHidden * $1
+				EnableMenuItem hMenu.0, MenuID_MemoInFron, isMemoHidden * $1
+				EnableMenuItem hMenu.0, MenuID_Alignment, isMemoHidden * $1
+
+				// メモの表示切替
+				foreach memo
+					MemoHidden memo.cnt, isMemoHidden
+				loop
 				swbreak
 			case MenuID_MemoInFron
 				foreach memo
