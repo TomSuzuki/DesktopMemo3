@@ -36,8 +36,9 @@
 		}
 	loop
 
-// 一つもロードできなかったら新しいメモをを作成
-	if (false == isOpend) {
+// 一つもロードできなかった＆ゴミ箱が空であれば新しいメモをを作成
+	dirlist list, trashFileMask, 0
+	if (false == isOpend && stat == 0) {
 		createNewMemo ""
 	}
 
