@@ -9,10 +9,10 @@
 
 // メニュー
 #define global MENU_MESSAGE_GitHub  "GitHub"
-#define global MENU_MESSAGE_NewMemo "新しいメモを作成"
-#define global MENU_MESSAGE_MemoInFron "すべてのメモを前面に"
-#define global MENU_MESSAGE_Alignment "メモを整列"
-#define global MENU_MESSAGE_Hidden "メモを非表示"
+#define global MENU_MESSAGE_NewMemo "新しいメモを作成(&N)"
+#define global MENU_MESSAGE_MemoInFron "すべてのメモを前面に(&F)"
+#define global MENU_MESSAGE_Alignment "メモを整列(&L)"
+#define global MENU_MESSAGE_Hidden "メモを非表示(&H)"
 #define global MENU_MESSAGE_Exit "終了"
 #define global MENU_MESSAGE_Version "バージョン表示"
 
