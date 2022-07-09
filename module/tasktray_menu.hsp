@@ -21,6 +21,7 @@
 	CreatePopupMenu
 	hMenu.0 = stat
 	AppendMenu hMenu.0, 0, MenuID_NewMemo, MENU_MESSAGE_NewMemo
+	AppendMenu hMenu.0, $800, 0, ""
 	AppendMenu hMenu.0, 0, MenuID_MemoInFron, MENU_MESSAGE_MemoInFron
 	AppendMenu hMenu.0, 0, MenuID_Alignment, MENU_MESSAGE_Alignment
 	AppendMenu hMenu.0, 0, MenuID_MemoHidden, MENU_MESSAGE_Hidden
