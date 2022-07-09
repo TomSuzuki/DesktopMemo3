@@ -31,8 +31,8 @@
 #define RIGHT		0x00000002
 #define TOP			0x00000004
 #define BOTTOM		0x00000008
-#define CaptionHeight ButtonSize
 #define BORDERWIDTH 4
+#define CaptionHeight ButtonSize + BORDERWIDTH
 
 // IDコントロール用定数
 #enum WID = 0
@@ -221,7 +221,7 @@
 // 追加ボタン
 	if (Id.BUTTON_ID_ADD == 0) {
 		CreateButtonImage ButtonTypeAdd, Id.COLOR_ID
-		pos ButtonSize * 0, 0
+		pos BORDERWIDTH + ButtonSize * 0, BORDERWIDTH
 		button gosub "", *OnButtonNew
 		Id.BUTTON_ID_ADD = stat
 	}
@@ -229,7 +229,7 @@
 // 色変更ボタン
 	if (Id.BUTTON_ID_COLOR == 0) {
 		CreateButtonImage ButtonTypeCol, Id.COLOR_ID
-		pos ButtonSize * 1, 0
+		pos BORDERWIDTH + ButtonSize * 1, BORDERWIDTH
 		button gosub "", *OnButtonCol
 		Id.BUTTON_ID_COLOR = stat
 	}
@@ -244,7 +244,7 @@
 // ピンボタン
 	if (Id.BUTTON_ID_PIN == 0) {
 		CreateButtonImage ButtonTypePinT + 1 - isPin, Id.COLOR_ID
-		pos ButtonSize * 2, 0
+		pos BORDERWIDTH + ButtonSize * 2, BORDERWIDTH
 		button gosub "", *OnButtonPin
 		Id.BUTTON_ID_PIN = stat
 	}
@@ -252,14 +252,14 @@
 // 削除ボタン
 	if (Id.BUTTON_ID_DELETE == 0 && isPin == false) {
 		CreateButtonImage ButtonTypeDel, Id.COLOR_ID
-		pos ginfo_winx - ButtonSize, 0
+		pos ginfo_winx - ButtonSize - BORDERWIDTH, BORDERWIDTH
 		button gosub "", *OnButtonDel
 		Id.BUTTON_ID_DELETE = stat
 	} else:if (Id.BUTTON_ID_DELETE != 0 && isPin == true) {
 		clrobj Id.BUTTON_ID_DELETE, Id.BUTTON_ID_DELETE
 		Id.BUTTON_ID_DELETE = 0
 	} else:if (Id.BUTTON_ID_DELETE != 0 && isPin == false) {
-		args = 0, 0, ginfo_winx - ButtonSize, 0
+		args = 0, 0, ginfo_winx - ButtonSize - BORDERWIDTH, BORDERWIDTH
 		resizeobj Id.BUTTON_ID_DELETE, args, 2
 	}
 
@@ -270,8 +270,8 @@
 		oncmd gosub *OnCtrlEdit, 0x133
 		font fontName, fontSize, fontStyle
 		objmode 2, 0
-		pos padding, ButtonSize + padding
-		mesbox text, ginfo_winx - padding * 2, ginfo_winy - padding * 2 - ButtonSize, 1, 0
+		pos padding, CaptionHeight + padding
+		mesbox text, ginfo_winx - padding * 2, ginfo_winy - padding * 2 - CaptionHeight, 1, 0
 		Id.TEXTAREA_ID = stat
 		hMesbox = objinfo(stat, 2)
 		ShowScrollBar hMesbox, 3, 0
@@ -283,7 +283,7 @@
 		sendmsg hMesbox, 0x00B9
 		sendmsg hMesbox, 0x00CF, f
 	} else {
-		size = ginfo_winx - padding * 2, ginfo_winy - padding * 2 - ButtonSize, padding, ButtonSize + padding
+		size = ginfo_winx - padding * 2, ginfo_winy - padding * 2 - CaptionHeight, padding, CaptionHeight + padding
 		resizeobj Id.TEXTAREA_ID, size, 0
 	}
 
