@@ -23,6 +23,7 @@
 // ウィンドウの作成
 	colorWindow_wid = ginfo_newid
 	bgscr colorWindow_wid, colorButtonWidth * ColorNum, colorButtonHeight, 2
+	SetWindowLong hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) | WS_EX_TOOLWINDOW
 
 // ボタンの配置
 	dim colorBtnId, ColorNum
