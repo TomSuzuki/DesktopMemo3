@@ -1,5 +1,17 @@
-# DesktopMemo3
-デスクトップに貼るメモ。
+<p align="center">
+ <img align="center" src="./img/app.ico">
+ <h2 align="center"><a href="https://github.com/TomSuzuki/DesktopMemo3">DesktopMemo3</a></h2>
+ <p align="center">デスクトップに貼るメモ。</p>
+</p>
+<p align="center">
+  <a href="https://github.com/anuraghazra/github-readme-stats/issues">
+    <img alt="Issues" src="https://img.shields.io/github/issues/TomSuzuki/DesktopMemo3?color=0088ff" />
+  </a>
+  <a href="">
+    <img alt="Lang" src="http://img.shields.io/badge/Language-HSP3-green" />
+  </a>
+</p>
+
 Windows上でのみ動作確認を行っています。
 
 実行ファイルを起動してご使用ください。
