@@ -13,6 +13,7 @@
 #enum MenuID_MemoInFron
 #enum MenuID_Alignment
 #enum MenuID_MemoHidden
+#enum MenuID_Version
 
 // メニューの配置
 #deffunc CreateTasktrayMenu
@@ -25,6 +26,7 @@
 	AppendMenu hMenu.0, 0, MenuID_MemoHidden, MENU_MESSAGE_Hidden
 	AppendMenu hMenu.0, $800, 0, ""
 	AppendMenu hMenu.0, 0, MenuID_GitHub, MENU_MESSAGE_GitHub
+	AppendMenu hMenu.0, 0, MenuID_Version, MENU_MESSAGE_Version
 	AppendMenu hMenu.0, $800, 0, ""
 	AppendMenu hMenu.0, 0, MenuId_Exit, MENU_MESSAGE_Exit
 
@@ -81,6 +83,9 @@
 					x += ButtonSize
 					y += ButtonSize
 				loop
+				swbreak
+			case MenuID_Version
+				dialog DIALOG_MESSAGE_VERSION
 				swbreak
 		swend
 	}

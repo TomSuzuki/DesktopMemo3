@@ -14,6 +14,10 @@
 #define global MENU_MESSAGE_Alignment "メモを整列"
 #define global MENU_MESSAGE_Hidden "メモを非表示"
 #define global MENU_MESSAGE_Exit "終了"
+#define global MENU_MESSAGE_Version "バージョン表示"
+
+// バージョン表示
+#define global DIALOG_MESSAGE_VERSION strf("%%s - %%s", appTitle, appVer)
 
 // エラー
 #define global ERROR_MESSAGE_CODE strf("CODE: %%d, LINE: %%d\n", wparam, lparam)
