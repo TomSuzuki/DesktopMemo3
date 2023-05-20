@@ -11,6 +11,7 @@
 #define global DefaultSetting_buttonColor1 "$666666"
 #define global DefaultSetting_buttonColor2 "$FFFFFF"
 #define global DefaultSetting_buttonColor3 "$AAAAAA"
+#define global DefaultSetting_deleteDialog 1
 
 // JSONキー値（オートマッパーとか作れないかな...）
 #define global SettingKey_fontName  "font"
@@ -19,6 +20,7 @@
 #define global SettingKey_buttonColor1 "button_color"
 #define global SettingKey_buttonColor2 "button_color_click"
 #define global SettingKey_buttonColor3 "button_color_mouseover"
+#define global SettingKey_deleteDialog "delete_dialog"
 
 // 設定項目をグローバルで使えるように登録（取得のみできるように関数にする）
 #define global fontName _application_setting_fontName()
@@ -27,6 +29,7 @@
 #define global ButtonColor _application_setting_buttonColor1()
 #define global ButtonClickColor _application_setting_buttonColor2()
 #define global ButtonMouseOverColor _application_setting_buttonColor3()
+#define global DeleteDialog _application_setting_deleteDialog()
 
 // アプリケーションの設定を読み込む
 #module application_setting
@@ -45,6 +48,7 @@
 	jsongets@ _buttonColor1, SettingKey_buttonColor1, jsonPtr
 	jsongets@ _buttonColor2, SettingKey_buttonColor2, jsonPtr
 	jsongets@ _buttonColor3, SettingKey_buttonColor3, jsonPtr
+	jsongeti@ _deleteDialog, SettingKey_deleteDialog, jsonPtr
 
 // JSONを閉じる
 	jsonclose@
@@ -56,6 +60,7 @@
 	if (_buttonColor1 == ""):_buttonColor1 = DefaultSetting_buttonColor1
 	if (_buttonColor2 == ""):_buttonColor2 = DefaultSetting_buttonColor2
 	if (_buttonColor3 == ""):_buttonColor3 = DefaultSetting_buttonColor3
+	if (_deleteDialog == ""):_deleteDialog = DefaultSetting_deleteDialog
 
 // 設定をJSONに
 	jsonnewobj@ jsonPtr, -1, ""
@@ -65,6 +70,7 @@
 	jsonputs@ jsonPtr, SettingKey_buttonColor1, _buttonColor1
 	jsonputs@ jsonPtr, SettingKey_buttonColor2, _buttonColor2
 	jsonputs@ jsonPtr, SettingKey_buttonColor3, _buttonColor3
+	jsonputi@ jsonPtr, SettingKey_deleteDialog, _deleteDialog
 	jsonout@ jsonText, jsonPtr
 	jsonclose@
 
@@ -94,6 +100,9 @@
 
 #defcfunc _application_setting_buttonColor3
 	return int(_buttonColor3)
+
+#defcfunc _application_setting_deleteDialog
+	return _deleteDialog = "1"
 #global
 
 #endif
