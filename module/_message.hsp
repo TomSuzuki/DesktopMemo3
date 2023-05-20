@@ -6,6 +6,8 @@
 
 // リソース
 #define global MESSAGE_IS_ALREADY_LOAD "すでに読み込まれているメモです"
+#define global MESSAGE_DELETE_DIALOG "メモを削除しますか？"
+#define global MESSAGE_DELETE_DIALOG_TITLE "メモの削除"
 
 // メニュー
 #define global MENU_MESSAGE_GitHub  "GitHub"

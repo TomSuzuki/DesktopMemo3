@@ -322,6 +322,13 @@
 
 // メモの削除
 #modfunc DelMemo
+// 設定を確認し削除ダイアログを表示
+	if DeleteDialog {
+		dialog MESSAGE_DELETE_DIALOG, 2, MESSAGE_DELETE_DIALOG_TITLE
+		if stat = 7 {
+			return
+		}
+	}
 
 // ファイルの移動
 	bcopy memoPath, trashDir + getpath(memoPath, 8)

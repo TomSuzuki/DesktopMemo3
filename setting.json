@@ -4,5 +4,6 @@
 	"font_style":	0,
 	"button_color":	"$666666",
 	"button_color_click":	"$FFFFFF",
-	"button_color_mouseover":	"$AAAAAA"
+	"button_color_mouseover":	"$AAAAAA",
+	"delete_dialog":	2
 }
