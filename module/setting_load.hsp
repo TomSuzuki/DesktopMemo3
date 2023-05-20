@@ -60,7 +60,7 @@
 	if (_buttonColor1 == ""):_buttonColor1 = DefaultSetting_buttonColor1
 	if (_buttonColor2 == ""):_buttonColor2 = DefaultSetting_buttonColor2
 	if (_buttonColor3 == ""):_buttonColor3 = DefaultSetting_buttonColor3
-	if (_deleteDialog == ""):_deleteDialog = DefaultSetting_deleteDialog
+	if (_deleteDialog == 0):_deleteDialog = DefaultSetting_deleteDialog
 
 // 設定をJSONに
 	jsonnewobj@ jsonPtr, -1, ""
@@ -102,7 +102,7 @@
 	return int(_buttonColor3)
 
 #defcfunc _application_setting_deleteDialog
-	return _deleteDialog = "1"
+	return _deleteDialog = 1
 #global
 
 #endif
