@@ -3,90 +3,96 @@
 // ------------------------------------------------------------
 
 #module
+
 #define colorButtonWidth 48
 #define colorButtonHeight 80
+
+// InitializeColorWindow ...色ウィンドウを初期化します。
 #deffunc InitializeColorWindow
 
-// カラーボタンバッファの作成
-	colorWindow_BtnBuffer = ginfo_newid
-	buffer colorWindow_BtnBuffer, colorButtonWidth * 2, colorButtonHeight * ColorNum
-	repeat ColorNum
-		y = cnt * colorButtonHeight
-		color decRGB(getColor(cnt, ColorTypeTheme))
-		boxf 0, y, colorButtonWidth, y + colorButtonHeight
-		color decRGB(getColor(cnt, ColorTypeBox))
-		boxf colorButtonWidth, y, colorButtonWidth * 2, y + colorButtonHeight
-	loop
+  // カラーボタンバッファの作成
+  colorWindow_BtnBuffer = ginfo_newid
+  buffer colorWindow_BtnBuffer, colorButtonWidth * 2, colorButtonHeight * ColorNum
+  repeat ColorNum
+    y = cnt * colorButtonHeight
+    color decRGB(getColor(cnt, ColorTypeTheme))
+    boxf 0, y, colorButtonWidth, y + colorButtonHeight
+    color decRGB(getColor(cnt, ColorTypeBox))
+    boxf colorButtonWidth, y, colorButtonWidth * 2, y + colorButtonHeight
+  loop
 
-// ウィンドウの作成
-	colorWindow_wid = ginfo_newid
-	bgscr colorWindow_wid, colorButtonWidth * ColorNum, colorButtonHeight, 2
-	SetWindowLong hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) | WS_EX_TOOLWINDOW
+  // ウィンドウの作成
+  colorWindow_wid = ginfo_newid
+  bgscr colorWindow_wid, colorButtonWidth * ColorNum, colorButtonHeight, 2
+  SetWindowLong hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) | WS_EX_TOOLWINDOW
 
-// ボタンの配置
-	dim colorBtnId, ColorNum
-	repeat ColorNum
-		y = cnt * colorButtonHeight
-		objsize colorButtonWidth, colorButtonHeight
-		objimage colorWindow_BtnBuffer, 0, y, colorButtonWidth, y, colorButtonWidth, y
-		pos cnt * colorButtonWidth, 0
-		button gosub "", *OnColorChange
-		colorBtnId.cnt = stat
-	loop
+  // ボタンを配置
+  dim colorBtnId, ColorNum
+  repeat ColorNum
+    y = cnt * colorButtonHeight
+    objsize colorButtonWidth, colorButtonHeight
+    objimage colorWindow_BtnBuffer, 0, y, colorButtonWidth, y, colorButtonWidth, y
+    pos cnt * colorButtonWidth, 0
+    button gosub "", *OnColorChange
+    colorBtnId.cnt = stat
+  loop
 
-	return
+  return
 
-// 画面の表示
+// DisplayColorWindow ...指定したメモウィンドウ用に色ウィンドウを表示します。
 #deffunc DisplayColorWindow int _wid
 
-// 色変更対象のウィンドウを記録
-	colorChange_wid = _wid
+  // 色変更対象のウィンドウを記録
+  colorChange_wid = _wid
 
-// ウィンドウの表示
-	gsel _wid
-	x = ginfo_wx1
-	y = ginfo_wy1 + ButtonSize
-	gsel colorWindow_wid
-	width -1, -1, x, y
-	gsel colorWindow_wid, 2
+  // ウィンドウの表示
+  gsel _wid
+  x = ginfo_wx1
+  y = ginfo_wy1 + ButtonSize
+  gsel colorWindow_wid
+  width -1, -1, x, y
+  gsel colorWindow_wid, 2
 
-// 更新待ち（非アクティブで非表示→抜ける）
-	repeat
-		if (ginfo(2) != colorWindow_wid):break
-		await 1000 / 10
-	loop
+  // 更新待ち（非アクティブで非表示→抜ける）
+  repeat
+    if (ginfo(2) != colorWindow_wid):break
+    await 1000 / 10
+  loop
 
-	gsel colorWindow_wid, -1
+  // 非表示にする
+  gsel colorWindow_wid, -1
 
-	return
+  return
 
 // 色変更割り込み
 *OnColorChange
 
-// 押されたボタンを取得
-	colorBtn = stat
-	colorId = 0
-	repeat ColorNum
-		if (colorBtnId.cnt == colorBtn) {
-			colorId = cnt
-			break
-		}
-	loop
+  // 押されたボタンを取得
+  colorBtn = stat
+  colorId = 0
+  repeat ColorNum
+    if (colorBtnId.cnt == colorBtn) {
+      colorId = cnt
+      break
+    }
+  loop
 
-// 選択移動
-	gsel colorChange_wid
+  // 選択移動
+  gsel colorChange_wid
 
-// 色変更処理
-	foreach memo
-// 対象ウィンドウを探す
-		if (colorChange_wid != getWid(memo.cnt)) {
-			continue
-		}
-// 色変更処理
-		ColorChange memo.cnt, colorId
-		break
-	loop
+  // 色変更処理
+  foreach memo
 
-	return
+    // 対象ウィンドウを探す
+    if (colorChange_wid != getWid(memo.cnt)) {
+      continue
+    }
+    
+    // 色変更処理
+    ColorChange memo.cnt, colorId
+    break
+  loop
+
+  return
 
 #global

@@ -7,42 +7,42 @@
 // MakeDirectory ...ディレクトリが無い場合に作成します（一階層上までないと失敗します？）。
 #deffunc MakeDirectory str _dirName
 
-	// パスを整形
-	dirName = _dirName
-	dirName = strtrim(dirName, 2, '/')
+  // パスを整形
+  dirName = _dirName
+  dirName = strtrim(dirName, 2, '/')
 
-	// 作成
-	dirlist list, dirName, 5
-	if (stat == 0) {
-		mkdir dirName
-	}
-	return
+  // 作成
+  dirlist list, dirName, 5
+  if (stat == 0) {
+    mkdir dirName
+  }
+  return
 
 // NewBuffer ...新しいバッファを作成する。戻り値はバッファID。
 #defcfunc NewBuffer int p1,int p2
 
-	// 取得
-	n = ginfo_sel
-	g = ginfo_newid
+  // 取得
+  n = ginfo_sel
+  g = ginfo_newid
 
-	// メイン
-	screen g, p1, p2, screen_fixedsize + screen_hide
-	gsel n
+  // メイン
+  screen g, p1, p2, screen_fixedsize + screen_hide
+  gsel n
 
-	return g
+  return g
 
 // ImgLoad ...画像をロードし、バッファIDを返す。
 #defcfunc ImgLoad str p1
 
-	// 取得
-	n = ginfo_sel
-	g = ginfo_newid
-	file = p1
+  // 取得
+  n = ginfo_sel
+  g = ginfo_newid
+  file = p1
 
-	// バッファ作成、ロード
-	buffer g:picload file
-	gsel n
-	
-	return g
+  // バッファ作成、ロード
+  buffer g:picload file
+  gsel n
+  
+  return g
 
 #global

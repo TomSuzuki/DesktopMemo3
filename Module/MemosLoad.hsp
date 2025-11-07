@@ -2,76 +2,80 @@
 // メモの読み込み処理を定義
 // ------------------------------------------------------------
 
-// メモの読み込み処理
+// メモの読み込み処理モジュール
 #module AREA_MEMO1
-// メモの読み込み（すべて）
+
+// LoadAllMemo ...メモの読込み処理（すべてのメモを読込む）。
 #deffunc LoadAllMemo str filemask
 
-// ファイルリストの取得
-	dirlist list, filemask, 0
+  // ファイルリストの取得
+  dirlist list, filemask, 0
 
-// ロードに成功したファイルがあるか示すフラグ
-	isOpend = false
+  // ロードに成功したファイルがあるか示すフラグ
+  isOpend = false
 
-// 各ファイルの読み込み
-	notesel list
-	lineNum = noteinfo(0)
-	repeat lineNum
+  // 各ファイルの読み込み
+  notesel list
+  lineNum = noteinfo(0)
+  repeat lineNum
 
-// ファイルの読み込み
-		notesel list
-		noteget fname, cnt
-		if (fname == "") {
-			continue
-		}
+  // ファイルの読み込み
+    notesel list
+    noteget fname, cnt
+    if (fname == "") {
+      continue
+    }
 
-// メモのロード
-		flg = LoadMemoFile(getpath(filemask, 32) + fname)
+  // メモのロード
+    flg = LoadMemoFile(getpath(filemask, 32) + fname)
 
-// 成功したファイルが存在する
-		if (flg) {
-			isOpend = true
-		}
-	loop
+  // 成功したファイルが存在する
+    if (flg) {
+      isOpend = true
+    }
+  loop
 
-// 一つもロードできなかった＆ゴミ箱が空であれば新しいメモをを作成
-	dirlist list, trashFileMask, 0
-	if (false == isOpend && stat == 0) {
-		createNewMemo ""
-	}
+  // 一つもロードできなかった＆ゴミ箱が空であれば新しいメモをを作成
+  dirlist list, trashFileMask, 0
+  if (false == isOpend && stat == 0) {
+    createNewMemo ""
+  }
 
-	return
+  return
 #global
 
-// メモファイルの読み込み
+// メモファイルの読み込みモジュール
 #module AREA_MEMO2
+
+// LoadMemoFile ...メモファイルを読み込んでメモウィンドウを作成します。
 #defcfunc LoadMemoFile str fname
 
-// 読み込み
-	notesel jsonText
-	noteload fname
-	noteunsel
+  // 読み込み
+  notesel jsonText
+  noteload fname
+  noteunsel
 
-// JSON形式を開く
-	jsonopen@ jsonPtr, jsonText
+  // JSON形式を開く
+  jsonopen@ jsonPtr, jsonText
 
-// 読み込み
-	jsongets@ path, "path", jsonPtr
-	path = cnvatos(path)
+  // 読み込み
+  jsongets@ path, "path", jsonPtr
+  path = cnvatos(path)
 
-// JSONを閉じる
-	jsonclose@
+  // JSONを閉じる
+  jsonclose@
 
-// リンク先メモが存在しなかったらゴミ箱に入れる
-	if (strsize == -1) {
-		bcopy fname, trashDir + getpath(fname, 8)
-		delete fname
-		return false
-	}
+  // リンク先メモが存在しなかったらゴミ箱に入れる
+  if (strsize == -1) {
+    bcopy fname, trashDir + getpath(fname, 8)
+    delete fname
+    return false
+  }
 
-// メモウィンドウの作成（モジュール変数はmemo.hspでグローバル定義）
-	wid = CreateMemoWindow()
-	newmod memo, MOD_MEMO, fname, jsonText, wid
+  // メモウィンドウの作成（モジュール変数はmemo.hspでグローバル定義）
+  wid = CreateMemoWindow()
+  newmod memo, MOD_MEMO, fname, jsonText, wid
 
-	return true
+  return true
+
 #global

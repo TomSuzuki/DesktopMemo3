@@ -9,58 +9,62 @@
 
 // 色管理モジュール
 #module MOD_COLOR_OBJ text, theme, box
+
 // コンストラクタ
 #modinit int _text, int _theme, int _box
-	text = _text
-	theme = _theme
-	box = _box
-	return
+  text = _text
+  theme = _theme
+  box = _box
+  return
 
 // ゲッター
 #modcfunc getObjTextColor
-	return text
+  return text
 #modcfunc getObjThemeColor
-	return theme
+  return theme
 #modcfunc getObjBoxColor
-	return box
+  return box
+
 #global
 
-// 色関連の読み込み処理
+// 色関連の読み込み処理モジュール
 #module
-// 色の読み込み
+
+// LoadColor ...色を読込みます。
 #deffunc LoadColor str fname
 
-// 読み込み
-	notesel jsonText
-	noteload fname
-	noteunsel
+  // 読み込み
+  notesel jsonText
+  noteload fname
+  noteunsel
 
-// 色管理モジュール初期化
-	dimtype color_obj, vartype("struct")    // この区間だけ有効な変数であるはず
+  // 色管理モジュール初期化
+  dimtype color_obj, vartype("struct")    // この区間だけ有効な変数であるはず
 
-// JSON形式を開く
-	jsonopen@ jsonPtr, jsonText
+  // JSON形式を開く
+  jsonopen@ jsonPtr, jsonText
 
-// JSONから読み込み（モジュール変数の順番は保証されるはず）
-	repeat ColorNum
-		jsongetobj@ nowPtr, str(cnt), jsonPtr
-		jsongets@ text, "text", nowPtr
-		jsongets@ theme, "theme", nowPtr
-		jsongets@ box, "box", nowPtr
-		newmod color_obj, MOD_COLOR_OBJ, int(text), int(theme), int(box)
-	loop
+  // JSONから読み込み（モジュール変数の順番は保証されるはず）
+  repeat ColorNum
+    jsongetobj@ nowPtr, str(cnt), jsonPtr
+    jsongets@ text, "text", nowPtr
+    jsongets@ theme, "theme", nowPtr
+    jsongets@ box, "box", nowPtr
+    newmod color_obj, MOD_COLOR_OBJ, int(text), int(theme), int(box)
+  loop
 
-// JSONを閉じる
-	jsonclose@
+  // JSONを閉じる
+  jsonclose@
 
-	return
+  return
 
-// 色を取得
+// getColor ...色を取得します。
 #defcfunc getColor int _id, int _type
-	c = 0
-	if (_type == ColorTypeText)  :c = getObjTextColor(color_obj._id)
-	if (_type == ColorTypeTheme) :c = getObjThemeColor(color_obj._id)
-	if (_type == ColorTypeBox)   :c = getObjBoxColor(color_obj._id)
-	return c
+  c = 0
+  if (_type == ColorTypeText)  : c = getObjTextColor(color_obj._id)
+  if (_type == ColorTypeTheme) : c = getObjThemeColor(color_obj._id)
+  if (_type == ColorTypeBox)   : c = getObjBoxColor(color_obj._id)
+  return c
+
 #global
 

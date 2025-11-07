@@ -33,38 +33,38 @@
 #include "./Module/ColorWindow.hsp"
 #include "./Module/Initialize.hsp"
 
-	// メモの定義
-	dimtype memo, vartype("struct")
+  // メモの定義
+  dimtype memo, vartype("struct")
 
-	// 起動時処理
-	AppInitialize
+  // 起動時処理
+  AppInitialize
 
-	// 設定の読み込み
-	SettingLoad appSetting
-	LoadColor colorSetting
+  // 設定の読み込み
+  SettingLoad appSetting
+  LoadColor colorSetting
 
-	// オブジェクト生成
-	CreateButton
+  // オブジェクト生成
+  CreateButton
 
-	// パレットウィンドウ生成
-	InitializeColorWindow
+  // パレットウィンドウ生成
+  InitializeColorWindow
 
-	// メモ読み込み
-	LoadAllMemo memoFileMask
+  // メモ読み込み
+  LoadAllMemo memoFileMask
 
-	// 割り込み待ち
-	stop
+  // 割り込み待ち
+  stop
 
 // 終了時処理
 *LabelExit
 
-	// メモを削除
-	foreach memo
-		delmod memo.cnt
-	loop
+  // メモを削除
+  foreach memo
+    delmod memo.cnt
+  loop
 
-	// 割り込みをオフにする
-	oncmd 0
+  // 割り込みをオフにする
+  oncmd 0
 
-	// 終了
-	end
+  // 終了
+  end
