@@ -1,10 +1,9 @@
-#include "hsp3utf.as"
-#include "_main.hsp"
+// ------------------------------------------------------------
+// タスクトレイを定義
+// ------------------------------------------------------------
 
-#ifndef _INCLUDE_TASKTRY_
-#define global _INCLUDE_TASKTRY_
-
-// http://tu3.jp/
+// 参考にさせていただいたサイト
+// → http://tu3.jp/
 
 /* trayicon.hsp */
 #module "trayicon"
@@ -96,11 +95,8 @@ else { icofile = filename }
 #deffunc _deinit_trayicon_ onexit ;// 終了時に全部のアイコンを削除。
 	foreach hIcon : if hIcon.cnt { DestroyTrayIcon cnt } loop : return
 
-#addition "./module/tasktray_menu.hsp"
-#addition "./tasktray_menu.hsp"
+#include "./module/TasktrayMenu.hsp"
 
 #global
 
 		_init_trayicon_
-
-#endif

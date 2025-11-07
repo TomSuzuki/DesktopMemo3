@@ -1,0 +1,17 @@
+// ------------------------------------------------------------
+// パス、設定の定義
+// ------------------------------------------------------------
+
+#define global backupDir "./backup/"
+#define global trashDir "./trash/"
+#define global memoDir "./memo/"
+#define global noteDir "./note/"
+#define global appSetting "./setting.json"
+#define global colorSetting "./color.json"
+#define global memoFileMask memoDir + "*.json"
+#define global trashFileMask trashDir + "*.json"
+#define global stringDate strf("%%04d_%%02d%%02d_%%02d%%02d_%%02d_%%03d", gettime(0), gettime(1), gettime(3), gettime(4), gettime(5), gettime(6), gettime(7))
+#define global memoNewFileName memoDir + stringDate + ".json"
+#define global noteNewFileName noteDir + stringDate + ".txt"
+#define global tasktrayIcon "./img/app.ico"
+#define global tasktrayIconSize	32

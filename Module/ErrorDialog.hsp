@@ -1,0 +1,32 @@
+// ------------------------------------------------------------
+// エラーダイアログ処理を定義・登録
+// ------------------------------------------------------------
+
+#module error_dialog
+
+// エラー時のダイアログ（復帰せずに終了）
+*OnErrorExit
+
+  // メッセージの作成
+  msg = ERROR_MESSAGE_CODE
+  switch err
+  case 13
+    msg += ERROR_MESSAGE_13
+    swbreak
+  case 38
+    msg += ERROR_MESSAGE_38
+    swbreak
+  default
+    msg += ERROR_MESSAGE_00
+  swend
+
+  // ダイアログ
+  dialog msg, 1
+
+  // 終了
+  end
+
+#global
+
+// エラー時の処理を登録
+onerror *OnErrorExit@error_dialog

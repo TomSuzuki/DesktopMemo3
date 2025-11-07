@@ -1,8 +1,6 @@
-#include "hsp3utf.as"
-#include "_main.hsp"
-
-#ifndef _INCLUDE_COLOR_WINDOW_
-#define global _INCLUDE_COLOR_WINDOW_
+// ------------------------------------------------------------
+// 色変更ウィンドウを定義・初期化
+// ------------------------------------------------------------
 
 #module
 #define colorButtonWidth 48
@@ -92,5 +90,3 @@
 	return
 
 #global
-
-#endif

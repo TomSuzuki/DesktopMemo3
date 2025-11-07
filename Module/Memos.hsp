@@ -1,8 +1,6 @@
-#include "hsp3utf.as"
-#include "_main.hsp"
-
-#ifndef _INCLUDE_MEMO_
-#define global _INCLUDE_MEMO_
+// ------------------------------------------------------------
+// メモ本体を定義
+// ------------------------------------------------------------
 
 // modfunc, modcfunc ...publicメソッド扱い
 // label ...staticメソッド扱い
@@ -569,5 +567,3 @@
 	loop
 	return n
 #global
-
-#endif

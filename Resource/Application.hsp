@@ -1,0 +1,20 @@
+// ------------------------------------------------------------
+// アプリのの定義
+// ------------------------------------------------------------
+
+// アプリケーションの設定
+#define global isDebug 0
+#define global appTitle "Desktop Memo 3"
+#define global appLink "https://github.com/TomSuzuki/DesktopMemo3"
+#define global appIcon "./img/app.ico"
+#define global appVer "ver1.0.3a"
+
+// コンパイルオプション
+#cmpopt utf8 1
+#cmpopt optcode 0
+#cmpopt optprm 0
+#bootopt utf8 1
+#packopt hide 1
+#packopt name appTitle
+#packopt icon appIcon
+#runtime "hsp3utf"

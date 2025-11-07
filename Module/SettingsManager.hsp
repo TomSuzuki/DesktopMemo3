@@ -1,8 +1,6 @@
-#include "hsp3utf.as"
-#include "_main.hsp"
-
-#ifndef _INCLUDE_SETTING_LOAD_
-#define global _INCLUDE_SETTING_LOAD_
+// ------------------------------------------------------------
+// 設定を管理
+// ------------------------------------------------------------
 
 // デフォルト設定
 #define global DefaultSetting_fontName  "游ゴシック"
@@ -13,7 +11,7 @@
 #define global DefaultSetting_buttonColor3 "$AAAAAA"
 #define global DefaultSetting_deleteDialog 1
 
-// JSONキー値（オートマッパーとか作れないかな...）
+// JSONキー値
 #define global SettingKey_fontName  "font"
 #define global SettingKey_fontSize  "font_size"
 #define global SettingKey_fontStyle "font_style"
@@ -104,5 +102,3 @@
 #defcfunc _application_setting_deleteDialog
 	return _deleteDialog = 1
 #global
-
-#endif

@@ -1,0 +1,35 @@
+// ------------------------------------------------------------
+// 起動時に行う処理
+// ------------------------------------------------------------
+
+#module
+
+// AppInitialize ...起動時に一度だけ行う処理を実行します。
+#deffunc AppInitialize
+
+	// 多重起動防止
+	aplsel@ appTitle
+	if (stat != true) {
+		end
+	}
+
+	// ウィンドウ設定
+	gsel 0, -1
+	title appTitle
+
+	// タスクトレイ
+	SetTrayIconFile tasktrayIcon
+	CreateTrayIcon appTitle, 0, 0
+
+	// タスクトレイのメニューを設定
+	CreateTasktrayMenu
+
+	// ディレクトリの作成
+	MakeDirectory noteDir
+	MakeDirectory memoDir
+	MakeDirectory trashDir
+	MakeDirectory backupDir
+
+	return
+	
+#global

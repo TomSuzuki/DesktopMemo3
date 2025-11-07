@@ -1,8 +1,6 @@
-#include "hsp3utf.as"
-#include "_main.hsp"
-
-#ifndef _INCLUDE_CREATE_WINDOW_
-#define global _INCLUDE_CREATE_WINDOW_
+// ------------------------------------------------------------
+// メモのウィンドウ生成処理を定義
+// ------------------------------------------------------------
 
 #module
 // 可変枠無しウィンドウ（非表示生成）
@@ -27,5 +25,3 @@
 	return g
 
 #global
-
-#endif

@@ -1,9 +1,0 @@
-#include "hsp3utf.as"
-
-// モジュールからメインを起動
-#ifndef _INCLUDE_MAIN_
-#define global _MODULE_EXEC_
-
-#addition "../main.hsp"
-
-#endif
