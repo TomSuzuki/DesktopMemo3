@@ -11,24 +11,27 @@
 
 // メモ管理モジュール
 #module MOD_MEMO Id, jsonText, memoPath, path, text, x, y, w, h, isPin, hMesbox, hBrush, isPinButton, beRedraw, mousePos
+
 #uselib "user32"
 #cfunc GetWindowLong "GetWindowLongA" int, int
 #func SetWindowLong "SetWindowLongA" int, int, int
 #func SetWindowPos "SetWindowPos" int, nullptr, nullptr, nullptr, nullptr, nullptr, int
+
 #uselib "gdi32"
 #func CreateSolidBrush "CreateSolidBrush" sptr
 #func DeleteObject "DeleteObject" sptr
 #func SetBkColor "SetBkColor" sptr,sptr
 #func SetBkMode "SetBkMode" sptr,sptr
 #func SetTextColor "SetTextColor" sptr,sptr
+
 #define ctype BGR(%1,%2,%3) (%1 | %2 << 8 | %3 << 16)
-#define GWL_STYLE	$FFFFFFF0
+#define GWL_STYLE   0xFFFFFFF0
 #define GWL_EXSTYLE -20
-#define WS_EX_TOOLWINDOW	0x0080
-#define LEFT		0x00000001
-#define RIGHT		0x00000002
-#define TOP			0x00000004
-#define BOTTOM		0x00000008
+#define WS_EX_TOOLWINDOW 0x0080
+#define LEFT    0x00000001
+#define RIGHT   0x00000002
+#define TOP     0x00000004
+#define BOTTOM  0x00000008
 #define BORDERWIDTH 4
 #define CaptionHeight ButtonSize + BORDERWIDTH
 
@@ -50,19 +53,19 @@
 // コンストラクタ（infoはjson文字列）
 #modinit str _memoPath, str _jsonText, int _wid
 
-// ID用配列を初期化
-    dimtype Id, vartype("int"), ID_MAX
+  // ID用配列を初期化
+  dimtype Id, vartype("int"), ID_MAX
   dimtype mousePos, vartype("int"), MOUSE_MAX
 
-// 引数の受け渡し
+  // 引数の受け渡し
   memoPath = _memoPath
   jsonText = _jsonText
   Id.WID = _wid
 
-// JSON形式を開く
+  // JSON形式を開く
   jsonopen@ jsonPtr, jsonText
 
-// 読み込み
+  // 読み込み
   jsongets@ path, "path", jsonPtr
   jsongeti@ x, "x", jsonPtr
   jsongeti@ y, "y", jsonPtr
@@ -72,27 +75,27 @@
   jsongeti@ isPin, "pin", jsonPtr
   path = cnvatos(path)
 
-// JSONを閉じる
+  // JSONを閉じる
   jsonclose@
 
-// バックアップの作成
+  // バックアップの作成
   FileBackup path
 
-// 読み込み
+  // 読み込み
   notesel text
   noteload path
   noteunsel
 
-// 不正な値を防ぐ
+  // 不正な値を防ぐ
   Id.COLOR_ID = limit(Id.COLOR_ID, 0, ColorNum)
 
-// ウィンドウ位置・大きさ修正
+  // ウィンドウ位置・大きさ修正
   gsel Id.WID
   w = limit(w, MinMemoWidth, w)
   h = limit(h, MinMemoHeight, h)
   width w, h, x, y
 
-// 割り込み登録
+  // 割り込み登録
   oncmd 0
   oncmd gosub *OnResize, WM_SIZE
   oncmd gosub *OnWidthChange, WM_NCHITTEST
@@ -102,11 +105,11 @@
   DandD_SetWindow true
   oncmd 1
 
-// 初期値設定
+  // 初期値設定
   beRedraw = true
   isPinButton = isPin
 
-// ウィンドウ表示
+  // ウィンドウ表示
   gsel Id.WID, 1 + isPin
   gosub *OnResize
 
@@ -115,46 +118,46 @@
 // デストラクタ
 #modterm
 
-// ウィドウを非表示
+  // ウィドウを非表示
   gsel Id.WID, -1
 
-// メモリの開放
+  // メモリの開放
   DeleteObject hBrush
   buffer wid, 1, 1, 2
 
   return
 
+// WidthChange ...画面サイズを変更します。
 #modcfunc WidthChange
 
-// マウスに動きがあるウィンドウであるかを確認
-  logmes "" + TargetWID
+  // マウスに動きがあるウィンドウであるかを確認
   if (isOnMouse(thismod) == false && TargetWID != Id.WID) {
     return -1
   }
 
-// 処理するウィンドウ
+  // 処理するウィンドウ
   gsel Id.WID
 
-// 座標
+  // 座標
   mposx = ginfo_mx - ginfo_wx1
   mposy = ginfo_my - ginfo_wy1
 
-// マウスが範囲外なら別ウィンドウ
+  // マウスが範囲外なら別ウィンドウ
   if (mposx < -BORDERWIDTH || mposx > ginfo_winx + BORDERWIDTH || mposy < -BORDERWIDTH || mposy > ginfo_winy + BORDERWIDTH) {
     return -1
   }
 
-// ターゲットを記録
+  // ターゲットを記録
   TargetWID = Id.WID
 
-// マウスのポジション
+  // マウスのポジション
   dim area
   if (mposx <= BORDERWIDTH)             : area |= LEFT
   if (mposx >= ginfo_winx - BORDERWIDTH): area |= RIGHT
   if (mposy <= BORDERWIDTH)             : area |= TOP
   if (mposy >= ginfo_winy - BORDERWIDTH): area |= BOTTOM
 
-// 各方向ごとの処理
+  // 各方向ごとの処理
   if (area & LEFT) {
     if (area & TOP)    : return HTTOPLEFT
     if (area & BOTTOM) : return HTBOTTOMLEFT
@@ -168,12 +171,12 @@
   if (area & TOP)    : return HTTOP
   if (area & BOTTOM) : return HTBOTTOM
 
-// マウス座標がタイトルバーなら移動
+  // マウス座標がタイトルバーなら移動
   if (mposy <= CaptionHeight) : return HTCAPTION
 
   return -1
 
-// マウスが乗っているかの判定
+// isOnMouse ...マウスがメモに乗っているかを判定します。
 #modcfunc isOnMouse
 
   // 座標を取得
@@ -192,22 +195,22 @@
 
   return true
 
-// 移動時
+// Move ...メモの移動時に呼び出されます。
 #modfunc Move
 
-// メモの更新
+  // メモの更新
   saveMemo thismod
 
   return
 
-// 再描画
+// Resize ...再描画します。
 #modfunc Resize
 
-// 処理するウィンドウ
+  // 処理するウィンドウ
   gsel Id.WID
   redraw 0
 
-// 背景色
+  // 背景色
   if (beRedraw) {
     color decRGB(getColor(Id.COLOR_ID, ColorTypeBox))
     boxf
@@ -216,7 +219,7 @@
     beRedraw = false
   }
 
-// 追加ボタン
+  // 追加ボタン
   if (Id.BUTTON_ID_ADD == 0) {
     CreateButtonImage ButtonTypeAdd, Id.COLOR_ID
     pos BORDERWIDTH + ButtonSize * 0, BORDERWIDTH
@@ -224,7 +227,7 @@
     Id.BUTTON_ID_ADD = stat
   }
 
-// 色変更ボタン
+  // 色変更ボタン
   if (Id.BUTTON_ID_COLOR == 0) {
     CreateButtonImage ButtonTypeCol, Id.COLOR_ID
     pos BORDERWIDTH + ButtonSize * 1, BORDERWIDTH
@@ -232,14 +235,14 @@
     Id.BUTTON_ID_COLOR = stat
   }
 
-// ピンボタン（更新時）
+  // ピンボタン（更新時）
   if (isPinButton != isPin && Id.BUTTON_ID_PIN != 0) {
     isPinButton = isPin
     clrobj Id.BUTTON_ID_PIN, Id.BUTTON_ID_PIN
     Id.BUTTON_ID_PIN = 0
   }
 
-// ピンボタン
+  // ピンボタン
   if (Id.BUTTON_ID_PIN == 0) {
     CreateButtonImage ButtonTypePinT + 1 - isPin, Id.COLOR_ID
     pos BORDERWIDTH + ButtonSize * 2, BORDERWIDTH
@@ -247,7 +250,7 @@
     Id.BUTTON_ID_PIN = stat
   }
 
-// 削除ボタン
+  // 削除ボタン
   if (Id.BUTTON_ID_DELETE == 0 && isPin == false) {
     CreateButtonImage ButtonTypeDel, Id.COLOR_ID
     pos ginfo_winx - ButtonSize - BORDERWIDTH, BORDERWIDTH
@@ -262,7 +265,7 @@
   }
 
 
-// テキストエリアの配置
+  // テキストエリアの配置
   padding = 5
   if (Id.TEXTAREA_ID == 0) {
     oncmd gosub *OnCtrlEdit, 0x133
@@ -285,42 +288,42 @@
     resizeobj Id.TEXTAREA_ID, size, 0
   }
 
-// メモの更新
+  // メモの更新
   saveMemo thismod
 
   redraw 1
 
   return
 
-// 前面化
+// InFront ...最前面へ移動します。
 #modfunc InFront
 
-// 最前面化
+  // 最前面化
   gsel Id.WID, 2
 
-// 前面化
+  // 前面化
   gsel Id.WID, 1 + isPin
 
   return
 
-// ピン止め処理
+// Pin ...ピン止め処理します。
 #modfunc Pin
 
-// ピン設定の更新
+  // ピン設定の更新
   isPin = isPin == false
 
-// 再描画
+  // 再描画
   Resize thismod
 
-// 最前面処理（メモの更新）
+  // 最前面処理（メモの更新）
   gsel Id.WID, 1 + isPin
 
   return
 
-
-// メモの削除
+// DelMemo ...メモを削除します。
 #modfunc DelMemo
-// 設定を確認し削除ダイアログを表示
+
+  // 設定を確認し削除ダイアログを表示
   if DeleteDialog {
     dialog MESSAGE_DELETE_DIALOG, 2, MESSAGE_DELETE_DIALOG_TITLE
     if stat = 7 {
@@ -328,53 +331,56 @@
     }
   }
 
-// ファイルの移動
+  // ファイルの移動
   bcopy memoPath, trashDir + getpath(memoPath, 8)
   delete memoPath
 
-// 削除
+  // 削除
   delmod thismod
 
   return
 
-// テキストエリアの処理（更新）
+// TextArea ...テキストエリアの更新処理です。
 #modcfunc TextArea int _lparam, int _wparam
+
+  // このウィンドウの場合のみ処理する
   if hMesbox = _lparam {
 
-// ファイル更新
+    // ファイル更新
     saveMemo thismod
 
-// 色処理
+    // 色処理
     gsel Id.WID
     SetTextColor _wparam, hexBGR(getColor(Id.COLOR_ID, ColorTypeText))
     SetBkColor _wparam, hexBGR(getColor(Id.COLOR_ID, ColorTypeBox))
 
     return hBrush
   }
+
   return 0
 
-// メモの保存
+// saveMemo ...メモを保存します。
 #modfunc saveMemo
 
-// テキストファイルが存在するかチェック
+  // テキストファイルが存在するかチェック
   exist path
   if (strsize == -1) {
     path = noteNewFileName
   }
 
-// テキストの保存
+  // テキストの保存
   notesel text
   notesave path
   noteunsel
 
-// 情報の更新
+  // 情報の更新
   gsel Id.WID
   x = ginfo_wx1
   y = ginfo_wy1
   w = ginfo_sizex
   h = ginfo_sizey
 
-// 設定データの組み立て
+  // 設定データの組み立て
   sdim jsonText
   jsonnewobj@ jsonPtr
   jsonputs@ jsonPtr, "path", path
@@ -387,44 +393,44 @@
   jsonout@ jsonText, jsonPtr
   jsonclose@
 
-// 設定の保存
+  // 設定の保存
   notesel jsonText
   notesave memoPath
   noteunsel
 
   return
 
-// 色変更処理
+// ColorChange ...メモの色を変更します。
 #modfunc ColorChange int _colorId
 
-// 色コード変更
+  // 色コード変更
   Id.COLOR_ID = _colorId
 
-// テキストエリア削除
+  // テキストエリア削除
   clrobj Id.TEXTAREA_ID, Id.TEXTAREA_ID
   Id.TEXTAREA_ID = 0
 
-// ボタン削除
+  // ボタン削除
   clrobj Id.BUTTON_ID_ADD, Id.BUTTON_ID_ADD
   clrobj Id.BUTTON_ID_COLOR, Id.BUTTON_ID_COLOR
   clrobj Id.BUTTON_ID_PIN, Id.BUTTON_ID_PIN
   clrobj Id.BUTTON_ID_DELETE, Id.BUTTON_ID_DELETE
 
-// ボタンID初期化
+  // ボタンID初期化
   Id.BUTTON_ID_ADD = 0
   Id.BUTTON_ID_COLOR = 0
   Id.BUTTON_ID_PIN = 0
   Id.BUTTON_ID_DELETE = 0
 
-// 描画オプション変更
+  // 描画オプション変更
   beRedraw = true
 
-// リサイズ＋保存
+  // リサイズ＋保存
   Resize thismod
 
   return
 
-// 場所移動
+// Alignment ...整列処理します。
 #modfunc Alignment int _x, int _y
 
   gsel Id.WID
@@ -432,7 +438,7 @@
 
   return
 
-// 非表示
+// MemoHidden ...メモを非表示にします（トグル）。
 #modfunc MemoHidden int _isHidden
 
   if (_isHidden) {
@@ -451,10 +457,11 @@
   return path
 
 // ---------------------------------------------------------------------
-// ウィンドウ最小幅回り
+
+// ウィンドウ最小幅処理
 *OnGetMinMaxInfo
 
-// 最小幅を指定
+  // 最小幅を指定
   dupptr MinMaxInfo, lParam, 40
   MinMaxInfo.6 = MinMemoWidth
   MinMaxInfo.7 = MinMemoHeight
@@ -464,32 +471,35 @@
 // 色変更ウィンドウの有効化
 *OnButtonCol
 
-// 色変更ウィンドウの配置
+  // 色変更ウィンドウの配置
   DisplayColorWindow ginfo(2)
 
   return
 
 // 移動時の処理
 *OnMove
+
   foreach memo
-// アクティブウィンドウを探す
+
+    // アクティブウィンドウを探す
     if (ginfo(2) != getWid(memo.cnt)) {
       continue
     }
 
-// 移動時処理
+    // 移動時処理
     Move memo.cnt
     break
   loop
+
   return
 
 // D&D時の処理
 *OnDragAndDrop
 
-// 情報の取得
+  // 情報の取得
   fileNum = DandD_GetInfo(0)
 
-// 各ファイルの処理
+  // 各ファイルの処理
   repeat fileNum
     fname = DandD_GetPath(cnt)
     createNewMemo fname
@@ -499,14 +509,16 @@
 
 // テキストエリアの処理
 *OnCtrlEdit
+
   n = 0
   __lparam = lparam
   __wparam = wparam
   foreach memo
-// テキストエリアの処理
+    // テキストエリアの処理
     n = TextArea(memo.cnt, __lparam, __wparam)
     if (n != 0):break
   loop
+
   return n
 
 // 新規メモ追加
@@ -516,48 +528,60 @@
 
 // 削除ボタンの処理
 *OnButtonDel
+
   foreach memo
-// アクティブウィンドウを探す
+
+    // アクティブウィンドウを探す
     if (ginfo(2) != getWid(memo.cnt)) {
       continue
     }
 
-// ピン止めの処理
+    // ピン止めの処理
     DelMemo memo.cnt
     break
+
   loop
+
   return
 
 // ピン止めボタンの処理
 *OnButtonPin
+
   foreach memo
-// アクティブウィンドウを探す
+
+    // アクティブウィンドウを探す
     if (ginfo(2) != getWid(memo.cnt)) {
       continue
     }
 
-// ピン止めの処理
+    // ピン止めの処理
     Pin memo.cnt
     break
   loop
+
   return
 
 // 画面リサイズ時＋初期化表示
 *OnResize
+
   foreach memo
-// アクティブウィンドウを探す
+
+    // アクティブウィンドウを探す
     if (ginfo(2) != getWid(memo.cnt)) {
       continue
     }
 
-// リサイズ時の処理
+    // リサイズ時の処理
     Resize memo.cnt
     break
+
   loop
+
   return
 
 // 画面リサイズ用の動き
 *OnWidthChange
+
   n = HTCAPTION
   foreach memo
     n = WidthChange(memo.cnt)
@@ -565,5 +589,7 @@
       break
     }
   loop
+  
   return n
+
 #global
