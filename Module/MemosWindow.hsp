@@ -1,0 +1,28 @@
+// ------------------------------------------------------------
+// メモのウィンドウ生成処理を定義
+// ------------------------------------------------------------
+
+#module
+
+// CreateMemoWindow ...可変枠無しウィンドウを非表示で生成します。
+#defcfunc CreateMemoWindow
+
+  // 取得
+  n = ginfo_sel
+  g = ginfo_newid
+
+  // ウィンドウを生成
+  bgscr g, ginfo_dispx, ginfo_dispy, screen_hide
+  gsel g
+  SetWindowLong hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) | WS_EX_TOOLWINDOW
+
+  // 影を設定
+  GetClassLong hwnd, GCL_STYLE
+  SetClassLong hwnd, GCL_STYLE, stat | CS_DROPSHADOW
+
+  // 戻す
+  gsel n
+
+  return g
+
+#global

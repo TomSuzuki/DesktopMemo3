@@ -1,0 +1,107 @@
+// ------------------------------------------------------------
+// 設定を管理
+// ------------------------------------------------------------
+
+// デフォルト設定
+#define global DefaultSetting_fontName  "游ゴシック"
+#define global DefaultSetting_fontSize  14
+#define global DefaultSetting_fontStyle 0
+#define global DefaultSetting_buttonColor1 "$666666"
+#define global DefaultSetting_buttonColor2 "$FFFFFF"
+#define global DefaultSetting_buttonColor3 "$AAAAAA"
+#define global DefaultSetting_deleteDialog 1
+
+// JSONキー値
+#define global SettingKey_fontName  "font"
+#define global SettingKey_fontSize  "font_size"
+#define global SettingKey_fontStyle "font_style"
+#define global SettingKey_buttonColor1 "button_color"
+#define global SettingKey_buttonColor2 "button_color_click"
+#define global SettingKey_buttonColor3 "button_color_mouseover"
+#define global SettingKey_deleteDialog "delete_dialog"
+
+// 設定項目をグローバルで使えるように登録（取得のみできるように関数にする）
+#define global fontName _application_setting_fontName()
+#define global fontSize _application_setting_fontSize()
+#define global fontStyle _application_setting_fontStyle()
+#define global ButtonColor _application_setting_buttonColor1()
+#define global ButtonClickColor _application_setting_buttonColor2()
+#define global ButtonMouseOverColor _application_setting_buttonColor3()
+#define global DeleteDialog _application_setting_deleteDialog()
+
+// アプリケーションの設定を読み込む
+#module application_setting
+
+// SettingLoad ...設定ファイルを読み込みます。
+#deffunc SettingLoad str fname
+
+  // 読み込み
+  notesel jsonText
+  noteload fname
+  noteunsel
+
+  // JSON形式を開く
+  jsonopen@ jsonPtr, jsonText
+  jsongets@ _fontName, SettingKey_fontName, jsonPtr
+  jsongeti@ _fontSize, SettingKey_fontSize, jsonPtr
+  jsongeti@ _fontStyle, SettingKey_fontStyle, jsonPtr
+  jsongets@ _buttonColor1, SettingKey_buttonColor1, jsonPtr
+  jsongets@ _buttonColor2, SettingKey_buttonColor2, jsonPtr
+  jsongets@ _buttonColor3, SettingKey_buttonColor3, jsonPtr
+  jsongeti@ _deleteDialog, SettingKey_deleteDialog, jsonPtr
+
+  // JSONを閉じる
+  jsonclose@
+
+  // デフォルト設定の復元
+  if (_fontName == ""):_fontName = DefaultSetting_fontName
+  if (_fontSize == 0):_fontSize = DefaultSetting_fontSize
+  if (_fontStyle == 0):_fontStyle = DefaultSetting_fontStyle
+  if (_buttonColor1 == ""):_buttonColor1 = DefaultSetting_buttonColor1
+  if (_buttonColor2 == ""):_buttonColor2 = DefaultSetting_buttonColor2
+  if (_buttonColor3 == ""):_buttonColor3 = DefaultSetting_buttonColor3
+  if (_deleteDialog == 0):_deleteDialog = DefaultSetting_deleteDialog
+
+  // 設定をJSONに
+  jsonnewobj@ jsonPtr, -1, ""
+  jsonputs@ jsonPtr, SettingKey_fontName, _fontName
+  jsonputi@ jsonPtr, SettingKey_fontSize, _fontSize
+  jsonputi@ jsonPtr, SettingKey_fontStyle, _fontStyle
+  jsonputs@ jsonPtr, SettingKey_buttonColor1, _buttonColor1
+  jsonputs@ jsonPtr, SettingKey_buttonColor2, _buttonColor2
+  jsonputs@ jsonPtr, SettingKey_buttonColor3, _buttonColor3
+  jsonputi@ jsonPtr, SettingKey_deleteDialog, _deleteDialog
+  jsonout@ jsonText, jsonPtr
+  jsonclose@
+
+  // 設定を保存
+  jsonText = cnvatos(jsonText)
+  notesel jsonText
+  notesave fname
+  noteunsel
+
+  return
+
+// 設定の取得
+#defcfunc _application_setting_fontName
+  return _fontName
+
+#defcfunc _application_setting_fontSize
+  return _fontSize
+
+#defcfunc _application_setting_fontStyle
+  return _fontStyle
+
+#defcfunc _application_setting_buttonColor1
+  return int(_buttonColor1)
+
+#defcfunc _application_setting_buttonColor2
+  return int(_buttonColor2)
+
+#defcfunc _application_setting_buttonColor3
+  return int(_buttonColor3)
+
+#defcfunc _application_setting_deleteDialog
+  return _deleteDialog = 1
+
+#global

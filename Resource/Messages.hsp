@@ -1,8 +1,6 @@
-#include "hsp3utf.as"
-#include "_main.hsp"
-
-#ifndef _INCLUDE_MESSAGE_
-#define global _INCLUDE_MESSAGE_
+// ------------------------------------------------------------
+// メッセージの定義
+// ------------------------------------------------------------
 
 // リソース
 #define global MESSAGE_IS_ALREADY_LOAD "すでに読み込まれているメモです"
@@ -26,5 +24,3 @@
 #define global ERROR_MESSAGE_38 "外部DLLの呼び出しに失敗しました。"
 #define global ERROR_MESSAGE_13 "画像ファイルの読み込みに失敗しました。"
 #define global ERROR_MESSAGE_00 "不明なエラーが発生しました。"
-
-#endif

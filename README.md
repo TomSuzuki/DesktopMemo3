@@ -48,8 +48,8 @@ Windows上でのみ動作確認を行っています。
 - `theme` ...コピペで使えるカラーテーマです。ファイルの中身を`color.json`にコピーすることで、テーマを変えることができます。
 
 ## 動作環境
-- 開発バージョン: `HSP3.6`
-- OS: `Windows 10 Home`
+- 開発バージョン: `HSP3.7`
+- OS: `Windows 11 Home`
 
 ## ビルド方法
 - [VSCode で HSP3 の開発環境を作る [2019年末] - Qiita](https://qiita.com/vain0x/items/1c0be49b3b22142dbfd1)
