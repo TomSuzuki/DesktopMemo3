@@ -56,6 +56,9 @@
   // ID用配列を初期化
   dimtype Id, vartype("int"), ID_MAX
   dimtype mousePos, vartype("int"), MOUSE_MAX
+  foreach Id
+    Id.cnt = -1
+  loop
 
   // 引数の受け渡し
   memoPath = _memoPath
@@ -94,11 +97,6 @@
   w = limit(w, MinMemoWidth, w)
   h = limit(h, MinMemoHeight, h)
   width w, h, x, y
-
-  // オブジェクトIDを1番から採番するためにダミーボタンを生成する（仮）
-  pos -999, -999
-  objsize 1, 1
-  button "", *dummy
 
   // 割り込み登録
   oncmd 0
@@ -229,11 +227,11 @@
 
   // 追加ボタン
   if (isBtnDisabled == true) {
-    if (Id.BUTTON_ID_ADD != 0) {
+    if (Id.BUTTON_ID_ADD != -1) {
       clrobj Id.BUTTON_ID_ADD, Id.BUTTON_ID_ADD
-      Id.BUTTON_ID_ADD = 0
+      Id.BUTTON_ID_ADD = -1
     }
-  } else:if (Id.BUTTON_ID_ADD == 0) {
+  } else:if (Id.BUTTON_ID_ADD == -1) {
     CreateButtonImage ButtonTypeAdd, Id.COLOR_ID
     pos BORDERWIDTH + ButtonSize * 0, BORDERWIDTH
     button gosub "", *OnButtonNew
@@ -242,11 +240,11 @@
 
   // 色変更ボタン
   if (isBtnDisabled == true) {
-    if (Id.BUTTON_ID_COLOR != 0) {
+    if (Id.BUTTON_ID_COLOR != -1) {
       clrobj Id.BUTTON_ID_COLOR, Id.BUTTON_ID_COLOR
-      Id.BUTTON_ID_COLOR = 0
+      Id.BUTTON_ID_COLOR = -1
     }
-  } else:if (Id.BUTTON_ID_COLOR == 0) {
+  } else:if (Id.BUTTON_ID_COLOR == -1) {
     CreateButtonImage ButtonTypeCol, Id.COLOR_ID
     pos BORDERWIDTH + ButtonSize * 1, BORDERWIDTH
     button gosub "", *OnButtonCol
@@ -255,18 +253,18 @@
 
   // ピンボタン（更新時）
   if (isBtnDisabled == true) {
-    if (Id.BUTTON_ID_PIN != 0) {
+    if (Id.BUTTON_ID_PIN != -1) {
       clrobj Id.BUTTON_ID_PIN, Id.BUTTON_ID_PIN
-      Id.BUTTON_ID_PIN = 0
+      Id.BUTTON_ID_PIN = -1
     }
-  } else:if (isPinButton != isPin && Id.BUTTON_ID_PIN != 0) {
+  } else:if (isPinButton != isPin && Id.BUTTON_ID_PIN != -1) {
     isPinButton = isPin
     clrobj Id.BUTTON_ID_PIN, Id.BUTTON_ID_PIN
-    Id.BUTTON_ID_PIN = 0
+    Id.BUTTON_ID_PIN = -1
   }
 
   // ピンボタン
-  if (Id.BUTTON_ID_PIN == 0 && isBtnDisabled == false) {
+  if (Id.BUTTON_ID_PIN == -1 && isBtnDisabled == false) {
     CreateButtonImage ButtonTypePinT + 1 - isPin, Id.COLOR_ID
     pos BORDERWIDTH + ButtonSize * 2, BORDERWIDTH
     button gosub "", *OnButtonPin
@@ -275,26 +273,26 @@
 
   // 削除ボタン
   if (isBtnDisabled == true) {
-    if (Id.BUTTON_ID_DELETE != 0) {
+    if (Id.BUTTON_ID_DELETE != -1) {
       clrobj Id.BUTTON_ID_DELETE, Id.BUTTON_ID_DELETE
-      Id.BUTTON_ID_DELETE = 0
+      Id.BUTTON_ID_DELETE = -1
     }
-  } else:if (Id.BUTTON_ID_DELETE == 0 && isPin == false) {
+  } else:if (Id.BUTTON_ID_DELETE == -1 && isPin == false) {
     CreateButtonImage ButtonTypeDel, Id.COLOR_ID
     pos ginfo_winx - ButtonSize - BORDERWIDTH, BORDERWIDTH
     button gosub "", *OnButtonDel
     Id.BUTTON_ID_DELETE = stat
-  } else:if (Id.BUTTON_ID_DELETE != 0 && isPin == true) {
+  } else:if (Id.BUTTON_ID_DELETE != -1 && isPin == true) {
     clrobj Id.BUTTON_ID_DELETE, Id.BUTTON_ID_DELETE
-    Id.BUTTON_ID_DELETE = 0
-  } else:if (Id.BUTTON_ID_DELETE != 0 && isPin == false) {
+    Id.BUTTON_ID_DELETE = -1
+  } else:if (Id.BUTTON_ID_DELETE != -1 && isPin == false) {
     args = 0, 0, ginfo_winx - ButtonSize - BORDERWIDTH, BORDERWIDTH
     resizeobj Id.BUTTON_ID_DELETE, args, 2
   }
 
   // テキストエリアの配置
   padding = 5
-  if (Id.TEXTAREA_ID == 0) {
+  if (Id.TEXTAREA_ID == -1) {
     oncmd gosub *OnCtrlEdit, 0x133
     font fontName, fontSize, fontStyle
     objmode 2, 0
@@ -435,7 +433,7 @@
 
   // テキストエリア削除
   clrobj Id.TEXTAREA_ID, Id.TEXTAREA_ID
-  Id.TEXTAREA_ID = 0
+  Id.TEXTAREA_ID = -1
 
   // ボタン削除
   clrobj Id.BUTTON_ID_ADD, Id.BUTTON_ID_ADD
@@ -444,10 +442,10 @@
   clrobj Id.BUTTON_ID_DELETE, Id.BUTTON_ID_DELETE
 
   // ボタンID初期化
-  Id.BUTTON_ID_ADD = 0
-  Id.BUTTON_ID_COLOR = 0
-  Id.BUTTON_ID_PIN = 0
-  Id.BUTTON_ID_DELETE = 0
+  Id.BUTTON_ID_ADD = -1
+  Id.BUTTON_ID_COLOR = -1
+  Id.BUTTON_ID_PIN = -1
+  Id.BUTTON_ID_DELETE = -1
 
   // 描画オプション変更
   beRedraw = true
