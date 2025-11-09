@@ -1,0 +1,70 @@
+// ------------------------------------------------------------
+// ステータス管理の定義
+// ------------------------------------------------------------
+
+// ステータス管理ファイル
+#define global PATH_STATUS "./status.json"
+
+// メモ状態フラグ
+#define global STATUS_HIDDN        0b0000000001 // 非表示
+#define global STATUS_BTN_DISABLED 0b0000000010 // ボタン非表示（無効）
+
+#module
+
+// StatusLoad ...ステータスを読み込んで初期化します。
+#deffunc StatusLoad
+
+  // ファイルがない場合は初期ファイルを生成
+  exist PATH_STATUS
+  if (strsize == -1) {
+    notedata = "{\n}"
+    notesel notedata
+    notesave PATH_STATUS
+    noteunsel
+  }
+
+  // 設定を読込み
+  notesel jsonText
+  noteload PATH_STATUS
+  noteunsel
+
+  // JSON形式で開く
+  jsonopen@ jsonPtr, jsonText
+  jsongeti@ memoStatus, "memo_status", jsonPtr
+  jsonclose@
+
+  return
+
+// StatusSave ...設定を保存します。
+#deffunc StatusSave
+
+  // 設定データの組み立て
+  sdim jsonText
+  jsonnewobj@ jsonPtr
+  jsonputi@ jsonPtr, "memo_status", memoStatus
+  jsonout@ jsonText, jsonPtr
+  jsonclose@
+
+  // 設定の保存
+  notesel jsonText
+  notesave PATH_STATUS
+  noteunsel
+
+  return
+
+// GetGlobalStatus ...設定を取得します。
+#defcfunc GetGlobalStatus int _p1
+  return ((memoStatus & _p1) != 0)
+
+// ToggleGlobalStatus ...設定を切替えします。
+#defcfunc ToggleGlobalStatus int _p1
+  // 変更
+  memoStatus = memoStatus ^ _p1
+
+  // 保存
+  StatusSave
+
+  // 変更後の値を返す
+  return GetGlobalStatus(_p1)
+
+#global

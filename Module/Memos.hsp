@@ -112,8 +112,13 @@
   beRedraw = true
   isPinButton = isPin
 
+  // フラグ取得
+  isMemoHidden = GetGlobalStatus(STATUS_HIDDN)
+
   // ウィンドウ表示
-  gsel Id.WID, 1 + isPin
+  if (isMemoHidden == false) {
+    gsel Id.WID, 1 + isPin
+  }
   gosub *OnResize
 
   return
@@ -214,7 +219,7 @@
   redraw 0
 
   // 表示ステータスを取得
-  isBtnDisabled = ((memoStatus & STATUS_BTN_DISABLED) != 0)
+  isBtnDisabled = GetGlobalStatus(STATUS_BTN_DISABLED)
 
   // 背景色
   if (beRedraw) {
@@ -469,6 +474,7 @@
   if (_isHidden) {
     gsel Id.WID, -1
   } else {
+    Resize thismod
     InFront thismod
   }
 
@@ -616,9 +622,5 @@
   loop
   
   return n
-
-// ダミー
-*dummy
-  return
 
 #global
