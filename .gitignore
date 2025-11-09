@@ -12,3 +12,5 @@ memo/*
 note/*
 trash/*
 backup/*
+
+status.json

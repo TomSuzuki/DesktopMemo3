@@ -1,5 +1,17 @@
-# DesktopMemo3 v1.0.2
-デスクトップに貼るメモ。
+<p align="center">
+ <img align="center" src="./img/app.ico">
+ <h2 align="center"><a href="https://github.com/TomSuzuki/DesktopMemo3">DesktopMemo3</a></h2>
+ <p align="center">デスクトップに貼るメモ。</p>
+</p>
+<p align="center">
+  <a href="https://github.com/anuraghazra/github-readme-stats/issues">
+    <img alt="Issues" src="https://img.shields.io/github/issues/TomSuzuki/DesktopMemo3?color=0088ff" />
+  </a>
+  <a href="">
+    <img alt="Lang" src="http://img.shields.io/badge/Language-HSP3-green" />
+  </a>
+</p>
+
 Windows上でのみ動作確認を行っています。
 
 実行ファイルを起動してご使用ください。
@@ -25,6 +37,7 @@ Windows上でのみ動作確認を行っています。
 - `button_color` ...基本のボタン色です。
 - `button_color_click` ...クリック時のボタン色です。
 - `button_color_mouseover` ...マウスホバー時のボタン色です。
+- `delete_dialog` ...削除時にダイアログを表示するかの設定です。 `1`で有効、`2`で無効です。
 
 ## フォルダについて
 - `backup` ...起動時とメモ読み込み時に、メモの内容をコピーして保存します。
@@ -35,8 +48,8 @@ Windows上でのみ動作確認を行っています。
 - `theme` ...コピペで使えるカラーテーマです。ファイルの中身を`color.json`にコピーすることで、テーマを変えることができます。
 
 ## 動作環境
-- 開発バージョン: `HSP3.6`
-- OS: `Windows 10 Home`
+- 開発バージョン: `HSP3.7`
+- OS: `Windows 11 Home`
 
 ## ビルド方法
 - [VSCode で HSP3 の開発環境を作る [2019年末] - Qiita](https://qiita.com/vain0x/items/1c0be49b3b22142dbfd1)
