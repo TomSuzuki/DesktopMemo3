@@ -108,6 +108,9 @@
   DandD_SetWindow true
   oncmd 1
 
+  // メニューに登録
+  AppendMemoMenu Id.WID, strmid(text, 0, 10)
+
   // 初期値設定
   beRedraw = true
   isPinButton = isPin
@@ -125,6 +128,9 @@
 
 // デストラクタ
 #modterm
+
+  // メニューから削除
+  DeleteMemoMenu Id.WID
 
   // ウィドウを非表示
   gsel Id.WID, -1
@@ -378,6 +384,9 @@
 
     // ファイル更新
     saveMemo thismod
+
+    // メニュー更新
+    ChangeMemoMenu Id.WID, strmid(text, 0, 10)
 
     // 色処理
     gsel Id.WID

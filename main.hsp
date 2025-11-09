@@ -21,7 +21,6 @@
 #include "./Common/CommonConstants.hsp"
 #include "./Common/CommonFunctions.hsp"
 #include "./Common/DragAndDrop.hsp"
-#include "./Common/Tasktray.hsp"
 #include "./Module/ErrorDialog.hsp"
 #include "./Module/SettingsManager.hsp"
 #include "./Module/ColorManager.hsp"
@@ -32,6 +31,7 @@
 #include "./Module/MemosLoad.hsp"
 #include "./Module/MemosCreate.hsp"
 #include "./Module/ColorWindow.hsp"
+#include "./Common/Tasktray.hsp"
 
   // メモの定義
   dimtype memo, vartype("struct")
