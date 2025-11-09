@@ -10,12 +10,19 @@
 #enum MenuId_Exit
 #enum MenuID_MemoInFron
 #enum MenuID_Alignment
+#enum MenuID_SelectAlignment
 #enum MenuID_MemoHidden
 #enum MenuID_BtnDisabled
 #enum MenuID_Version
+#enum MenuID_SelectMemoBase
 
 // CreateTasktrayMenu ...メニューを配置します。
 #deffunc CreateTasktrayMenu
+
+  dim hMenu, 2
+
+  CreatePopupMenu
+  hMenu.1 = stat
 
   CreatePopupMenu
   hMenu.0 = stat
@@ -23,6 +30,7 @@
   AppendMenu hMenu.0, $800, 0, ""
   AppendMenu hMenu.0, 0, MenuID_MemoInFron, MENU_MESSAGE_MemoInFron
   AppendMenu hMenu.0, 0, MenuID_Alignment, MENU_MESSAGE_Alignment
+  AppendMenu hMenu.0, $10, hMenu.1, MENU_MESSAGE_SelectAlignment
   AppendMenu hMenu.0, 0, MenuID_MemoHidden, MENU_MESSAGE_Hidden
   AppendMenu hMenu.0, 0, MenuID_BtnDisabled, MENU_MESSAGE_BtnDisabled
   AppendMenu hMenu.0, $800, 0, ""
@@ -37,7 +45,33 @@
   EnableMenuItem hMenu.0, MenuID_NewMemo,    isMemoHidden * $1
   EnableMenuItem hMenu.0, MenuID_MemoInFron, isMemoHidden * $1
   EnableMenuItem hMenu.0, MenuID_Alignment,  isMemoHidden * $1
+  EnableMenuItem hMenu.0, hMenu.1,           isMemoHidden * $1
 
+  // タイトルバー機能ボタンの初期化
+  isBtnDisabled = GetGlobalStatus(STATUS_BTN_DISABLED)
+  CheckMenuItem hMenu.0, MenuID_BtnDisabled, isBtnDisabled * $8
+
+  return
+
+// AppendMemoMenu ...メモをメニューに登録します。
+#deffunc AppendMemoMenu int _p1, str _p2
+  s = _p2 : if s == "" : s = MENU_MEMO_NO_TITLE
+  menuId = MenuID_SelectMemoBase + _p1
+  AppendMenu hMenu.1, 0, menuId, s
+  return
+
+// RemoveMemoMenu ...メモをメニューから削除します。
+#deffunc DeleteMemoMenu int _p1
+  menuId = MenuID_SelectMemoBase + _p1
+  DeleteMenu hMenu.1, menuId, 0
+  return
+
+// ChangeMemoMenu ...メモメニューの内容を更新します。
+#deffunc ChangeMemoMenu int _p1, str _p2
+  s = _p2 : if s == "" : s = MENU_MEMO_NO_TITLE
+  menuId = MenuID_SelectMemoBase + _p1
+  ModifyMenu hMenu.1, menuId, 0x00000000, menuId, s
+  DrawMenuBar hMenu.1
   return
 
 // メニュー処理イベント
@@ -51,7 +85,8 @@
     if stat = 0:return
 
     // 各メニューの処理
-    switch stat
+    mstat = stat
+    switch mstat
 
       // 新規メモの作成
       case MenuID_NewMemo
@@ -76,9 +111,10 @@
         CheckMenuItem hMenu.0, MenuID_MemoHidden, isMemoHidden * $8
 
         // 無効化
-        EnableMenuItem hMenu.0, MenuID_NewMemo, isMemoHidden * $1
+        EnableMenuItem hMenu.0, MenuID_NewMemo,    isMemoHidden * $1
         EnableMenuItem hMenu.0, MenuID_MemoInFron, isMemoHidden * $1
-        EnableMenuItem hMenu.0, MenuID_Alignment, isMemoHidden * $1
+        EnableMenuItem hMenu.0, MenuID_Alignment,  isMemoHidden * $1
+        EnableMenuItem hMenu.0, hMenu.1,           isMemoHidden * $1
 
         // メモの表示切替
         foreach memo
@@ -124,6 +160,20 @@
         swbreak
 
     swend
+
+    // メニュー以外（メモ）の処理
+    foreach memo
+      wid = getWid(memo.cnt)
+      selectMemoId = wid + MenuID_SelectMemoBase
+
+      // 整列
+      if (mstat == selectMemoId) {
+        Alignment memo.cnt, ButtonSize, ButtonSize
+        InFront memo.cnt
+        break
+      }
+
+    loop
   }
 
   return
