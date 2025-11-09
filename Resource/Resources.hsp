@@ -15,3 +15,7 @@
 #define global noteNewFileName noteDir + stringDate + ".txt"
 #define global tasktrayIcon "./img/app.ico"
 #define global tasktrayIconSize	32
+
+// メモ状態フラグ
+#define global STATUS_HIDDN        0b0000000001
+#define global STATUS_BTN_DISABLED 0b0000000010

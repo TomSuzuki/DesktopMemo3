@@ -12,6 +12,7 @@
 
 // グローバル変数
 #define global memo _memo@
+#define global memoStatus _memoStatus@
 
 // モジュールの一括読み込み
 #include "./Resource/Application.hsp"
@@ -35,6 +36,11 @@
 
   // メモの定義
   dimtype memo, vartype("struct")
+
+  // メモ状態の初期化
+  // 1桁目 ...非表示（未実装）
+  // 2桁目 ...ボタンの無効化
+  memoStatus = 0b0000000000
 
   // 起動時処理
   AppInitialize

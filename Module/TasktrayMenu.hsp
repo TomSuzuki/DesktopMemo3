@@ -11,6 +11,7 @@
 #enum MenuID_MemoInFron
 #enum MenuID_Alignment
 #enum MenuID_MemoHidden
+#enum MenuID_BtnDisabled
 #enum MenuID_Version
 
 // CreateTasktrayMenu ...メニューを配置します。
@@ -23,6 +24,7 @@
   AppendMenu hMenu.0, 0, MenuID_MemoInFron, MENU_MESSAGE_MemoInFron
   AppendMenu hMenu.0, 0, MenuID_Alignment, MENU_MESSAGE_Alignment
   AppendMenu hMenu.0, 0, MenuID_MemoHidden, MENU_MESSAGE_Hidden
+  AppendMenu hMenu.0, 0, MenuID_BtnDisabled, MENU_MESSAGE_BtnDisabled
   AppendMenu hMenu.0, $800, 0, ""
   AppendMenu hMenu.0, 0, MenuID_GitHub, MENU_MESSAGE_GitHub
   AppendMenu hMenu.0, 0, MenuID_Version, MENU_MESSAGE_Version
@@ -77,6 +79,21 @@
         foreach memo
           MemoHidden memo.cnt, isMemoHidden
         loop
+        swbreak
+      
+      // タイトルバーのボタンを非表示・表示
+      case MenuID_BtnDisabled
+        
+        // ステータスフラグを更新・チェックを更新
+        memoStatus = memoStatus ^ STATUS_BTN_DISABLED // フラグを反転
+        isBtnDisabled = ((memoStatus & STATUS_BTN_DISABLED) != 0) // フラグが立っているか取得
+        CheckMenuItem hMenu.0, MenuID_BtnDisabled, isBtnDisabled * $8
+
+        // メモの表示を更新
+        foreach memo
+          Resize memo.cnt
+        loop
+
         swbreak
       
       // 最前面に表示

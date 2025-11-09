@@ -95,6 +95,11 @@
   h = limit(h, MinMemoHeight, h)
   width w, h, x, y
 
+  // オブジェクトIDを1番から採番するためにダミーボタンを生成する（仮）
+  pos -999, -999
+  objsize 1, 1
+  button "", *dummy
+
   // 割り込み登録
   oncmd 0
   oncmd gosub *OnResize, WM_SIZE
@@ -210,6 +215,9 @@
   gsel Id.WID
   redraw 0
 
+  // 表示ステータスを取得
+  isBtnDisabled = ((memoStatus & STATUS_BTN_DISABLED) != 0)
+
   // 背景色
   if (beRedraw) {
     color decRGB(getColor(Id.COLOR_ID, ColorTypeBox))
@@ -220,7 +228,12 @@
   }
 
   // 追加ボタン
-  if (Id.BUTTON_ID_ADD == 0) {
+  if (isBtnDisabled == true) {
+    if (Id.BUTTON_ID_ADD != 0) {
+      clrobj Id.BUTTON_ID_ADD, Id.BUTTON_ID_ADD
+      Id.BUTTON_ID_ADD = 0
+    }
+  } else:if (Id.BUTTON_ID_ADD == 0) {
     CreateButtonImage ButtonTypeAdd, Id.COLOR_ID
     pos BORDERWIDTH + ButtonSize * 0, BORDERWIDTH
     button gosub "", *OnButtonNew
@@ -228,7 +241,12 @@
   }
 
   // 色変更ボタン
-  if (Id.BUTTON_ID_COLOR == 0) {
+  if (isBtnDisabled == true) {
+    if (Id.BUTTON_ID_COLOR != 0) {
+      clrobj Id.BUTTON_ID_COLOR, Id.BUTTON_ID_COLOR
+      Id.BUTTON_ID_COLOR = 0
+    }
+  } else:if (Id.BUTTON_ID_COLOR == 0) {
     CreateButtonImage ButtonTypeCol, Id.COLOR_ID
     pos BORDERWIDTH + ButtonSize * 1, BORDERWIDTH
     button gosub "", *OnButtonCol
@@ -236,14 +254,19 @@
   }
 
   // ピンボタン（更新時）
-  if (isPinButton != isPin && Id.BUTTON_ID_PIN != 0) {
+  if (isBtnDisabled == true) {
+    if (Id.BUTTON_ID_PIN != 0) {
+      clrobj Id.BUTTON_ID_PIN, Id.BUTTON_ID_PIN
+      Id.BUTTON_ID_PIN = 0
+    }
+  } else:if (isPinButton != isPin && Id.BUTTON_ID_PIN != 0) {
     isPinButton = isPin
     clrobj Id.BUTTON_ID_PIN, Id.BUTTON_ID_PIN
     Id.BUTTON_ID_PIN = 0
   }
 
   // ピンボタン
-  if (Id.BUTTON_ID_PIN == 0) {
+  if (Id.BUTTON_ID_PIN == 0 && isBtnDisabled == false) {
     CreateButtonImage ButtonTypePinT + 1 - isPin, Id.COLOR_ID
     pos BORDERWIDTH + ButtonSize * 2, BORDERWIDTH
     button gosub "", *OnButtonPin
@@ -251,7 +274,12 @@
   }
 
   // 削除ボタン
-  if (Id.BUTTON_ID_DELETE == 0 && isPin == false) {
+  if (isBtnDisabled == true) {
+    if (Id.BUTTON_ID_DELETE != 0) {
+      clrobj Id.BUTTON_ID_DELETE, Id.BUTTON_ID_DELETE
+      Id.BUTTON_ID_DELETE = 0
+    }
+  } else:if (Id.BUTTON_ID_DELETE == 0 && isPin == false) {
     CreateButtonImage ButtonTypeDel, Id.COLOR_ID
     pos ginfo_winx - ButtonSize - BORDERWIDTH, BORDERWIDTH
     button gosub "", *OnButtonDel
@@ -263,7 +291,6 @@
     args = 0, 0, ginfo_winx - ButtonSize - BORDERWIDTH, BORDERWIDTH
     resizeobj Id.BUTTON_ID_DELETE, args, 2
   }
-
 
   // テキストエリアの配置
   padding = 5
@@ -591,5 +618,9 @@
   loop
   
   return n
+
+// ダミー
+*dummy
+  return
 
 #global
