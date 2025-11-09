@@ -9,8 +9,8 @@
 #define global ctype hexBGR(%1) ((%1 & 0xFF)<<16 | (%1>>8 & 0xFF)<<8 | (%1>>16 & 0xFF))
 
 // 定数定義
-#const global True  1
-#const global False 0
+#const global true  1
+#const global false 0
 
 // WinApi
 #define global WM_SIZ           0x0005
