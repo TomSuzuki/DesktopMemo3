@@ -31,7 +31,12 @@
   AppendMenu hMenu.0, $800, 0, ""
   AppendMenu hMenu.0, 0, MenuId_Exit, MENU_MESSAGE_Exit
 
-  CheckMenuItem hMenu.0, MenuID_MemoHidden, 0
+  // 非表示ボタンの初期化
+  isMemoHidden = GetGlobalStatus(STATUS_HIDDN)
+  CheckMenuItem  hMenu.0, MenuID_MemoHidden, isMemoHidden * $8
+  EnableMenuItem hMenu.0, MenuID_NewMemo,    isMemoHidden * $1
+  EnableMenuItem hMenu.0, MenuID_MemoInFron, isMemoHidden * $1
+  EnableMenuItem hMenu.0, MenuID_Alignment,  isMemoHidden * $1
 
   return
 
@@ -66,8 +71,8 @@
       // すべてのメモを非表示・表示
       case MenuID_MemoHidden
 
-        // チェック
-        isMemoHidden = (isMemoHidden == 0)
+        // ステータスフラグを更新・チェックを更新
+        isMemoHidden = ToggleGlobalStatus(STATUS_HIDDN) // フラグを反転
         CheckMenuItem hMenu.0, MenuID_MemoHidden, isMemoHidden * $8
 
         // 無効化
@@ -85,8 +90,7 @@
       case MenuID_BtnDisabled
         
         // ステータスフラグを更新・チェックを更新
-        memoStatus = memoStatus ^ STATUS_BTN_DISABLED // フラグを反転
-        isBtnDisabled = ((memoStatus & STATUS_BTN_DISABLED) != 0) // フラグが立っているか取得
+        isBtnDisabled = ToggleGlobalStatus(STATUS_BTN_DISABLED)
         CheckMenuItem hMenu.0, MenuID_BtnDisabled, isBtnDisabled * $8
 
         // メモの表示を更新
