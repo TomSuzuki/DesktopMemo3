@@ -10,7 +10,7 @@
 #const global MinMemoHeight 240
 
 // メモ管理モジュール
-#module MOD_MEMO Id, jsonText, memoPath, path, text, x, y, w, h, isPin, hMesbox, hBrush, isPinButton, beRedraw, mousePos
+#module MOD_MEMO Id, jsonText, memoPath, path, text, x, y, w, h, isPin, hMesbox, hBrush, isPinButton, beRedraw, mousePos, isHidden
 
 #uselib "user32"
 #cfunc GetWindowLong "GetWindowLongA" int, int
@@ -76,6 +76,7 @@
   jsongeti@ h, "h", jsonPtr
   jsongeti@ Id.COLOR_ID, "color_id", jsonPtr
   jsongeti@ isPin, "pin", jsonPtr
+  jsongeti@ isHidden, "is_hidden", jsonPtr
   path = cnvatos(path)
 
   // JSONを閉じる
@@ -109,7 +110,7 @@
   oncmd 1
 
   // メニューに登録
-  AppendMemoMenu Id.WID, getMenuText(thismod)
+  AppendMemoMenu Id.WID, getMenuText(thismod), isHidden
 
   // 初期値設定
   beRedraw = true
@@ -119,7 +120,7 @@
   isMemoHidden = GetGlobalStatus(STATUS_HIDDN)
 
   // ウィンドウ表示
-  if (isMemoHidden == false) {
+  if (isMemoHidden == false && isHidden == false) {
     gsel Id.WID, 1 + isPin
   }
   gosub *OnResize
@@ -334,6 +335,9 @@
 // InFront ...最前面へ移動します。
 #modfunc InFront
 
+  // 非表示の場合は処理しない
+  if (isHidden == true) : return
+
   // 最前面化
   gsel Id.WID, 2
 
@@ -429,6 +433,7 @@
   jsonputi@ jsonPtr, "h", h
   jsonputi@ jsonPtr, "color_id", Id.COLOR_ID
   jsonputi@ jsonPtr, "pin", isPin
+  jsonputi@ jsonPtr, "is_hidden", isHidden
   jsonout@ jsonText, jsonPtr
   jsonclose@
 
@@ -477,15 +482,38 @@
 
   return
 
-// MemoHidden ...メモを非表示にします（トグル）。
+// MemoHidden ...メモを非表示にします（全体）。
 #modfunc MemoHidden int _isHidden
 
+  // 非表示の場合は処理しない
+  if (isHidden == true) : return
+
+  // 表示状態を切り替える
   if (_isHidden) {
     gsel Id.WID, -1
   } else {
     Resize thismod
     InFront thismod
   }
+
+  return
+
+// SelectHidden ...選択したメモを非表示にします。
+#modfunc SelectHidden
+
+  // 状態を切り替える
+  isHidden = isHidden == false
+
+  // 表示状態を切り替える
+  if (isHidden) {
+    gsel Id.WID, -1
+  } else {
+    Resize thismod
+    InFront thismod
+  }
+
+  // 保存する
+  saveMemo thismod
 
   return
 
@@ -505,6 +533,9 @@
 
 #modcfunc getMemoPath
   return path
+
+#modcfunc getIsHidden
+  return isHidden
 
 // ---------------------------------------------------------------------
 

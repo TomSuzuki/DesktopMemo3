@@ -19,10 +19,13 @@
 // CreateTasktrayMenu ...メニューを配置します。
 #deffunc CreateTasktrayMenu
 
-  dim hMenu, 2
+  dim hMenu, 3
 
-  CreatePopupMenu
+  CreatePopupMenu // 選択したメモを整列
   hMenu.1 = stat
+
+  CreatePopupMenu // 選択したメモを非表示
+  hMenu.2 = stat
 
   CreatePopupMenu
   hMenu.0 = stat
@@ -30,48 +33,78 @@
   AppendMenu hMenu.0, $800, 0, ""
   AppendMenu hMenu.0, 0, MenuID_MemoInFron, MENU_MESSAGE_MemoInFron
   AppendMenu hMenu.0, 0, MenuID_Alignment, MENU_MESSAGE_Alignment
-  AppendMenu hMenu.0, $10, hMenu.1, MENU_MESSAGE_SelectAlignment
   AppendMenu hMenu.0, 0, MenuID_MemoHidden, MENU_MESSAGE_Hidden
   AppendMenu hMenu.0, 0, MenuID_BtnDisabled, MENU_MESSAGE_BtnDisabled
+  AppendMenu hMenu.0, $800, 0, ""
+  AppendMenu hMenu.0, $10, hMenu.1, MENU_MESSAGE_SelectAlignment
+  AppendMenu hMenu.0, $10, hMenu.2, MENU_MESSAGE_SelectHidden
   AppendMenu hMenu.0, $800, 0, ""
   AppendMenu hMenu.0, 0, MenuID_GitHub, MENU_MESSAGE_GitHub
   AppendMenu hMenu.0, 0, MenuID_Version, MENU_MESSAGE_Version
   AppendMenu hMenu.0, $800, 0, ""
   AppendMenu hMenu.0, 0, MenuId_Exit, MENU_MESSAGE_Exit
 
-  // 非表示ボタンの初期化
+  // メニュー状態を更新
+  UpdateMenuStatus
+
+  return
+
+// UpdateMenuStatus ...メニューのチェック状態等を更新します。
+#deffunc UpdateMenuStatus
+
+  // 非表示機能
   isMemoHidden = GetGlobalStatus(STATUS_HIDDN)
   CheckMenuItem  hMenu.0, MenuID_MemoHidden, isMemoHidden * $8
   EnableMenuItem hMenu.0, MenuID_NewMemo,    isMemoHidden * $1
   EnableMenuItem hMenu.0, MenuID_MemoInFron, isMemoHidden * $1
   EnableMenuItem hMenu.0, MenuID_Alignment,  isMemoHidden * $1
   EnableMenuItem hMenu.0, hMenu.1,           isMemoHidden * $1
+  EnableMenuItem hMenu.0, hMenu.2,           isMemoHidden * $1
 
-  // タイトルバー機能ボタンの初期化
+  // タイトルバー機能
   isBtnDisabled = GetGlobalStatus(STATUS_BTN_DISABLED)
   CheckMenuItem hMenu.0, MenuID_BtnDisabled, isBtnDisabled * $8
+
+  // メモ単独非表示
+  foreach memo
+    wid = getWid(memo.cnt)
+    selectMemoId = MenuID_SelectMemoBase + 2 * wid
+    hiddenMemoId = MenuID_SelectMemoBase + 2 * wid + 1
+    flg = getIsHidden(memo.cnt)
+    EnableMenuItem hMenu.1, selectMemoId, flg * $1
+    CheckMenuItem  hMenu.2, hiddenMemoId, flg * $8
+  loop
 
   return
 
 // AppendMemoMenu ...メモをメニューに登録します。
-#deffunc AppendMemoMenu int _p1, str _p2
+#deffunc AppendMemoMenu int _p1, str _p2, int _p3
   s = _p2 : if s == "" : s = MENU_MEMO_NO_TITLE
-  menuId = MenuID_SelectMemoBase + _p1
-  AppendMenu hMenu.1, 0, menuId, s
+  menuId1 = MenuID_SelectMemoBase + 2 * _p1
+  menuId2 = MenuID_SelectMemoBase + 2 * _p1 + 1
+  AppendMenu hMenu.1, 0, menuId1, s
+  AppendMenu hMenu.2, 0, menuId2, s
+  EnableMenuItem  hMenu.1, menuId1, _p3 * $1
+  CheckMenuItem   hMenu.2, menuId2, _p3 * $8
   return
 
 // RemoveMemoMenu ...メモをメニューから削除します。
 #deffunc DeleteMemoMenu int _p1
-  menuId = MenuID_SelectMemoBase + _p1
-  DeleteMenu hMenu.1, menuId, 0
+  menuId1 = MenuID_SelectMemoBase + 2 * _p1
+  menuId2 = MenuID_SelectMemoBase + 2 * _p1 + 1
+  DeleteMenu hMenu.1, menuId1, 0
+  DeleteMenu hMenu.2, menuId2, 0
   return
 
 // ChangeMemoMenu ...メモメニューの内容を更新します。
 #deffunc ChangeMemoMenu int _p1, str _p2
   s = _p2 : if s == "" : s = MENU_MEMO_NO_TITLE
-  menuId = MenuID_SelectMemoBase + _p1
-  ModifyMenu hMenu.1, menuId, 0x00000000, menuId, s
+  menuId1 = MenuID_SelectMemoBase + 2 * _p1
+  menuId2 = MenuID_SelectMemoBase + 2 * _p1 + 1
+  ModifyMenu hMenu.1, menuId1, 0x00000000, menuId1, s
+  ModifyMenu hMenu.2, menuId2, 0x00000000, menuId2, s
   DrawMenuBar hMenu.1
+  DrawMenuBar hMenu.2
   return
 
 // メニュー処理イベント
@@ -106,15 +139,11 @@
       // すべてのメモを非表示・表示
       case MenuID_MemoHidden
 
-        // ステータスフラグを更新・チェックを更新
+        // ステータスフラグを更新
         isMemoHidden = ToggleGlobalStatus(STATUS_HIDDN) // フラグを反転
-        CheckMenuItem hMenu.0, MenuID_MemoHidden, isMemoHidden * $8
 
-        // 無効化
-        EnableMenuItem hMenu.0, MenuID_NewMemo,    isMemoHidden * $1
-        EnableMenuItem hMenu.0, MenuID_MemoInFron, isMemoHidden * $1
-        EnableMenuItem hMenu.0, MenuID_Alignment,  isMemoHidden * $1
-        EnableMenuItem hMenu.0, hMenu.1,           isMemoHidden * $1
+        // メニュー状態を更新
+        UpdateMenuStatus
 
         // メモの表示切替
         foreach memo
@@ -125,9 +154,11 @@
       // タイトルバーのボタンを非表示・表示
       case MenuID_BtnDisabled
         
-        // ステータスフラグを更新・チェックを更新
+        // ステータスフラグを更新
         isBtnDisabled = ToggleGlobalStatus(STATUS_BTN_DISABLED)
-        CheckMenuItem hMenu.0, MenuID_BtnDisabled, isBtnDisabled * $8
+
+        // メニュー状態を更新
+        UpdateMenuStatus
 
         // メモの表示を更新
         foreach memo
@@ -164,12 +195,20 @@
     // メニュー以外（メモ）の処理
     foreach memo
       wid = getWid(memo.cnt)
-      selectMemoId = wid + MenuID_SelectMemoBase
+      selectMemoId = MenuID_SelectMemoBase + 2 * wid
+      hiddenMemoId = MenuID_SelectMemoBase + 2 * wid + 1
 
       // 整列
       if (mstat == selectMemoId) {
         Alignment memo.cnt, ButtonSize, ButtonSize
         InFront memo.cnt
+        break
+      }
+
+      // 単独非表示
+      if (mstat == hiddenMemoId) {
+        SelectHidden memo.cnt
+        UpdateMenuStatus
         break
       }
 
