@@ -109,7 +109,7 @@
   oncmd 1
 
   // メニューに登録
-  AppendMemoMenu Id.WID, strmid(text, 0, 10)
+  AppendMemoMenu Id.WID, getMenuText(thismod)
 
   // 初期値設定
   beRedraw = true
@@ -386,7 +386,7 @@
     saveMemo thismod
 
     // メニュー更新
-    ChangeMemoMenu Id.WID, strmid(text, 0, 10)
+    ChangeMemoMenu Id.WID, getMenuText(thismod)
 
     // 色処理
     gsel Id.WID
@@ -488,6 +488,16 @@
   }
 
   return
+
+// getMenuText ...メニュー用に文字を切り出します。
+#modcfunc getMenuText
+  split text, "\n", text1
+  sdim buf1, strlen(text1)
+  sdim buf2, 20
+  cnvstow buf1, text1
+  memcpy buf2, buf1, 30 * 2, , 0 // 最大30文字
+  res = cnvwtos(buf2)
+  return res
 
 // ゲッター
 #modcfunc getWid
