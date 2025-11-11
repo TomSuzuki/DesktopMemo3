@@ -16,16 +16,24 @@
 #enum MenuID_Version
 #enum MenuID_SelectMemoBase
 
+#enum MemoMenuID_SelectAlignment = 0
+#enum MemoMenuID_SelectHidden
+#enum MemoMenuID_SelectCopy
+#enum MemoMenuID_SelectMax
+
 // CreateTasktrayMenu ...メニューを配置します。
 #deffunc CreateTasktrayMenu
 
-  dim hMenu, 3
+  dim hMenu, 4
 
   CreatePopupMenu // 選択したメモを整列
   hMenu.1 = stat
 
   CreatePopupMenu // 選択したメモを非表示
   hMenu.2 = stat
+
+  CreatePopupMenu // 選択したメモをコピー
+  hMenu.3 = stat
 
   CreatePopupMenu
   hMenu.0 = stat
@@ -38,6 +46,7 @@
   AppendMenu hMenu.0, $800, 0, ""
   AppendMenu hMenu.0, $10, hMenu.1, MENU_MESSAGE_SelectAlignment
   AppendMenu hMenu.0, $10, hMenu.2, MENU_MESSAGE_SelectHidden
+  AppendMenu hMenu.0, $10, hMenu.3, MENU_MESSAGE_SelectCopy
   AppendMenu hMenu.0, $800, 0, ""
   AppendMenu hMenu.0, 0, MenuID_GitHub, MENU_MESSAGE_GitHub
   AppendMenu hMenu.0, 0, MenuID_Version, MENU_MESSAGE_Version
@@ -68,8 +77,8 @@
   // メモ単独非表示
   foreach memo
     wid = getWid(memo.cnt)
-    selectMemoId = MenuID_SelectMemoBase + 2 * wid
-    hiddenMemoId = MenuID_SelectMemoBase + 2 * wid + 1
+    selectMemoId = MenuID_SelectMemoBase + MemoMenuID_SelectMax * wid + MemoMenuID_SelectAlignment
+    hiddenMemoId = MenuID_SelectMemoBase + MemoMenuID_SelectMax * wid + MemoMenuID_SelectHidden
     flg = getIsHidden(memo.cnt)
     EnableMenuItem hMenu.1, selectMemoId, flg * $1
     CheckMenuItem  hMenu.2, hiddenMemoId, flg * $8
@@ -79,32 +88,62 @@
 
 // AppendMemoMenu ...メモをメニューに登録します。
 #deffunc AppendMemoMenu int _p1, str _p2, int _p3
+
+  // タイトル文字を設定
   s = _p2 : if s == "" : s = MENU_MEMO_NO_TITLE
-  menuId1 = MenuID_SelectMemoBase + 2 * _p1
-  menuId2 = MenuID_SelectMemoBase + 2 * _p1 + 1
+
+  // IDを生成
+  menuId1 = MenuID_SelectMemoBase + MemoMenuID_SelectMax * _p1 + MemoMenuID_SelectAlignment
+  menuId2 = MenuID_SelectMemoBase + MemoMenuID_SelectMax * _p1 + MemoMenuID_SelectHidden
+  menuId3 = MenuID_SelectMemoBase + MemoMenuID_SelectMax * _p1 + MemoMenuID_SelectCopy
+
+  // メニューを追加
   AppendMenu hMenu.1, 0, menuId1, s
   AppendMenu hMenu.2, 0, menuId2, s
+  AppendMenu hMenu.3, 0, menuId3, s
+
+  // 初期状態を設定
   EnableMenuItem  hMenu.1, menuId1, _p3 * $1
   CheckMenuItem   hMenu.2, menuId2, _p3 * $8
+
   return
 
 // RemoveMemoMenu ...メモをメニューから削除します。
 #deffunc DeleteMemoMenu int _p1
-  menuId1 = MenuID_SelectMemoBase + 2 * _p1
-  menuId2 = MenuID_SelectMemoBase + 2 * _p1 + 1
+
+  // IDを生成
+  menuId1 = MenuID_SelectMemoBase + MemoMenuID_SelectMax * _p1 + MemoMenuID_SelectAlignment
+  menuId2 = MenuID_SelectMemoBase + MemoMenuID_SelectMax * _p1 + MemoMenuID_SelectHidden
+  menuId3 = MenuID_SelectMemoBase + MemoMenuID_SelectMax * _p1 + MemoMenuID_SelectCopy
+
+  // メニューを削除
   DeleteMenu hMenu.1, menuId1, 0
   DeleteMenu hMenu.2, menuId2, 0
+  DeleteMenu hMenu.3, menuId3, 0
+
   return
 
 // ChangeMemoMenu ...メモメニューの内容を更新します。
 #deffunc ChangeMemoMenu int _p1, str _p2
+
+  // タイトル文字を設定
   s = _p2 : if s == "" : s = MENU_MEMO_NO_TITLE
-  menuId1 = MenuID_SelectMemoBase + 2 * _p1
-  menuId2 = MenuID_SelectMemoBase + 2 * _p1 + 1
+
+  // IDを生成
+  menuId1 = MenuID_SelectMemoBase + MemoMenuID_SelectMax * _p1 + MemoMenuID_SelectAlignment
+  menuId2 = MenuID_SelectMemoBase + MemoMenuID_SelectMax * _p1 + MemoMenuID_SelectHidden
+  menuId3 = MenuID_SelectMemoBase + MemoMenuID_SelectMax * _p1 + MemoMenuID_SelectCopy
+
+  // メニュー内容を更新
   ModifyMenu hMenu.1, menuId1, 0x00000000, menuId1, s
   ModifyMenu hMenu.2, menuId2, 0x00000000, menuId2, s
+  ModifyMenu hMenu.3, menuId3, 0x00000000, menuId3, s
+
+  // メニューを更新
   DrawMenuBar hMenu.1
   DrawMenuBar hMenu.2
+  DrawMenuBar hMenu.3
+
   return
 
 // メニュー処理イベント
@@ -194,9 +233,12 @@
 
     // メニュー以外（メモ）の処理
     foreach memo
+
+      // IDを取得
       wid = getWid(memo.cnt)
-      selectMemoId = MenuID_SelectMemoBase + 2 * wid
-      hiddenMemoId = MenuID_SelectMemoBase + 2 * wid + 1
+      selectMemoId = MenuID_SelectMemoBase + MemoMenuID_SelectMax * wid + MemoMenuID_SelectAlignment
+      hiddenMemoId = MenuID_SelectMemoBase + MemoMenuID_SelectMax * wid + MemoMenuID_SelectHidden
+      copyMemoId = MenuID_SelectMemoBase + MemoMenuID_SelectMax * wid + MemoMenuID_SelectCopy
 
       // 整列
       if (mstat == selectMemoId) {
@@ -209,6 +251,13 @@
       if (mstat == hiddenMemoId) {
         SelectHidden memo.cnt
         UpdateMenuStatus
+        break
+      }
+
+      // コピー
+      if (mstat == copyMemoId) {
+        text = getText(memo.cnt)
+        clipset@ text
         break
       }
 
