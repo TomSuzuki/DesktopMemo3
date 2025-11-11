@@ -4,9 +4,6 @@
  <p align="center">デスクトップに貼るメモ。</p>
 </p>
 <p align="center">
-  <a href="https://github.com/anuraghazra/github-readme-stats/issues">
-    <img alt="Issues" src="https://img.shields.io/github/issues/TomSuzuki/DesktopMemo3?color=0088ff" />
-  </a>
   <a href="">
     <img alt="Lang" src="http://img.shields.io/badge/Language-HSP3-green" />
   </a>
