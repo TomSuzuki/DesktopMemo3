@@ -14,6 +14,7 @@
 #define global MENU_MESSAGE_Alignment "メモを整列(&L)"
 #define global MENU_MESSAGE_SelectAlignment "選択したメモを整列"
 #define global MENU_MESSAGE_SelectHidden "選択したメモを非表示"
+#define global MENU_MESSAGE_SelectCopy "選択したメモをクリップボードへコピー"
 #define global MENU_MESSAGE_Hidden "すべてのメモを非表示(&H)"
 #define global MENU_MESSAGE_BtnDisabled "タイトルバーのボタンを非表示(&T)"
 #define global MENU_MESSAGE_Exit "終了"

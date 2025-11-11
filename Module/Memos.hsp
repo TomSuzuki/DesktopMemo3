@@ -537,6 +537,9 @@
 #modcfunc getIsHidden
   return isHidden
 
+#modcfunc getText
+  return text
+
 // ---------------------------------------------------------------------
 
 // ウィンドウ最小幅処理
