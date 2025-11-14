@@ -41,6 +41,9 @@
     createNewMemo ""
   }
 
+  // メニューを再作成する
+  ReloadMemoMenu
+
   return
 #global
 
