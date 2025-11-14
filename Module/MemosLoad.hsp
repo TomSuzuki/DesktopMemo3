@@ -19,17 +19,17 @@
   lineNum = noteinfo(0)
   repeat lineNum
 
-  // ファイルの読み込み
+    // ファイルの読み込み
     notesel list
     noteget fname, cnt
     if (fname == "") {
       continue
     }
 
-  // メモのロード
+    // メモのロード
     flg = LoadMemoFile(getpath(filemask, 32) + fname)
 
-  // 成功したファイルが存在する
+    // 成功したファイルが存在する
     if (flg) {
       isOpend = true
     }

@@ -81,7 +81,7 @@
     hiddenMemoId = MenuID_SelectMemoBase + MemoMenuID_SelectMax * wid + MemoMenuID_SelectHidden
     flg = getIsHidden(memo.cnt)
     EnableMenuItem hMenu.1, selectMemoId, flg * $1
-    CheckMenuItem  hMenu.2, hiddenMemoId, flg * $8
+    CheckMenuItem  hMenu.2, hiddenMemoId, (flg == 0) * $8
   loop
 
   return
@@ -104,7 +104,7 @@
 
   // 初期状態を設定
   EnableMenuItem  hMenu.1, menuId1, _p3 * $1
-  CheckMenuItem   hMenu.2, menuId2, _p3 * $8
+  CheckMenuItem   hMenu.2, menuId2, (_p3 == 0) * $8
 
   return
 
@@ -135,9 +135,12 @@
   menuId3 = MenuID_SelectMemoBase + MemoMenuID_SelectMax * _p1 + MemoMenuID_SelectCopy
 
   // メニュー内容を更新
-  ModifyMenu hMenu.1, menuId1, 0x00000000, menuId1, s
-  ModifyMenu hMenu.2, menuId2, 0x00000000, menuId2, s
-  ModifyMenu hMenu.3, menuId3, 0x00000000, menuId3, s
+  ModifyMenu hMenu.1, menuId1, 0, menuId1, s
+  ModifyMenu hMenu.2, menuId2, 0, menuId2, s
+  ModifyMenu hMenu.3, menuId3, 0, menuId3, s
+
+  // メニュー状態を更新
+  UpdateMenuStatus
 
   // メニューを更新
   DrawMenuBar hMenu.1
