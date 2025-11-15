@@ -459,10 +459,10 @@
   Id.TEXTAREA_ID = -1
 
   // ボタン削除
-  clrobj Id.BUTTON_ID_ADD, Id.BUTTON_ID_ADD
-  clrobj Id.BUTTON_ID_COLOR, Id.BUTTON_ID_COLOR
-  clrobj Id.BUTTON_ID_PIN, Id.BUTTON_ID_PIN
-  clrobj Id.BUTTON_ID_DELETE, Id.BUTTON_ID_DELETE
+  if (Id.BUTTON_ID_ADD != -1)    : clrobj Id.BUTTON_ID_ADD,    Id.BUTTON_ID_ADD
+  if (Id.BUTTON_ID_COLOR != -1)  : clrobj Id.BUTTON_ID_COLOR,  Id.BUTTON_ID_COLOR
+  if (Id.BUTTON_ID_PIN != -1)    : clrobj Id.BUTTON_ID_PIN,    Id.BUTTON_ID_PIN
+  if (Id.BUTTON_ID_DELETE != -1) : clrobj Id.BUTTON_ID_DELETE, Id.BUTTON_ID_DELETE
 
   // ボタンID初期化
   Id.BUTTON_ID_ADD = -1
