@@ -252,6 +252,9 @@
         x = ButtonSize
         y = ButtonSize
         foreach memo
+          if (getIsHidden(memo.cnt) == true) {
+            continue
+          }
           Alignment memo.cnt, x, y
           x += ButtonSize
           y += ButtonSize
