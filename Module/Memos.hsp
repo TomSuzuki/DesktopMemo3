@@ -366,7 +366,7 @@
 
   // 設定を確認し削除ダイアログを表示
   if DeleteDialog {
-    dialog MESSAGE_DELETE_DIALOG, 2, MESSAGE_DELETE_DIALOG_TITLE
+    dialog Localizer("dialog_delete_confirm"), 2, Localizer("dialog_delete_confirm_title")
     if stat = 7 {
       return
     }

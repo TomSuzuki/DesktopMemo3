@@ -11,13 +11,13 @@
   msg = ERROR_MESSAGE_CODE
   switch err
   case 13
-    msg += ERROR_MESSAGE_13
+    msg += Localizer("error_13")
     swbreak
   case 38
-    msg += ERROR_MESSAGE_38
+    msg += Localizer("error_38")
     swbreak
   default
-    msg += ERROR_MESSAGE_00
+    msg += Localizer("error_00")
   swend
 
   // ダイアログ
