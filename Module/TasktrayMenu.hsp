@@ -15,6 +15,7 @@
 #enum MenuID_BtnDisabled
 #enum MenuID_Version
 #enum MenuID_ReloadMemoMenu
+#enum MenuID_SkipCopy
 #enum MenuID_SelectMemoBase
 
 #enum MemoMenuID_SelectAlignment = 0
@@ -45,6 +46,7 @@
   AppendMenu hMenu.0, 0, MenuID_MemoHidden, Localizer("menu_all_memo_hidden")
   AppendMenu hMenu.0, 0, MenuID_BtnDisabled, Localizer("menu_memo_btn_disabled")
   AppendMenu hMenu.0, 0, MenuID_ReloadMemoMenu, Localizer("menu_reload_memo_menu")
+  AppendMenu hMenu.0, 0, MenuID_SkipCopy, Localizer("menu_skip_copy")
   AppendMenu hMenu.0, $800, 0, ""
   AppendMenu hMenu.0, $10, hMenu.1, Localizer("menu_select_alignment")
   AppendMenu hMenu.0, $10, hMenu.2, Localizer("menu_select_hidden")
@@ -75,6 +77,10 @@
   // タイトルバー機能
   isBtnDisabled = GetGlobalStatus(STATUS_BTN_DISABLED)
   CheckMenuItem hMenu.0, MenuID_BtnDisabled, isBtnDisabled * $8
+
+  // スキップコピー
+  isSkipCopy = GetGlobalStatus(STATUS_SKIP_COPY)
+  CheckMenuItem hMenu.0, MenuID_SkipCopy, isSkipCopy * $8
 
   // メモ単独非表示
   foreach memo
@@ -270,6 +276,17 @@
       case MenuID_ReloadMemoMenu
         ReloadMemoMenu
         swbreak
+      
+      // スキップコピー
+      case MenuID_SkipCopy
+
+        // フラグを更新
+        _ = ToggleGlobalStatus(STATUS_SKIP_COPY)
+
+        // メニュー状態を更新
+        UpdateMenuStatus
+
+        swbreak
 
     swend
 
@@ -298,7 +315,12 @@
 
       // コピー
       if (mstat == copyMemoId) {
-        text = getText(memo.cnt)
+        isSkipCopy = GetGlobalStatus(STATUS_SKIP_COPY)
+        if (isSkipCopy == false) {
+          text = getText(memo.cnt)
+        } else {
+          text = getSkipText(memo.cnt)
+        }
         clipset@ text
         break
       }

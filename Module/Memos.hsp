@@ -531,6 +531,14 @@
   res = cnvwtos(buf2)
   return res
 
+// 1行目を飛ばしたテキスト
+#modcfunc getSkipText
+  skipText = text
+  notesel skipText
+  notedel 0
+  noteunsel
+  return skipText
+
 // ゲッター
 #modcfunc getWid
   return Id.WID
