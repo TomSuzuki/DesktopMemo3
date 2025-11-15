@@ -14,6 +14,7 @@
 #enum MenuID_MemoHidden
 #enum MenuID_BtnDisabled
 #enum MenuID_Version
+#enum MenuID_ReloadMemoMenu
 #enum MenuID_SelectMemoBase
 
 #enum MemoMenuID_SelectAlignment = 0
@@ -43,6 +44,7 @@
   AppendMenu hMenu.0, 0, MenuID_Alignment, MENU_MESSAGE_Alignment
   AppendMenu hMenu.0, 0, MenuID_MemoHidden, MENU_MESSAGE_Hidden
   AppendMenu hMenu.0, 0, MenuID_BtnDisabled, MENU_MESSAGE_BtnDisabled
+  AppendMenu hMenu.0, 0, MenuID_ReloadMemoMenu, MENU_MESSAGE_ReloadMemoMenu
   AppendMenu hMenu.0, $800, 0, ""
   AppendMenu hMenu.0, $10, hMenu.1, MENU_MESSAGE_SelectAlignment
   AppendMenu hMenu.0, $10, hMenu.2, MENU_MESSAGE_SelectHidden
@@ -82,6 +84,35 @@
     flg = getIsHidden(memo.cnt)
     EnableMenuItem hMenu.1, selectMemoId, flg * $1
     CheckMenuItem  hMenu.2, hiddenMemoId, (flg == 0) * $8
+  loop
+
+  return
+
+// ReloadMemoMenu ...メモメニューを並び替えて再作成します。
+#deffunc ReloadMemoMenu
+
+  // メニューを削除する
+  foreach memo
+    wid = getWid(memo.cnt)
+    DeleteMemoMenu wid
+  loop
+
+  // メニュー情報を取得する
+  sdim memoTexts, 64, length(memo)
+  foreach memo
+    memoTexts.cnt = getText(memo.cnt)
+  loop
+
+  // 文字配列を並び替える
+  sortstr memoTexts, 0
+
+  // メニューを生成する
+  foreach memo
+    sortget n, cnt
+    wid = getWid(memo.n)
+    flg = getIsHidden(memo.n)
+    txt = getMenuText(memo.n)
+    AppendMemoMenu wid,txt, flg
   loop
 
   return
@@ -230,6 +261,11 @@
       // バージョンダイアログを表示
       case MenuID_Version
         dialog DIALOG_MESSAGE_VERSION
+        swbreak
+      
+      // 再読込み
+      case MenuID_ReloadMemoMenu
+        ReloadMemoMenu
         swbreak
 
     swend
