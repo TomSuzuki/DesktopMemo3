@@ -9,6 +9,7 @@
   "menu_select_hidden": "選択したメモを表示",
   "menu_select_copy": "選択したメモをクリップボードへコピー",
   "menu_memo_btn_disabled": "タイトルバーのボタンを非表示(&T)",
+  "menu_skip_copy": "1行目をスキップしてコピー",
   "menu_exit": "終了",
   "menu_version": "バージョン表示",
   "menu_memo_no_title": "《無題》",
