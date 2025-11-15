@@ -38,22 +38,22 @@
 
   CreatePopupMenu
   hMenu.0 = stat
-  AppendMenu hMenu.0, 0, MenuID_NewMemo, MENU_MESSAGE_NewMemo
+  AppendMenu hMenu.0, 0, MenuID_NewMemo, Localizer("menu_new_memo")
   AppendMenu hMenu.0, $800, 0, ""
-  AppendMenu hMenu.0, 0, MenuID_MemoInFron, MENU_MESSAGE_MemoInFron
-  AppendMenu hMenu.0, 0, MenuID_Alignment, MENU_MESSAGE_Alignment
-  AppendMenu hMenu.0, 0, MenuID_MemoHidden, MENU_MESSAGE_Hidden
-  AppendMenu hMenu.0, 0, MenuID_BtnDisabled, MENU_MESSAGE_BtnDisabled
-  AppendMenu hMenu.0, 0, MenuID_ReloadMemoMenu, MENU_MESSAGE_ReloadMemoMenu
+  AppendMenu hMenu.0, 0, MenuID_MemoInFron, Localizer("menu_all_memo_in_front")
+  AppendMenu hMenu.0, 0, MenuID_Alignment, Localizer("menu_all_memo_alignment")
+  AppendMenu hMenu.0, 0, MenuID_MemoHidden, Localizer("menu_all_memo_hidden")
+  AppendMenu hMenu.0, 0, MenuID_BtnDisabled, Localizer("menu_memo_btn_disabled")
+  AppendMenu hMenu.0, 0, MenuID_ReloadMemoMenu, Localizer("menu_reload_memo_menu")
   AppendMenu hMenu.0, $800, 0, ""
-  AppendMenu hMenu.0, $10, hMenu.1, MENU_MESSAGE_SelectAlignment
-  AppendMenu hMenu.0, $10, hMenu.2, MENU_MESSAGE_SelectHidden
-  AppendMenu hMenu.0, $10, hMenu.3, MENU_MESSAGE_SelectCopy
+  AppendMenu hMenu.0, $10, hMenu.1, Localizer("menu_select_alignment")
+  AppendMenu hMenu.0, $10, hMenu.2, Localizer("menu_select_hidden")
+  AppendMenu hMenu.0, $10, hMenu.3, Localizer("menu_select_copy")
   AppendMenu hMenu.0, $800, 0, ""
-  AppendMenu hMenu.0, 0, MenuID_GitHub, MENU_MESSAGE_GitHub
-  AppendMenu hMenu.0, 0, MenuID_Version, MENU_MESSAGE_Version
+  AppendMenu hMenu.0, 0, MenuID_GitHub, Localizer("menu_github")
+  AppendMenu hMenu.0, 0, MenuID_Version, Localizer("menu_version")
   AppendMenu hMenu.0, $800, 0, ""
-  AppendMenu hMenu.0, 0, MenuId_Exit, MENU_MESSAGE_Exit
+  AppendMenu hMenu.0, 0, MenuId_Exit, Localizer("menu_exit")
 
   // メニュー状態を更新
   UpdateMenuStatus
@@ -121,7 +121,7 @@
 #deffunc AppendMemoMenu int _p1, str _p2, int _p3
 
   // タイトル文字を設定
-  s = _p2 : if s == "" : s = MENU_MEMO_NO_TITLE
+  s = _p2 : if s == "" : s = Localizer("menu_memo_no_title")
 
   // IDを生成
   menuId1 = MenuID_SelectMemoBase + MemoMenuID_SelectMax * _p1 + MemoMenuID_SelectAlignment

@@ -32,7 +32,7 @@
 
   // リンクファイルが無効なら返す
   if (isLinked) {
-    dialog MESSAGE_IS_ALREADY_LOAD
+    dialog Localizer("dialog_is_already_load")
     return
   }
 

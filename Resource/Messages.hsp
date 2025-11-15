@@ -2,31 +2,41 @@
 // メッセージの定義
 // ------------------------------------------------------------
 
-// リソース
-#define global MESSAGE_IS_ALREADY_LOAD "すでに読み込まれているメモです"
-#define global MESSAGE_DELETE_DIALOG "メモを削除しますか？"
-#define global MESSAGE_DELETE_DIALOG_TITLE "メモの削除"
-
-// メニュー
-#define global MENU_MESSAGE_GitHub  "GitHub"
-#define global MENU_MESSAGE_NewMemo "新しいメモを作成(&N)"
-#define global MENU_MESSAGE_MemoInFron "すべてのメモを前面に(&F)"
-#define global MENU_MESSAGE_Alignment "メモを整列(&L)"
-#define global MENU_MESSAGE_ReloadMemoMenu "メモメニューを再読込み(&R)"
-#define global MENU_MESSAGE_SelectAlignment "選択したメモを整列"
-#define global MENU_MESSAGE_SelectHidden "選択したメモを表示"
-#define global MENU_MESSAGE_SelectCopy "選択したメモをクリップボードへコピー"
-#define global MENU_MESSAGE_Hidden "すべてのメモを非表示(&H)"
-#define global MENU_MESSAGE_BtnDisabled "タイトルバーのボタンを非表示(&T)"
-#define global MENU_MESSAGE_Exit "終了"
-#define global MENU_MESSAGE_Version "バージョン表示"
-#define global MENU_MEMO_NO_TITLE "《無題》"
-
-// バージョン表示
+// その他のリソースを定義
 #define global DIALOG_MESSAGE_VERSION strf("%%s - %%s", appTitle, appVer)
-
-// エラー
 #define global ERROR_MESSAGE_CODE strf("CODE: %%d, LINE: %%d\n", wparam, lparam)
-#define global ERROR_MESSAGE_38 "外部DLLの呼び出しに失敗しました。"
-#define global ERROR_MESSAGE_13 "画像ファイルの読み込みに失敗しました。"
-#define global ERROR_MESSAGE_00 "不明なエラーが発生しました。"
+
+// 管理モジュール
+#module
+
+#define FILE_MESSAGE "./message.json"
+
+// MessageLoad ...メッセージファイルをロードします。
+#deffunc MessageLoad
+
+  // ファイルを読込み
+  notesel message_json
+  noteload FILE_MESSAGE
+  noteunsel
+
+  return
+
+// メッセージを取得します。
+#defcfunc Localizer str _key
+
+  // JSONを開く
+  jsonopen@ jsonPtr, message_json
+
+  // JSONから読込み
+  jsongets@ res, _key, jsonPtr
+  if stat == 1 : res = _key
+
+  // JSONを閉じる
+  jsonclose@
+
+  return res
+
+#global
+
+// ファイルを読込み
+MessageLoad
