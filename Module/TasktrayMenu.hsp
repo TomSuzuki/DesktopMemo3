@@ -16,6 +16,7 @@
 #enum MenuID_Version
 #enum MenuID_ReloadMemoMenu
 #enum MenuID_SkipCopy
+#enum MenuID_ShowScrollBar
 #enum MenuID_SelectMemoBase
 
 #enum MemoMenuID_SelectAlignment = 0
@@ -46,6 +47,7 @@
   AppendMenu hMenu.0, 0, MenuID_MemoHidden, Localizer("menu_all_memo_hidden")
   AppendMenu hMenu.0, 0, MenuID_BtnDisabled, Localizer("menu_memo_btn_disabled")
   AppendMenu hMenu.0, 0, MenuID_ReloadMemoMenu, Localizer("menu_reload_memo_menu")
+  AppendMenu hMenu.0, 0, MenuID_ShowScrollBar, Localizer("menu_show_scroll_bar")
   AppendMenu hMenu.0, 0, MenuID_SkipCopy, Localizer("menu_skip_copy")
   AppendMenu hMenu.0, $800, 0, ""
   AppendMenu hMenu.0, $10, hMenu.1, Localizer("menu_select_alignment")
@@ -81,6 +83,10 @@
   // スキップコピー
   isSkipCopy = GetGlobalStatus(STATUS_SKIP_COPY)
   CheckMenuItem hMenu.0, MenuID_SkipCopy, isSkipCopy * $8
+
+  // スクロールバーを表示
+  isShowScrollbar = GetGlobalStatus(STATUS_SHOW_SCROLLBAR)
+  CheckMenuItem hMenu.0, MenuID_ShowScrollBar, isShowScrollbar * $8
 
   // メモ単独非表示
   foreach memo
@@ -285,6 +291,22 @@
 
         // メニュー状態を更新
         UpdateMenuStatus
+
+        swbreak
+      
+      // スクロールバーを表示
+      case MenuID_ShowScrollBar
+
+        // フラグを更新
+        _ = ToggleGlobalStatus(STATUS_SHOW_SCROLLBAR)
+
+        // メニュー状態を更新
+        UpdateMenuStatus
+
+        // メモの表示を更新
+        foreach memo
+          Resize memo.cnt
+        loop
 
         swbreak
 
