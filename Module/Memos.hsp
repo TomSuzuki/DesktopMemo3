@@ -33,7 +33,7 @@
 #define TOP     0x00000004
 #define BOTTOM  0x00000008
 #define BORDERWIDTH 4
-#define CaptionHeight ButtonSize + BORDERWIDTH
+#define CaptionHeight (ButtonSize + BORDERWIDTH)
 
 // IDコントロール用定数
 #enum WID = 0
@@ -304,16 +304,20 @@
   }
 
   // テキストエリアの配置
-  padding = 5
+  padding = 5 * (false == GetGlobalStatus(STATUS_SHOW_SCROLLBAR))
+  x = padding
+  y = CaptionHeight + padding
+  w = ginfo_winx - padding * 2
+  h = (ginfo_winy - CaptionHeight) - (padding * 2)
   if (Id.TEXTAREA_ID == -1) {
     oncmd gosub *OnCtrlEdit, 0x133
     font fontName, fontSize, fontStyle
     objmode 2, 0
-    pos padding, CaptionHeight + padding
-    mesbox text, ginfo_winx - padding * 2, ginfo_winy - padding * 2 - CaptionHeight, 1, 0
+    pos x, y
+    mesbox text, w, h, 1, 0
     Id.TEXTAREA_ID = stat
     hMesbox = objinfo(stat, 2)
-    ShowScrollBar hMesbox, 3, 0
+    ShowScrollBar hMesbox, 1, 1 * GetGlobalStatus(STATUS_SHOW_SCROLLBAR)
     SetWindowLong hMesbox, -20, 0x0
     SetWindowPos hMesbox, 0x27
     CreateSolidBrush hexBGR(getColor(Id.COLOR_ID, ColorTypeBox))
@@ -322,8 +326,11 @@
     sendmsg hMesbox, 0x00B9
     sendmsg hMesbox, 0x00CF, f
   } else {
-    size = ginfo_winx - padding * 2, ginfo_winy - padding * 2 - CaptionHeight, padding, CaptionHeight + padding
+    size = w, h, x, y
     resizeobj Id.TEXTAREA_ID, size, 0
+
+    hMesbox = objinfo(Id.TEXTAREA_ID, 2)
+    ShowScrollBar hMesbox, 1, 1 * GetGlobalStatus(STATUS_SHOW_SCROLLBAR)
   }
 
   // メモの更新

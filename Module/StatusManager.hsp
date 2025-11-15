@@ -6,9 +6,10 @@
 #define global PATH_STATUS "./status.json"
 
 // メモ状態フラグ
-#define global STATUS_HIDDN        0b0000000001 // 非表示
-#define global STATUS_BTN_DISABLED 0b0000000010 // ボタン非表示（無効）
-#define global STATUS_SKIP_COPY    0b0000000100 // 2行目以降コピー
+#define global STATUS_HIDDN          0b0000000001 // 非表示
+#define global STATUS_BTN_DISABLED   0b0000000010 // ボタン非表示（無効）
+#define global STATUS_SKIP_COPY      0b0000000100 // 2行目以降コピー
+#define global STATUS_SHOW_SCROLLBAR 0b0000001000 // スクロールバー表示
 
 #module
 
