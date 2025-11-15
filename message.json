@@ -1,0 +1,23 @@
+{
+  "menu_github": "GitHub",
+  "menu_new_memo": "新しいメモを作成(&N)",
+  "menu_all_memo_in_front": "すべてのメモを前面に(&F)",
+  "menu_all_memo_alignment": "メモを整列(&L)",
+  "menu_all_memo_hidden": "すべてのメモを非表示(&H)",
+  "menu_reload_memo_menu": "メモメニューを再読込み(&R)",
+  "menu_select_alignment": "選択したメモを整列",
+  "menu_select_hidden": "選択したメモを表示",
+  "menu_select_copy": "選択したメモをクリップボードへコピー",
+  "menu_memo_btn_disabled": "タイトルバーのボタンを非表示(&T)",
+  "menu_skip_copy": "1行目をスキップしてコピー",
+  "menu_show_scroll_bar": "スクロールバーを表示",
+  "menu_exit": "終了",
+  "menu_version": "バージョン表示",
+  "menu_memo_no_title": "《無題》",
+  "error_00": "不明なエラーが発生しました。",
+  "error_13": "画像ファイルの読み込みに失敗しました。",
+  "error_38": "外部DLLの呼び出しに失敗しました。",
+  "dialog_is_already_load": "すでに読み込まれているメモです。",
+  "dialog_delete_confirm": "メモを削除しますか？",
+  "dialog_delete_confirm_title": "メモの削除"
+}
