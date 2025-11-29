@@ -10,7 +10,7 @@
 #const global MinMemoHeight 240
 
 // メモ管理モジュール
-#module MOD_MEMO Id, jsonText, memoPath, path, text, menuText, x, y, w, h, isPin, hMesbox, hBrush, isPinButton, beRedraw, mousePos, isHidden
+#module MOD_MEMO Id, jsonText, memoPath, path, text, menuText, x, y, w, h, isPin, hMesbox, hBrush, isPinButton, beRedraw, mousePos, isHidden, hMenu
 
 #uselib "user32"
 #cfunc GetWindowLong "GetWindowLongA" int, int
@@ -110,7 +110,7 @@
   oncmd 1
 
   // メニューに登録
-  AppendMemoMenu Id.WID, getMenuText(thismod), getIsHidden(thismod)
+  hMenu = AppendMemoMenu(Id.WID, getMenuText(thismod), getIsHidden(thismod), -1)
   menuText = text
 
   // 初期値設定
@@ -132,7 +132,7 @@
 #modterm
 
   // メニューから削除
-  DeleteMemoMenu Id.WID
+  DeleteMemoMenu hMenu
 
   // ウィドウを非表示
   gsel Id.WID, -1
@@ -400,7 +400,7 @@
     // メニュー更新
     if (text != menuText) {
       menuText = text
-      ChangeMemoMenu Id.WID, getMenuText(thismod)
+      ChangeMemoMenu hMenu, getMenuText(thismod)
     }
 
     // 色処理
@@ -558,6 +558,9 @@
 
 #modcfunc getText
   return text
+
+#modcfunc getHMenu
+  return hMenu
 
 // ---------------------------------------------------------------------
 
