@@ -14,6 +14,7 @@
 #enum MenuID_MemoHidden
 #enum MenuID_BtnDisabled
 #enum MenuID_Version
+#enum MenuID_Options
 #enum MenuID_ReloadMemoMenu
 #enum MenuID_SkipCopy
 #enum MenuID_ShowScrollBar
@@ -24,40 +25,44 @@
 #enum MemoMenuID_SelectCopy
 #enum MemoMenuID_SelectMax
 
+#enum PopupMenu_Main = 0
+#enum PopupMenu_Memo
+#enum PopupMenu_Options
+#enum PopupMenu_MemosBase
+
 // CreateTasktrayMenu ...メニューを配置します。
 #deffunc CreateTasktrayMenu
 
-  dim hMenu, 4
+  dim hMenu, PopupMenu_MemosBase
+  hMenuNextId = PopupMenu_MemosBase
 
-  CreatePopupMenu // 選択したメモを整列
-  hMenu.1 = stat
+  CreatePopupMenu // メモ
+  hMenu.PopupMenu_Memo = stat
 
-  CreatePopupMenu // 選択したメモを非表示
-  hMenu.2 = stat
-
-  CreatePopupMenu // 選択したメモをコピー
-  hMenu.3 = stat
+  CreatePopupMenu // オプションメモ
+  hMenu.PopupMenu_Options = stat
+  AppendMenu hMenu.PopupMenu_Options, 0, MenuID_ReloadMemoMenu, Localizer("menu_reload_memo_menu")
+  AppendMenu hMenu.PopupMenu_Options, $800, 0, ""
+  AppendMenu hMenu.PopupMenu_Options, 0, MenuID_MemoInFron, Localizer("menu_all_memo_in_front")
+  AppendMenu hMenu.PopupMenu_Options, 0, MenuID_Alignment, Localizer("menu_all_memo_alignment")
+  AppendMenu hMenu.PopupMenu_Options, $800, 0, ""
+  AppendMenu hMenu.PopupMenu_Options, 0, MenuID_BtnDisabled, Localizer("menu_memo_btn_disabled")
+  AppendMenu hMenu.PopupMenu_Options, 0, MenuID_ShowScrollBar, Localizer("menu_show_scroll_bar")
+  AppendMenu hMenu.PopupMenu_Options, 0, MenuID_SkipCopy, Localizer("menu_skip_copy")
 
   CreatePopupMenu
-  hMenu.0 = stat
-  AppendMenu hMenu.0, 0, MenuID_NewMemo, Localizer("menu_new_memo")
-  AppendMenu hMenu.0, $800, 0, ""
-  AppendMenu hMenu.0, 0, MenuID_MemoInFron, Localizer("menu_all_memo_in_front")
-  AppendMenu hMenu.0, 0, MenuID_Alignment, Localizer("menu_all_memo_alignment")
-  AppendMenu hMenu.0, 0, MenuID_MemoHidden, Localizer("menu_all_memo_hidden")
-  AppendMenu hMenu.0, 0, MenuID_BtnDisabled, Localizer("menu_memo_btn_disabled")
-  AppendMenu hMenu.0, 0, MenuID_ReloadMemoMenu, Localizer("menu_reload_memo_menu")
-  AppendMenu hMenu.0, 0, MenuID_ShowScrollBar, Localizer("menu_show_scroll_bar")
-  AppendMenu hMenu.0, 0, MenuID_SkipCopy, Localizer("menu_skip_copy")
-  AppendMenu hMenu.0, $800, 0, ""
-  AppendMenu hMenu.0, $10, hMenu.1, Localizer("menu_select_alignment")
-  AppendMenu hMenu.0, $10, hMenu.2, Localizer("menu_select_hidden")
-  AppendMenu hMenu.0, $10, hMenu.3, Localizer("menu_select_copy")
-  AppendMenu hMenu.0, $800, 0, ""
-  AppendMenu hMenu.0, 0, MenuID_GitHub, Localizer("menu_github")
-  AppendMenu hMenu.0, 0, MenuID_Version, Localizer("menu_version")
-  AppendMenu hMenu.0, $800, 0, ""
-  AppendMenu hMenu.0, 0, MenuId_Exit, Localizer("menu_exit")
+  hMenu.PopupMenu_Main = stat
+  AppendMenu hMenu.PopupMenu_Main, 0, MenuID_MemoHidden, Localizer("menu_all_memo_hidden")
+  AppendMenu hMenu.PopupMenu_Main, $800, 0, ""
+  AppendMenu hMenu.PopupMenu_Main, 0, MenuID_NewMemo, Localizer("menu_new_memo")
+  AppendMenu hMenu.PopupMenu_Main, $10, hMenu.PopupMenu_Options, Localizer("menu_options")
+  AppendMenu hMenu.PopupMenu_Main, $800, 0, ""
+  AppendMenu hMenu.PopupMenu_Main, $10, hMenu.PopupMenu_Memo, Localizer("menu_memos")
+  AppendMenu hMenu.PopupMenu_Main, $800, 0, ""
+  AppendMenu hMenu.PopupMenu_Main, 0, MenuID_GitHub, Localizer("menu_github")
+  AppendMenu hMenu.PopupMenu_Main, 0, MenuID_Version, Localizer("menu_version")
+  AppendMenu hMenu.PopupMenu_Main, $800, 0, ""
+  AppendMenu hMenu.PopupMenu_Main, 0, MenuId_Exit, Localizer("menu_exit")
 
   // メニュー状態を更新
   UpdateMenuStatus
@@ -69,34 +74,42 @@
 
   // 非表示機能
   isMemoHidden = GetGlobalStatus(STATUS_HIDDN)
-  CheckMenuItem  hMenu.0, MenuID_MemoHidden, isMemoHidden * $8
-  EnableMenuItem hMenu.0, MenuID_NewMemo,    isMemoHidden * $1
-  EnableMenuItem hMenu.0, MenuID_MemoInFron, isMemoHidden * $1
-  EnableMenuItem hMenu.0, MenuID_Alignment,  isMemoHidden * $1
-  EnableMenuItem hMenu.0, hMenu.1,           isMemoHidden * $1
-  EnableMenuItem hMenu.0, hMenu.2,           isMemoHidden * $1
+  CheckMenuItem  hMenu.PopupMenu_Main,    MenuID_MemoHidden, isMemoHidden * $8
+  EnableMenuItem hMenu.PopupMenu_Options, MenuID_NewMemo,    isMemoHidden * $1
+  EnableMenuItem hMenu.PopupMenu_Options, MenuID_MemoInFron, isMemoHidden * $1
+  EnableMenuItem hMenu.PopupMenu_Options, MenuID_Alignment,  isMemoHidden * $1
 
   // タイトルバー機能
   isBtnDisabled = GetGlobalStatus(STATUS_BTN_DISABLED)
-  CheckMenuItem hMenu.0, MenuID_BtnDisabled, isBtnDisabled * $8
+  CheckMenuItem hMenu.PopupMenu_Options, MenuID_BtnDisabled, isBtnDisabled * $8
 
   // スキップコピー
   isSkipCopy = GetGlobalStatus(STATUS_SKIP_COPY)
-  CheckMenuItem hMenu.0, MenuID_SkipCopy, isSkipCopy * $8
+  CheckMenuItem hMenu.PopupMenu_Options, MenuID_SkipCopy, isSkipCopy * $8
+  skipCopyLabel = Localizer("menu_select_copy")
+  if isSkipCopy : skipCopyLabel += Localizer("menu_select_copy_only_body") : else : skipCopyLabel += Localizer("menu_select_copy_all")
 
   // スクロールバーを表示
   isShowScrollbar = GetGlobalStatus(STATUS_SHOW_SCROLLBAR)
-  CheckMenuItem hMenu.0, MenuID_ShowScrollBar, isShowScrollbar * $8
+  CheckMenuItem hMenu.PopupMenu_Options, MenuID_ShowScrollBar, isShowScrollbar * $8
 
-  // メモ単独非表示
+  // メモメニュー
   foreach memo
+    hPopMenuId = getHMenu(memo.cnt)
     wid = getWid(memo.cnt)
+    flg = getIsHidden(memo.cnt)
+
     selectMemoId = MenuID_SelectMemoBase + MemoMenuID_SelectMax * wid + MemoMenuID_SelectAlignment
     hiddenMemoId = MenuID_SelectMemoBase + MemoMenuID_SelectMax * wid + MemoMenuID_SelectHidden
-    flg = getIsHidden(memo.cnt)
-    EnableMenuItem hMenu.1, selectMemoId, flg * $1
-    CheckMenuItem  hMenu.2, hiddenMemoId, (flg == 0) * $8
+    copyMemoId   = MenuID_SelectMemoBase + MemoMenuID_SelectMax * wid + MemoMenuID_SelectCopy
+
+    EnableMenuItem hMenu.hPopMenuId, selectMemoId, flg * $1
+    CheckMenuItem  hMenu.hPopMenuId, hiddenMemoId, (flg == 0) * $8
+    ModifyMenu     hMenu.hPopMenuId, copyMemoId, 0, copyMemoId, skipCopyLabel
   loop
+
+  // 描画を更新
+  DrawMenuBar hMenu.PopupMenu_Main
 
   return
 
@@ -105,8 +118,8 @@
 
   // メニューを削除する
   foreach memo
-    wid = getWid(memo.cnt)
-    DeleteMemoMenu wid
+    hPopMenuId = getHMenu(memo.cnt)
+    DeleteMemoMenu hPopMenuId
   loop
 
   // メニュー情報を取得する
@@ -121,16 +134,17 @@
   // メニューを生成する
   foreach memo
     sortget n, cnt
-    wid = getWid(memo.n)
+    wid = getWid(memo.cnt)
+    hPopMenuId = getHMenu(memo.cnt)
     flg = getIsHidden(memo.n)
     txt = getMenuText(memo.n)
-    AppendMemoMenu wid,txt, flg
+    _ = AppendMemoMenu(wid, txt, flg, hPopMenuId)
   loop
 
   return
 
 // AppendMemoMenu ...メモをメニューに登録します。
-#deffunc AppendMemoMenu int _p1, str _p2, int _p3
+#defcfunc AppendMemoMenu int _p1, str _p2, int _p3, int _p4
 
   // タイトル文字を設定
   s = _p2 : if s == "" : s = Localizer("menu_memo_no_title")
@@ -140,29 +154,42 @@
   menuId2 = MenuID_SelectMemoBase + MemoMenuID_SelectMax * _p1 + MemoMenuID_SelectHidden
   menuId3 = MenuID_SelectMemoBase + MemoMenuID_SelectMax * _p1 + MemoMenuID_SelectCopy
 
+  // ポップメニューのIDを取得
+  if (_p4 == -1) {
+    hPopMenuId = hMenuNextId
+    hMenuNextId = hMenuNextId + 1
+  } else {
+    hPopMenuId = _p4
+  }
+
+  // ポップメニューを追加
+  CreatePopupMenu
+  hMenu.hPopMenuId = stat
+
+  // コピーメニューのラベル名を取得
+  isSkipCopy = GetGlobalStatus(STATUS_SKIP_COPY)
+  skipCopyLabel = Localizer("menu_select_copy")
+  if isSkipCopy : skipCopyLabel += Localizer("menu_select_copy_only_body") : else : skipCopyLabel += Localizer("menu_select_copy_all")
+
   // メニューを追加
-  AppendMenu hMenu.1, 0, menuId1, s
-  AppendMenu hMenu.2, 0, menuId2, s
-  AppendMenu hMenu.3, 0, menuId3, s
+  AppendMenu hMenu.hPopMenuId, 0, menuId2, Localizer("menu_select_hidden")
+  AppendMenu hMenu.hPopMenuId, 0, menuId1, Localizer("menu_select_alignment")
+  AppendMenu hMenu.hPopMenuId, 0, menuId3, skipCopyLabel
+
+  // ポップメニューをメニューに追加
+  AppendMenu hMenu.PopupMenu_Memo, $10, hMenu.hPopMenuId, s
 
   // 初期状態を設定
-  EnableMenuItem  hMenu.1, menuId1, _p3 * $1
-  CheckMenuItem   hMenu.2, menuId2, (_p3 == 0) * $8
+  EnableMenuItem  hMenu.hPopMenuId, menuId1, _p3 * $1
+  CheckMenuItem   hMenu.hPopMenuId, menuId2, (_p3 == 0) * $8
 
-  return
+  return hPopMenuId
 
 // RemoveMemoMenu ...メモをメニューから削除します。
 #deffunc DeleteMemoMenu int _p1
 
-  // IDを生成
-  menuId1 = MenuID_SelectMemoBase + MemoMenuID_SelectMax * _p1 + MemoMenuID_SelectAlignment
-  menuId2 = MenuID_SelectMemoBase + MemoMenuID_SelectMax * _p1 + MemoMenuID_SelectHidden
-  menuId3 = MenuID_SelectMemoBase + MemoMenuID_SelectMax * _p1 + MemoMenuID_SelectCopy
-
   // メニューを削除
-  DeleteMenu hMenu.1, menuId1, 0
-  DeleteMenu hMenu.2, menuId2, 0
-  DeleteMenu hMenu.3, menuId3, 0
+  DeleteMenu hMenu.PopupMenu_Memo, hMenu._p1, 0
 
   return
 
@@ -172,23 +199,14 @@
   // タイトル文字を設定
   s = _p2 : if s == "" : s = MENU_MEMO_NO_TITLE
 
-  // IDを生成
-  menuId1 = MenuID_SelectMemoBase + MemoMenuID_SelectMax * _p1 + MemoMenuID_SelectAlignment
-  menuId2 = MenuID_SelectMemoBase + MemoMenuID_SelectMax * _p1 + MemoMenuID_SelectHidden
-  menuId3 = MenuID_SelectMemoBase + MemoMenuID_SelectMax * _p1 + MemoMenuID_SelectCopy
-
   // メニュー内容を更新
-  ModifyMenu hMenu.1, menuId1, 0, menuId1, s
-  ModifyMenu hMenu.2, menuId2, 0, menuId2, s
-  ModifyMenu hMenu.3, menuId3, 0, menuId3, s
+  ModifyMenu hMenu.PopupMenu_Main, hMenu._p1, 0, hMenu._p1, s
 
   // メニュー状態を更新
   UpdateMenuStatus
 
   // メニューを更新
-  DrawMenuBar hMenu.1
-  DrawMenuBar hMenu.2
-  DrawMenuBar hMenu.3
+  DrawMenuBar hMenu.PopupMenu_Main
 
   return
 
@@ -199,7 +217,7 @@
   if lparam == 0x0202 || lparam == 0x0205 {
     gsel 0
     SetForegroundWindow hwnd
-    TrackPopupMenu hMenu.0, $100, ginfo(0), ginfo(1), 0, hwnd, 0
+    TrackPopupMenu hMenu.PopupMenu_Main, $100, ginfo(0), ginfo(1), 0, hwnd, 0
     if stat = 0:return
 
     // 各メニューの処理
