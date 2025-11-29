@@ -7,7 +7,7 @@
 #define global appTitle "Desktop Memo 3"
 #define global appLink "https://github.com/TomSuzuki/DesktopMemo3"
 #define global appIcon "./img/app.ico"
-#define global appVer "ver1.1.1"
+#define global appVer "ver1.2.1"
 
 // コンパイルオプション
 #cmpopt utf8 1
