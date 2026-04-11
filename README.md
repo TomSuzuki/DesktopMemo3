@@ -50,10 +50,8 @@ Windows上でのみ動作確認を行っています。
 - OS: `Windows 11 Home`
 
 ## ビルド方法
-- [VSCode で HSP3 の開発環境を作る [2019年末] - Qiita](https://qiita.com/vain0x/items/1c0be49b3b22142dbfd1)
-```shell
-ginger build --release main.hsp
-```
+
+`Build` フォルダ内の `build.hsp` を実行してください。
 
 ## 参考にさせていただいたもの
 - [HSP用 ドラッグ・アンド・ドロップ モジュール - 略して仮。](http://menyukko.ifdef.jp/cauldron/hmdandd.html)

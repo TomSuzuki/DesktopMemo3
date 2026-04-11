@@ -2,6 +2,19 @@
 // メインプログラム
 // ------------------------------------------------------------
 
+#cmpopt utf8 1
+#cmpopt optcode 0
+#cmpopt optprm 0
+#bootopt utf8 1
+
+#define global appTitle "Desktop Memo 3"
+#define global appIcon "./img/app.ico"
+
+#runtime "hsp3utf"
+#packopt hide 1
+#packopt name appTitle
+#packopt icon appIcon
+
 #include "hsp3utf.as"
 #include "user32.as"
 #include "gdi32.as"
