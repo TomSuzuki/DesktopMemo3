@@ -539,15 +539,19 @@
   // テキストの文字数を判定
   charCount = strlen(text1)
   
-  if charCount >= 17 {
-    // 17文字以上の場合は15文字コピーして「…」を追加
-    memcpy buf2, buf1, 15 * 2, , 0
+  // メニュー文字数の閾値（MenuTextLength-1以上なら省略記号を追加）
+  truncateLength = MenuTextLength - 1
+  truncateThreshold = MenuTextLength + 1
+  
+  if charCount >= truncateThreshold {
+    // 閾値以上の場合はtruncateLength文字コピーして「…」を追加
+    memcpy buf2, buf1, truncateLength * 2, , 0
     sdim buf3, 10
     cnvstow buf3, "…"
-    memcpy buf2, buf3, 2, 15 * 2, 0
+    memcpy buf2, buf3, 2, truncateLength * 2, 0
     res = cnvwtos(buf2)
   } else {
-    // 16文字以下の場合はそのまま処理
+    // 閾値未満の場合はそのまま処理
     memcpy buf2, buf1, charCount * 2, , 0
     res = cnvwtos(buf2)
   }
