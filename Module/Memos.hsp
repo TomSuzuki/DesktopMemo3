@@ -531,11 +531,27 @@
 // getMenuText ...メニュー用に文字を切り出します。
 #modcfunc getMenuText
   split text, "\n", text1
-  sdim buf1, strlen(text1)
-  sdim buf2, 20
+  
+  sdim buf1, strlen(text1) + 1
+  sdim buf2, 64
   cnvstow buf1, text1
-  memcpy buf2, buf1, 30 * 2, , 0 // 最大30文字
-  res = cnvwtos(buf2)
+  
+  // テキストの文字数を判定
+  charCount = strlen(text1)
+  
+  if charCount >= 17 {
+    // 17文字以上の場合は15文字コピーして「…」を追加
+    memcpy buf2, buf1, 15 * 2, , 0
+    sdim buf3, 10
+    cnvstow buf3, "…"
+    memcpy buf2, buf3, 2, 15 * 2, 0
+    res = cnvwtos(buf2)
+  } else {
+    // 16文字以下の場合はそのまま処理
+    memcpy buf2, buf1, charCount * 2, , 0
+    res = cnvwtos(buf2)
+  }
+  
   return res
 
 // 1行目を飛ばしたテキスト
