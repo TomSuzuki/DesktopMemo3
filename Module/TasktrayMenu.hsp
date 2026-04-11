@@ -170,7 +170,7 @@
 #deffunc ChangeMemoMenu int _p1, str _p2
 
   // タイトル文字を設定
-  s = _p2 : if s == "" : s = MENU_MEMO_NO_TITLE
+  s = _p2 : if s == "" : s = Localizer("menu_memo_no_title")
 
   // IDを生成
   menuId1 = MenuID_SelectMemoBase + MemoMenuID_SelectMax * _p1 + MemoMenuID_SelectAlignment
