@@ -4,9 +4,6 @@
  <p align="center">デスクトップに貼るメモ。</p>
 </p>
 <p align="center">
-  <a href="https://github.com/anuraghazra/github-readme-stats/issues">
-    <img alt="Issues" src="https://img.shields.io/github/issues/TomSuzuki/DesktopMemo3?color=0088ff" />
-  </a>
   <a href="">
     <img alt="Lang" src="http://img.shields.io/badge/Language-HSP3-green" />
   </a>
@@ -38,6 +35,7 @@ Windows上でのみ動作確認を行っています。
 - `button_color_click` ...クリック時のボタン色です。
 - `button_color_mouseover` ...マウスホバー時のボタン色です。
 - `delete_dialog` ...削除時にダイアログを表示するかの設定です。 `1`で有効、`2`で無効です。
+- `menu_text_length` ...メモメニューに表示する文字数の設定です。
 
 ## フォルダについて
 - `backup` ...起動時とメモ読み込み時に、メモの内容をコピーして保存します。
@@ -52,10 +50,8 @@ Windows上でのみ動作確認を行っています。
 - OS: `Windows 11 Home`
 
 ## ビルド方法
-- [VSCode で HSP3 の開発環境を作る [2019年末] - Qiita](https://qiita.com/vain0x/items/1c0be49b3b22142dbfd1)
-```shell
-ginger build --release main.hsp
-```
+
+`Build` フォルダ内の `build.hsp` を実行してください。
 
 ## 参考にさせていただいたもの
 - [HSP用 ドラッグ・アンド・ドロップ モジュール - 略して仮。](http://menyukko.ifdef.jp/cauldron/hmdandd.html)
