@@ -226,8 +226,6 @@
   gsel Id.WID
   redraw 0
 
-  // 半透明化
-
   // 半透明
   isTranslucent = GetGlobalStatus(STATUS_TRANSLUCENT)
   alphaValue = 0 + (255.0 * TranslucentRate / 100.0)
