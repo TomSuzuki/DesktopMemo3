@@ -20,6 +20,10 @@
   GetClassLong hwnd, GCL_STYLE
   SetClassLong hwnd, GCL_STYLE, stat | CS_DROPSHADOW
 
+  // 半透明
+  GetWindowLong hwnd, -20
+  SetWindowLong hwnd, -20, stat | WS_EX_LAYERED
+
   // 戻す
   gsel n
 

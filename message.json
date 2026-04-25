@@ -14,6 +14,7 @@
   "menu_exit": "終了",
   "menu_version": "バージョン表示",
   "menu_memo_no_title": "《無題》",
+  "menu_translucent": "メモを半透明化",
   "error_00": "不明なエラーが発生しました。",
   "error_13": "画像ファイルの読み込みに失敗しました。",
   "error_38": "外部DLLの呼び出しに失敗しました。",
