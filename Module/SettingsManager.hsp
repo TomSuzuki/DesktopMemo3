@@ -11,6 +11,7 @@
 #define global DefaultSetting_buttonColor3 "$AAAAAA"
 #define global DefaultSetting_deleteDialog 1
 #define global DefaultSetting_menuTextLength 16
+#define global DefaultSetting_translucentRate 80
 
 // JSONキー値
 #define global SettingKey_fontName  "font"
@@ -21,6 +22,7 @@
 #define global SettingKey_buttonColor3 "button_color_mouseover"
 #define global SettingKey_deleteDialog "delete_dialog"
 #define global SettingKey_menuTextLength "menu_text_length"
+#define global SettingKey_translucentRate "translucent_rate"
 
 // 設定項目をグローバルで使えるように登録（取得のみできるように関数にする）
 #define global fontName _application_setting_fontName()
@@ -31,6 +33,7 @@
 #define global ButtonMouseOverColor _application_setting_buttonColor3()
 #define global DeleteDialog _application_setting_deleteDialog()
 #define global MenuTextLength _application_setting_menuTextLength()
+#define global TranslucentRate _application_setting_translucentRate()
 
 // アプリケーションの設定を読み込む
 #module application_setting
@@ -53,6 +56,7 @@
   jsongets@ _buttonColor3, SettingKey_buttonColor3, jsonPtr
   jsongeti@ _deleteDialog, SettingKey_deleteDialog, jsonPtr
   jsongeti@ _menuTextLength, SettingKey_menuTextLength, jsonPtr
+  jsongeti@ _translucentRate, SettingKey_translucentRate, jsonPtr
 
   // JSONを閉じる
   jsonclose@
@@ -66,6 +70,7 @@
   if (_buttonColor3 == ""):_buttonColor3 = DefaultSetting_buttonColor3
   if (_deleteDialog == 0):_deleteDialog = DefaultSetting_deleteDialog
   if (_menuTextLength == 0):_menuTextLength = DefaultSetting_menuTextLength
+  if (_translucentRate == 0):_translucentRate = DefaultSetting_translucentRate
 
   // 設定をJSONに
   jsonnewobj@ jsonPtr, -1, ""
@@ -77,6 +82,7 @@
   jsonputs@ jsonPtr, SettingKey_buttonColor3, _buttonColor3
   jsonputi@ jsonPtr, SettingKey_deleteDialog, _deleteDialog
   jsonputi@ jsonPtr, SettingKey_menuTextLength, _menuTextLength
+  jsonputi@ jsonPtr, SettingKey_translucentRate, _translucentRate
   jsonout@ jsonText, jsonPtr
   jsonclose@
 
@@ -112,5 +118,8 @@
 
 #defcfunc _application_setting_menuTextLength
   return _menuTextLength
+
+#defcfunc _application_setting_translucentRate
+  return _translucentRate
 
 #global

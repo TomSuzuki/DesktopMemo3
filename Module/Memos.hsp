@@ -226,6 +226,14 @@
   gsel Id.WID
   redraw 0
 
+  // 半透明化
+
+  // 半透明
+  isTranslucent = GetGlobalStatus(STATUS_TRANSLUCENT)
+  alphaValue = 0 + (255.0 * TranslucentRate / 100.0)
+  if isTranslucent == false : alphaValue = 255
+  SetLayeredWindowAttributes hwnd, 0, alphaValue, ULW_ALPHA
+
   // 表示ステータスを取得
   isBtnDisabled = GetGlobalStatus(STATUS_BTN_DISABLED)
 

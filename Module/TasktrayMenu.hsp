@@ -18,6 +18,7 @@
 #enum MenuID_SkipCopy
 #enum MenuID_ShowScrollBar
 #enum MenuID_SelectMemoBase
+#enum MenuID_Translucent
 
 #enum MemoMenuID_SelectAlignment = 0
 #enum MemoMenuID_SelectHidden
@@ -42,13 +43,15 @@
   hMenu.0 = stat
   AppendMenu hMenu.0, 0, MenuID_NewMemo, Localizer("menu_new_memo")
   AppendMenu hMenu.0, $800, 0, ""
+  AppendMenu hMenu.0, 0, MenuID_MemoHidden, Localizer("menu_all_memo_hidden")
+  AppendMenu hMenu.0, $800, 0, ""
   AppendMenu hMenu.0, 0, MenuID_MemoInFron, Localizer("menu_all_memo_in_front")
   AppendMenu hMenu.0, 0, MenuID_Alignment, Localizer("menu_all_memo_alignment")
-  AppendMenu hMenu.0, 0, MenuID_MemoHidden, Localizer("menu_all_memo_hidden")
   AppendMenu hMenu.0, 0, MenuID_BtnDisabled, Localizer("menu_memo_btn_disabled")
   AppendMenu hMenu.0, 0, MenuID_ReloadMemoMenu, Localizer("menu_reload_memo_menu")
   AppendMenu hMenu.0, 0, MenuID_ShowScrollBar, Localizer("menu_show_scroll_bar")
   AppendMenu hMenu.0, 0, MenuID_SkipCopy, Localizer("menu_skip_copy")
+  AppendMenu hMenu.0, 0, MenuID_Translucent, Localizer("menu_translucent")
   AppendMenu hMenu.0, $800, 0, ""
   AppendMenu hMenu.0, $10, hMenu.1, Localizer("menu_select_alignment")
   AppendMenu hMenu.0, $10, hMenu.2, Localizer("menu_select_hidden")
@@ -87,6 +90,10 @@
   // スクロールバーを表示
   isShowScrollbar = GetGlobalStatus(STATUS_SHOW_SCROLLBAR)
   CheckMenuItem hMenu.0, MenuID_ShowScrollBar, isShowScrollbar * $8
+
+  // 半透明化
+  isTranslucent = GetGlobalStatus(STATUS_TRANSLUCENT)
+  CheckMenuItem hMenu.0, MenuID_Translucent, isTranslucent * $8
 
   // メモ単独非表示
   foreach memo
@@ -303,6 +310,22 @@
         // メニュー状態を更新
         UpdateMenuStatus
 
+        // メモの表示を更新
+        foreach memo
+          Resize memo.cnt
+        loop
+
+        swbreak
+
+      // メモの半透明化
+      case MenuID_Translucent
+
+        // フラグを更新
+        _ = ToggleGlobalStatus(STATUS_TRANSLUCENT)
+
+        // メニュー状態を更新
+        UpdateMenuStatus
+        
         // メモの表示を更新
         foreach memo
           Resize memo.cnt

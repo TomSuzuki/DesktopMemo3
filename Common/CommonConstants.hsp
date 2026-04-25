@@ -21,6 +21,10 @@
 #define global WS_EX_TOOLWINDOW 0x0080
 #define global WM_GETMINMAXINFO 0x0024
 
+#define global WS_EX_LAYERED    0x80000
+#define global LWA_COLORKEY     1
+#define global ULW_ALPHA        2
+
 // 画面・メニュー関連
 #define global HTLEFT        0x000A
 #define global HTRIGHT       0x000B
