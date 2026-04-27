@@ -20,5 +20,7 @@
   "error_38": "外部DLLの呼び出しに失敗しました。",
   "dialog_is_already_load": "すでに読み込まれているメモです。",
   "dialog_delete_confirm": "メモを削除しますか？",
-  "dialog_delete_confirm_title": "メモの削除"
+  "dialog_delete_confirm_title": "メモの削除",
+  "dialog_hidden_confirm": "メモを非表示にしますか？",
+  "dialog_hidden_confirm_title": "メモの非表示"
 }

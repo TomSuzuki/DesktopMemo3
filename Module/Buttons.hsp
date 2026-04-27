@@ -6,6 +6,7 @@
 #define global PathAdd "./img/add.gif"
 #define global PathCol "./img/col.gif"
 #define global PathDel "./img/del.gif"
+#define global PathHid "./img/hid.gif"
 #define global PathPinT "./img/PinT.gif"
 #define global PathPinF "./img/PinF.gif"
 
@@ -22,17 +23,21 @@
 #const global PosButtonDelY              ButtonSize *  6
 #const global PosButtonDelClickY         ButtonSize *  7
 #const global PosButtonDelMouseOverY     ButtonSize *  8
-#const global PosButtonPinTY             ButtonSize *  9
-#const global PosButtonPinTClickY        ButtonSize * 10
-#const global PosButtonPinTMouseOverY    ButtonSize * 11
-#const global PosButtonPinFY             ButtonSize * 12
-#const global PosButtonPinFClickY        ButtonSize * 13
-#const global PosButtonPinFMouseOverY    ButtonSize * 14
+#const global PosButtonHidY              ButtonSize *  9
+#const global PosButtonHidClickY         ButtonSize * 10
+#const global PosButtonHidMouseOverY     ButtonSize * 11
+#const global PosButtonPinTY             ButtonSize * 12
+#const global PosButtonPinTClickY        ButtonSize * 13
+#const global PosButtonPinTMouseOverY    ButtonSize * 14
+#const global PosButtonPinFY             ButtonSize * 15
+#const global PosButtonPinFClickY        ButtonSize * 16
+#const global PosButtonPinFMouseOverY    ButtonSize * 17
 
 // ボタンの処理ID
 #enum global ButtonTypeAdd 0
 #enum global ButtonTypeCol
 #enum global ButtonTypeDel
+#enum global ButtonTypeHid
 #enum global ButtonTypePinT
 #enum global ButtonTypePinF
 
@@ -43,18 +48,19 @@
 #deffunc CreateButton
 
   // バッファの作成
-  BufferButton = NewBuffer(ButtonSize * 2, ButtonSize * 15)
+  BufferButton = NewBuffer(ButtonSize * 2, ButtonSize * 18)
 
   // 画像のロード
   imgAdd = ImgLoad(PathAdd)
   imgCol = ImgLoad(PathCol)
   imgDel = ImgLoad(PathDel)
+  imgHid = ImgLoad(PathHid)
   imgPinT = ImgLoad(PathPinT)
   imgPinF = ImgLoad(PathPinF)
 
   // ボタン色の設定（通常、押し下げ、マウスオーバー）
   gsel BufferButton
-  repeat 5
+  repeat 6
     y = cnt * ButtonSize * 3
     color decRGB(ButtonColor)           :boxf 0, y + ButtonSize * 0, ButtonSize, y + ButtonSize * 1
     color decRGB(ButtonClickColor)      :boxf 0, y + ButtonSize * 1, ButtonSize, y + ButtonSize * 2
@@ -67,6 +73,7 @@
     pos ButtonSize, PosButtonAddY + cnt * ButtonSize:gcopy imgAdd
     pos ButtonSize, PosButtonColY + cnt * ButtonSize:gcopy imgCol
     pos ButtonSize, PosButtonDelY + cnt * ButtonSize:gcopy imgDel
+    pos ButtonSize, PosButtonHidY + cnt * ButtonSize:gcopy imgHid
     pos ButtonSize, PosButtonPinTY + cnt * ButtonSize:gcopy imgPinT
     pos ButtonSize, PosButtonPinFY + cnt * ButtonSize:gcopy imgPinF
   loop
@@ -75,9 +82,9 @@
   repeat ColorNum
 
     // 色ボタンの作成
-    n = NewBuffer(ButtonSize, ButtonSize * 15)
+    n = NewBuffer(ButtonSize, ButtonSize * 18)
     gsel n
-    gmode 7, ButtonSize, ButtonSize * 15
+    gmode 7, ButtonSize, ButtonSize * 18
     color decRGB(getColor(cnt, ColorTypeTheme))
     boxf
     pos 0, 0
@@ -102,6 +109,8 @@
     objimage ButtonBufferBaseID + _colorId, 0, PosButtonColY,  0, PosButtonColClickY,  0, PosButtonColMouseOverY
   } else:if (_type == ButtonTypeDel) {
     objimage ButtonBufferBaseID + _colorId, 0, PosButtonDelY,  0, PosButtonDelClickY,  0, PosButtonDelMouseOverY
+  } else:if (_type == ButtonTypeHid) {
+    objimage ButtonBufferBaseID + _colorId, 0, PosButtonHidY,  0, PosButtonHidClickY,  0, PosButtonHidMouseOverY
   } else:if (_type == ButtonTypePinT) {
     objimage ButtonBufferBaseID + _colorId, 0, PosButtonPinTY, 0, PosButtonPinTClickY, 0, PosButtonPinTMouseOverY
   } else:if (_type == ButtonTypePinF) {
