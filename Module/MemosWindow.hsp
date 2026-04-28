@@ -4,7 +4,7 @@
 
 #module
 
-// CreateMemoWindow ...可変枠無しウィンドウを非表示で生成します。
+// CreateMemoWindow ...ツールウィンドウスタイルのウィンドウを非表示で生成します。
 #defcfunc CreateMemoWindow
 
   // 取得

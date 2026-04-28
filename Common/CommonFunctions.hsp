@@ -4,7 +4,7 @@
 
 #module
 
-// MakeDirectory ...ディレクトリが無い場合に作成します（一階層上までないと失敗します？）。
+// MakeDirectory ...ディレクトリが無い場合に作成します。
 #deffunc MakeDirectory str _dirName
 
   // パスを整形

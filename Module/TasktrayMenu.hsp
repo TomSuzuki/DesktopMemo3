@@ -186,7 +186,7 @@
 
   return
 
-// RemoveMemoMenu ...メモをメニューから削除します。
+// DeleteMemoMenu ...メモをメニューから削除します。
 #deffunc DeleteMemoMenu int _p1
 
   // IDを生成

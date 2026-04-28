@@ -52,7 +52,7 @@
   noteunsel
 
   // 色管理モジュール初期化
-  dimtype color_obj, vartype("struct")    // この区間だけ有効な変数であるはず
+  dimtype color_obj, vartype("struct")    // 色オブジェクト構造体
 
   // JSON形式を開く
   jsonopen@ jsonPtr, jsonText
