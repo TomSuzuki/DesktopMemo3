@@ -1,0 +1,42 @@
+{
+    "0": {
+        "text": "$000000",
+        "theme": "$FAACBF",
+        "box": "$FFB8C8"
+    },
+    "1": {
+        "text": "$000000",
+        "theme": "$FFC2A6",
+        "box": "$FFCEB8"
+    },
+    "2": {
+        "text": "$000000",
+        "theme": "$FADE96",
+        "box": "$FEE6AA"
+    },
+    "3": {
+        "text": "$000000",
+        "theme": "$F2F27C",
+        "box": "$FFFFB3"
+    },
+    "4": {
+        "text": "$000000",
+        "theme": "$B5D6AE",
+        "box": "$CCEBC5"
+    },
+    "5": {
+        "text": "$000000",
+        "theme": "$98D6C9",
+        "box": "$B3E2D8"
+    },
+    "6": {
+        "text": "$000000",
+        "theme": "$93D0DB",
+        "box": "$B3D7DD"
+    },
+    "7": {
+        "text": "$000000",
+        "theme": "$B895C9",
+        "box": "$CAB2D6"
+    }
+}

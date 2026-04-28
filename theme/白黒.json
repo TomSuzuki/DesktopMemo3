@@ -1,0 +1,42 @@
+{
+    "0": {
+        "text": "$FFFFFF",
+        "theme": "$1A1A1A",
+        "box": "$333333"
+    },
+    "1": {
+        "text": "$FFFFFF",
+        "theme": "$404040",
+        "box": "$595959"
+    },
+    "2": {
+        "text": "$FFFFFF",
+        "theme": "$666666",
+        "box": "$808080"
+    },
+    "3": {
+        "text": "$000000",
+        "theme": "$8C8C8C",
+        "box": "$A6A6A6"
+    },
+    "4": {
+        "text": "$000000",
+        "theme": "$B3B3B3",
+        "box": "$CCCCCC"
+    },
+    "5": {
+        "text": "$000000",
+        "theme": "$D9D9D9",
+        "box": "$EBEBEB"
+    },
+    "6": {
+        "text": "$000000",
+        "theme": "$E6E6E6",
+        "box": "$F5F5F5"
+    },
+    "7": {
+        "text": "$000000",
+        "theme": "$FFFFFF",
+        "box": "$F2F2F2"
+    }
+}
