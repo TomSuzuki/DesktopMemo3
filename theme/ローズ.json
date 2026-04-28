@@ -1,0 +1,42 @@
+{
+    "0": {
+        "text": "$FFFFFF",
+        "theme": "$3D1A2F",
+        "box": "$52273F"
+    },
+    "1": {
+        "text": "$FFFFFF",
+        "theme": "$6B2E5C",
+        "box": "$8B3A7B"
+    },
+    "2": {
+        "text": "$FFFFFF",
+        "theme": "$C1549D",
+        "box": "$D472B5"
+    },
+    "3": {
+        "text": "$FFFFFF",
+        "theme": "$E97DC4",
+        "box": "$F09FD3"
+    },
+    "4": {
+        "text": "$000000",
+        "theme": "$F5B5D8",
+        "box": "$F8D1E6"
+    },
+    "5": {
+        "text": "$000000",
+        "theme": "$F8D1E6",
+        "box": "$FBE9F3"
+    },
+    "6": {
+        "text": "$000000",
+        "theme": "$FBE9F3",
+        "box": "$FEF3F9"
+    },
+    "7": {
+        "text": "$000000",
+        "theme": "$FEF3F9",
+        "box": "$FFFBFE"
+    }
+}
