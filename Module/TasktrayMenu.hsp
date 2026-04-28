@@ -7,7 +7,7 @@
 
 #enum MenuID_NewMemo = 1
 #enum MenuID_GitHub
-#enum MenuId_Exit
+#enum MenuID_Exit
 #enum MenuID_MemoInFron
 #enum MenuID_Alignment
 #enum MenuID_SelectAlignment
@@ -66,7 +66,7 @@
   AppendMenu hMenu.0, 0, MenuID_GitHub, Localizer("menu_github")
   AppendMenu hMenu.0, 0, MenuID_Version, Localizer("menu_version")
   AppendMenu hMenu.0, $800, 0, ""
-  AppendMenu hMenu.0, 0, MenuId_Exit, Localizer("menu_exit")
+  AppendMenu hMenu.0, 0, MenuID_Exit, Localizer("menu_exit")
 
   // 色セットメニュー
 	sdim coloNameList, 256
@@ -247,7 +247,7 @@
         swbreak
       
       // 終了
-      case MenuId_Exit
+      case MenuID_Exit
         gosub *LabelExit@
         swbreak
       

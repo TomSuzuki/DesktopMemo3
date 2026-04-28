@@ -354,9 +354,6 @@
   if (isHidden == true) : return
 
   // 最前面化
-  gsel Id.WID, 2
-
-  // 前面化
   gsel Id.WID, 1 + isPin
 
   return

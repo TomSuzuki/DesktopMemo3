@@ -20,7 +20,6 @@
   repeat lineNum
 
     // ファイルの読み込み
-    notesel list
     noteget fname, cnt
     if (fname == "") {
       continue
