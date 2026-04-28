@@ -5,4 +5,4 @@
 // アプリケーションの設定
 #define global isDebug 0
 #define global appLink "https://github.com/TomSuzuki/DesktopMemo3"
-#define global appVer "ver1.2.3"
+#define global appVer "ver1.2.4"
