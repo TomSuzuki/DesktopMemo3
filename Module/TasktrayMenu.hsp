@@ -20,6 +20,8 @@
 #enum MenuID_SelectMemoBase
 #enum MenuID_Translucent
 
+#enum MenuID_SelectColorBase = 2048
+
 #enum MemoMenuID_SelectAlignment = 0
 #enum MemoMenuID_SelectHidden
 #enum MemoMenuID_SelectCopy
@@ -28,7 +30,7 @@
 // CreateTasktrayMenu ...メニューを配置します。
 #deffunc CreateTasktrayMenu
 
-  dim hMenu, 4
+  dim hMenu, 5
 
   CreatePopupMenu // 選択したメモを整列
   hMenu.1 = stat
@@ -38,6 +40,9 @@
 
   CreatePopupMenu // 選択したメモをコピー
   hMenu.3 = stat
+
+  CreatePopupMenu // 色セット
+  hMenu.4 = stat
 
   CreatePopupMenu
   hMenu.0 = stat
@@ -51,6 +56,7 @@
   AppendMenu hMenu.0, 0, MenuID_ReloadMemoMenu, Localizer("menu_reload_memo_menu")
   AppendMenu hMenu.0, 0, MenuID_ShowScrollBar, Localizer("menu_show_scroll_bar")
   AppendMenu hMenu.0, 0, MenuID_SkipCopy, Localizer("menu_skip_copy")
+  AppendMenu hMenu.0, $10, hMenu.4, Localizer("menu_select_color_name")
   AppendMenu hMenu.0, 0, MenuID_Translucent, Localizer("menu_translucent")
   AppendMenu hMenu.0, $800, 0, ""
   AppendMenu hMenu.0, $10, hMenu.1, Localizer("menu_select_alignment")
@@ -61,6 +67,16 @@
   AppendMenu hMenu.0, 0, MenuID_Version, Localizer("menu_version")
   AppendMenu hMenu.0, $800, 0, ""
   AppendMenu hMenu.0, 0, MenuId_Exit, Localizer("menu_exit")
+
+  // 色セットメニュー
+	sdim coloNameList, 256
+	dirlist coloNameList, "./theme/*.json", 3
+  notesel coloNameList
+  repeat noteinfo(0)
+    noteget coloNameData, cnt
+    AppendMenu hMenu.4, 0, MenuID_SelectColorBase + cnt, getpath(coloNameData, 1)
+  loop
+  noteunsel
 
   // メニュー状態を更新
   UpdateMenuStatus
@@ -104,6 +120,18 @@
     EnableMenuItem hMenu.1, selectMemoId, flg * $1
     CheckMenuItem  hMenu.2, hiddenMemoId, (flg == 0) * $8
   loop
+
+  // 色セットメニュー
+  notesel coloNameList
+  repeat noteinfo(0)
+    noteget coloNameData, cnt
+    if (getpath(coloNameData, 1) == ColorName) {
+      CheckMenuItem  hMenu.4, MenuID_SelectColorBase + cnt, $8
+    } else {
+      CheckMenuItem  hMenu.4, MenuID_SelectColorBase + cnt, $0
+    }
+  loop
+  noteunsel
 
   return
 
@@ -334,6 +362,43 @@
         swbreak
 
     swend
+
+    // 色セットメニュー
+    if (mstat >= MenuID_SelectColorBase) {
+
+      // ファイル名を取得
+      notesel coloNameList
+      noteget coloNameData, (mstat - MenuID_SelectColorBase)
+      noteunsel
+
+      // ファイルパス
+      colorNamePath = "./theme/" + coloNameData
+
+      // 色を読込み
+      LoadColor colorNamePath
+
+      // メモを一度削除
+      foreach memo
+        delmod memo.cnt
+      loop
+
+      // オブジェクト再生成
+      CreateButton
+
+      // パレットウィンドウ再生成
+      InitializeColorWindow
+
+      // メモを再読込み
+      LoadAllMemo memoFileMask
+
+      // 設定を更新
+      UpdateSetting_ColorName getpath(coloNameData, 1)
+
+      // メニュー状態を更新
+      UpdateMenuStatus
+
+      return
+    }
 
     // メニュー以外（メモ）の処理
     foreach memo

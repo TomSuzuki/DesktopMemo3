@@ -31,7 +31,20 @@
 #module
 
 // LoadColor ...色を読込みます。
-#deffunc LoadColor str fname
+#deffunc LoadColor str _fname
+
+  fname = _fname
+
+  // ファイルがない場合は先頭に見つかったファイルにする
+  exist fname
+  if (strsize == -1) {
+    sdim searchList, 256
+    dirlist searchList, "./theme/*.json", 3
+    notesel searchList
+    noteget foundFile, 0
+    fname = "./theme/" + foundFile
+    noteunsel
+  }
 
   // 読み込み
   notesel jsonText

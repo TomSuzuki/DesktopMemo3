@@ -72,7 +72,7 @@
   // 設定の読み込み
   StatusLoad
   SettingLoad appSetting
-  LoadColor colorSetting
+  LoadColor "./theme/" + ColorName + ".json"
 
   // タスクトレイのメニューを設定
   CreateTasktrayMenu
