@@ -12,20 +12,41 @@
 #const global true  1
 #const global false 0
 
-// WinApi
-#define global WM_SIZE          0x0005
-#define global WM_NCHITTEST     0x0084
-#define global WM_ACTIVATE      0x0006
-#define global WM_MOVE          0x0003
-#define global GWL_EXSTYLE      -20
-#define global WS_EX_TOOLWINDOW 0x0080
-#define global WM_GETMINMAXINFO 0x0024
+// ウィンドウメッセージ
+#define global WM_MOVE           0x0003
+#define global WM_SIZE           0x0005
+#define global WM_ACTIVATE       0x0006
+#define global WM_GETMINMAXINFO  0x0024
+#define global WM_ICONERASEBKGND 0x0027
+#define global WM_NCHITTEST      0x0084
+#define global WM_CTLCOLOREDIT   0x0133
 
+// ウィンドウスタイル
+#define global WS_EX_TOOLWINDOW 0x00080
 #define global WS_EX_LAYERED    0x80000
-#define global LWA_COLORKEY     1
-#define global ULW_ALPHA        2
 
-// 画面・メニュー関連
+// ウィンドウスタイル（拡張）
+#define global GWL_EXSTYLE -20
+
+// レイヤード ウィンドウ
+#define global LWA_COLORKEY 0x00000001
+
+// UpdateLayeredWindow
+#define global ULW_ALPHA 0x00000002
+
+// クラススタイル
+#define global CS_DROPSHADOW 0x00020000
+
+// クラススタイル（拡張）
+#define global GCL_STYLE -26
+
+// エディットコントロール
+#define global EM_SETMODIFY   0x00B9 ; 編集コントロールの変更フラグを設定またはクリア
+#define global EM_SETREADONLY 0x00CF ; 編集コントロールの読み取り専用スタイルを設定または削除
+
+// ヒットテスト
+#define global HTCLIENT      0x0001
+#define global HTCAPTION     0x0002
 #define global HTLEFT        0x000A
 #define global HTRIGHT       0x000B
 #define global HTTOP         0x000C
@@ -34,7 +55,3 @@
 #define global HTBOTTOM      0x000F
 #define global HTBOTTOMLEFT  0x0010
 #define global HTBOTTOMRIGHT 0x0011
-#define global HTCLIENT      0x0001
-#define global HTCAPTION     0x0002
-#define global GCL_STYLE     -26
-#define global CS_DROPSHADOW 0x00020000

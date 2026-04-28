@@ -223,138 +223,125 @@
 // Resize ...再描画します。
 #modfunc Resize
 
-  // 処理するウィンドウ
+  // 処理するウィンドウへ移動
   gsel Id.WID
   redraw 0
 
-  // 半透明
+  // 各種ステータスを取得
   isTranslucent = GetGlobalStatus(STATUS_TRANSLUCENT)
+  isBtnDisabled = GetGlobalStatus(STATUS_BTN_DISABLED)
+
+  // 半透明
   alphaValue = 0 + (255.0 * TranslucentRate / 100.0)
   if isTranslucent == false : alphaValue = 255
   SetLayeredWindowAttributes hwnd, 0, alphaValue, ULW_ALPHA
 
-  // 表示ステータスを取得
-  isBtnDisabled = GetGlobalStatus(STATUS_BTN_DISABLED)
-
   // 背景色
   if (beRedraw) {
-    color decRGB(getColor(Id.COLOR_ID, ColorTypeBox))
-    boxf
-    color decRGB(getColor(Id.COLOR_ID, ColorTypeTheme))
-    boxf 0, 0, ginfo_sx, CaptionHeight
+    color decRGB(getColor(Id.COLOR_ID, ColorTypeBox))  :boxf
+    color decRGB(getColor(Id.COLOR_ID, ColorTypeTheme)):boxf 0, 0, ginfo_sx, CaptionHeight
     beRedraw = false
   }
 
-  // 追加ボタン
-  if (isBtnDisabled == true) {
-    if (Id.BUTTON_ID_ADD != -1) {
-      clrobj Id.BUTTON_ID_ADD, Id.BUTTON_ID_ADD
-      Id.BUTTON_ID_ADD = -1
+  // 各種ボタン
+  if (isBtnDisabled) {
+    if (Id.BUTTON_ID_ADD    != -1) : clrobj Id.BUTTON_ID_ADD,    Id.BUTTON_ID_ADD    : Id.BUTTON_ID_ADD    = -1
+    if (Id.BUTTON_ID_COLOR  != -1) : clrobj Id.BUTTON_ID_COLOR,  Id.BUTTON_ID_COLOR  : Id.BUTTON_ID_COLOR  = -1
+    if (Id.BUTTON_ID_PIN    != -1) : clrobj Id.BUTTON_ID_PIN,    Id.BUTTON_ID_PIN    : Id.BUTTON_ID_PIN    = -1
+    if (Id.BUTTON_ID_HID    != -1) : clrobj Id.BUTTON_ID_HID,    Id.BUTTON_ID_HID    : Id.BUTTON_ID_HID    = -1
+    if (Id.BUTTON_ID_DELETE != -1) : clrobj Id.BUTTON_ID_DELETE, Id.BUTTON_ID_DELETE : Id.BUTTON_ID_DELETE = -1
+  } else {
+
+    // 新規ボタンの配置
+    if (Id.BUTTON_ID_ADD == -1) {
+      CreateButtonImage ButtonTypeAdd, Id.COLOR_ID
+      pos BORDERWIDTH + ButtonSize * 0, BORDERWIDTH
+      button gosub "", *OnButtonNew
+      Id.BUTTON_ID_ADD = stat
     }
-  } else:if (Id.BUTTON_ID_ADD == -1) {
-    CreateButtonImage ButtonTypeAdd, Id.COLOR_ID
-    pos BORDERWIDTH + ButtonSize * 0, BORDERWIDTH
-    button gosub "", *OnButtonNew
-    Id.BUTTON_ID_ADD = stat
-  }
 
-  // 色変更ボタン
-  if (isBtnDisabled == true) {
-    if (Id.BUTTON_ID_COLOR != -1) {
-      clrobj Id.BUTTON_ID_COLOR, Id.BUTTON_ID_COLOR
-      Id.BUTTON_ID_COLOR = -1
+    // 色変更ボタンの配置
+    if (Id.BUTTON_ID_COLOR == -1) {
+      CreateButtonImage ButtonTypeCol, Id.COLOR_ID
+      pos BORDERWIDTH + ButtonSize * 1, BORDERWIDTH
+      button gosub "", *OnButtonCol
+      Id.BUTTON_ID_COLOR = stat
     }
-  } else:if (Id.BUTTON_ID_COLOR == -1) {
-    CreateButtonImage ButtonTypeCol, Id.COLOR_ID
-    pos BORDERWIDTH + ButtonSize * 1, BORDERWIDTH
-    button gosub "", *OnButtonCol
-    Id.BUTTON_ID_COLOR = stat
-  }
 
-  // ピンボタン（更新時）
-  if (isBtnDisabled == true) {
-    if (Id.BUTTON_ID_PIN != -1) {
-      clrobj Id.BUTTON_ID_PIN, Id.BUTTON_ID_PIN
-      Id.BUTTON_ID_PIN = -1
+    // ピンボタンの配置
+    if (Id.BUTTON_ID_PIN == -1 || isPinButton != isPin) {
+      isPinButton = isPin // 現在のボタン画像の状態
+      if (Id.BUTTON_ID_PIN != -1) : clrobj Id.BUTTON_ID_PIN, Id.BUTTON_ID_PIN
+      CreateButtonImage ButtonTypePinT + 1 - isPin, Id.COLOR_ID
+      pos BORDERWIDTH + ButtonSize * 2, BORDERWIDTH
+      button gosub "", *OnButtonPin
+      Id.BUTTON_ID_PIN = stat
     }
-  } else:if (isPinButton != isPin && Id.BUTTON_ID_PIN != -1) {
-    isPinButton = isPin
-    clrobj Id.BUTTON_ID_PIN, Id.BUTTON_ID_PIN
-    Id.BUTTON_ID_PIN = -1
-  }
 
-  // ピンボタン
-  if (Id.BUTTON_ID_PIN == -1 && isBtnDisabled == false) {
-    CreateButtonImage ButtonTypePinT + 1 - isPin, Id.COLOR_ID
-    pos BORDERWIDTH + ButtonSize * 2, BORDERWIDTH
-    button gosub "", *OnButtonPin
-    Id.BUTTON_ID_PIN = stat
-  }
-
-  // 非表示ボタン
-  if (isBtnDisabled == true) {
-    if (Id.BUTTON_ID_HID != -1) {
-      clrobj Id.BUTTON_ID_HID, Id.BUTTON_ID_HID
-      Id.BUTTON_ID_HID = -1
+    // 非表示ボタンの配置
+    if (isPin) {
+      if (Id.BUTTON_ID_HID != -1) : clrobj Id.BUTTON_ID_HID, Id.BUTTON_ID_HID : Id.BUTTON_ID_HID = -1
+    } else:if (Id.BUTTON_ID_HID == -1) {
+      CreateButtonImage ButtonTypeHid, Id.COLOR_ID
+      pos ginfo_winx - ButtonSize * 2 - BORDERWIDTH, BORDERWIDTH
+      button gosub "", *OnButtonHid
+      Id.BUTTON_ID_HID = stat
+    } else {
+      args = 0, 0, ginfo_winx - ButtonSize * 2 - BORDERWIDTH, BORDERWIDTH
+      resizeobj Id.BUTTON_ID_HID, args, 2
     }
-  } else:if (Id.BUTTON_ID_HID == -1 && isPin == false) {
-    CreateButtonImage ButtonTypeHid, Id.COLOR_ID
-    pos ginfo_winx - ButtonSize * 2 - BORDERWIDTH, BORDERWIDTH
-    button gosub "", *OnButtonHid
-    Id.BUTTON_ID_HID = stat
-  } else:if (Id.BUTTON_ID_HID != -1 && isPin == true) {
-    clrobj Id.BUTTON_ID_HID, Id.BUTTON_ID_HID
-    Id.BUTTON_ID_HID = -1
-  } else:if (Id.BUTTON_ID_HID != -1 && isPin == false) {
-    args = 0, 0, ginfo_winx - ButtonSize * 2 - BORDERWIDTH, BORDERWIDTH
-    resizeobj Id.BUTTON_ID_HID, args, 2
-  }
 
-  // 削除ボタン
-  if (isBtnDisabled == true) {
-    if (Id.BUTTON_ID_DELETE != -1) {
-      clrobj Id.BUTTON_ID_DELETE, Id.BUTTON_ID_DELETE
-      Id.BUTTON_ID_DELETE = -1
+    // 削除ボタンの配置
+    if (isPin) {
+      if (Id.BUTTON_ID_DELETE != -1) : clrobj Id.BUTTON_ID_DELETE, Id.BUTTON_ID_DELETE : Id.BUTTON_ID_DELETE = -1
+    } else:if (Id.BUTTON_ID_DELETE == -1) {
+      CreateButtonImage ButtonTypeDel, Id.COLOR_ID
+      pos ginfo_winx - ButtonSize - BORDERWIDTH, BORDERWIDTH
+      button gosub "", *OnButtonDel
+      Id.BUTTON_ID_DELETE = stat
+    } else {
+      args = 0, 0, ginfo_winx - ButtonSize - BORDERWIDTH, BORDERWIDTH
+      resizeobj Id.BUTTON_ID_DELETE, args, 2
     }
-  } else:if (Id.BUTTON_ID_DELETE == -1 && isPin == false) {
-    CreateButtonImage ButtonTypeDel, Id.COLOR_ID
-    pos ginfo_winx - ButtonSize - BORDERWIDTH, BORDERWIDTH
-    button gosub "", *OnButtonDel
-    Id.BUTTON_ID_DELETE = stat
-  } else:if (Id.BUTTON_ID_DELETE != -1 && isPin == true) {
-    clrobj Id.BUTTON_ID_DELETE, Id.BUTTON_ID_DELETE
-    Id.BUTTON_ID_DELETE = -1
-  } else:if (Id.BUTTON_ID_DELETE != -1 && isPin == false) {
-    args = 0, 0, ginfo_winx - ButtonSize - BORDERWIDTH, BORDERWIDTH
-    resizeobj Id.BUTTON_ID_DELETE, args, 2
   }
 
-  // テキストエリアの配置
+  // テキストエリアの座標情報を計算
   padding = 5 * (false == GetGlobalStatus(STATUS_SHOW_SCROLLBAR))
   x = padding
   y = CaptionHeight + padding
   w = ginfo_winx - padding * 2
   h = (ginfo_winy - CaptionHeight) - (padding * 2)
+
+  // テキストエリアの配置
   if (Id.TEXTAREA_ID == -1) {
-    oncmd gosub *OnCtrlEdit, 0x133
+    // 割り込み設定
+    oncmd gosub *OnCtrlEdit, 0x0133
+
+    // 描画設定
     font fontName, fontSize, fontStyle
     objmode 2, 0
     pos x, y
     mesbox text, w, h, 1, 0
     Id.TEXTAREA_ID = stat
     hMesbox = objinfo(stat, 2)
+
+    // スクロールバー
     ShowScrollBar hMesbox, 1, 1 * GetGlobalStatus(STATUS_SHOW_SCROLLBAR)
-    SetWindowLong hMesbox, -20, 0x0
-    SetWindowPos hMesbox, 0x27
+
+    // 色設定
+    SetWindowLong hMesbox, GWL_EXSTYLE, 0
+    SetWindowPos hMesbox, WM_ICONERASEBKGND
     CreateSolidBrush hexBGR(getColor(Id.COLOR_ID, ColorTypeBox))
     hBrush = stat
-    SetWindowPos hMesbox, 0x27
-    sendmsg hMesbox, 0x00B9
-    sendmsg hMesbox, 0x00CF, f
+    SetWindowPos hMesbox, WM_ICONERASEBKGND
+    sendmsg hMesbox, EM_SETMODIFY
+    sendmsg hMesbox, EM_SETREADONLY, 0
   } else {
+    // リサイズ
     size = w, h, x, y
     resizeobj Id.TEXTAREA_ID, size, 0
 
+    // スクロールバー
     hMesbox = objinfo(Id.TEXTAREA_ID, 2)
     ShowScrollBar hMesbox, 1, 1 * GetGlobalStatus(STATUS_SHOW_SCROLLBAR)
   }
