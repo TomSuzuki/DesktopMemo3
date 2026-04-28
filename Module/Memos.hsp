@@ -2,9 +2,6 @@
 // メモ本体を定義
 // ------------------------------------------------------------
 
-// modfunc, modcfunc ...publicメソッド扱い
-// label ...staticメソッド扱い
-
 // メモ設定
 #const global MinMemoWidth 320
 #const global MinMemoHeight 240
@@ -20,14 +17,11 @@
 #uselib "gdi32"
 #func CreateSolidBrush "CreateSolidBrush" sptr
 #func DeleteObject "DeleteObject" sptr
-#func SetBkColor "SetBkColor" sptr,sptr
-#func SetBkMode "SetBkMode" sptr,sptr
-#func SetTextColor "SetTextColor" sptr,sptr
+#func SetBkColor "SetBkColor" sptr, sptr
+#func SetBkMode "SetBkMode" sptr, sptr
+#func SetTextColor "SetTextColor" sptr, sptr
 
-#define ctype BGR(%1,%2,%3) (%1 | %2 << 8 | %3 << 16)
-#define GWL_STYLE   0xFFFFFFF0
-#define GWL_EXSTYLE -20
-#define WS_EX_TOOLWINDOW 0x0080
+// 各種定義
 #define LEFT    0x00000001
 #define RIGHT   0x00000002
 #define TOP     0x00000004
@@ -102,9 +96,9 @@
 
   // 割り込み登録
   oncmd 0
-  oncmd gosub *OnResize, WM_SIZE
-  oncmd gosub *OnWidthChange, WM_NCHITTEST
-  oncmd gosub *OnMove, WM_MOVE
+  oncmd gosub *OnResize,        WM_SIZE
+  oncmd gosub *OnWidthChange,   WM_NCHITTEST
+  oncmd gosub *OnMove,          WM_MOVE
   oncmd gosub *OnGetMinMaxInfo, WM_GETMINMAXINFO
   DandD_SetLabel *OnDragAndDrop
   DandD_SetWindow true
@@ -144,7 +138,7 @@
 
   return
 
-// WidthChange ...画面サイズを変更します。
+// WidthChange ...ウィンドウのリサイズ枠判定を行います。
 #modcfunc WidthChange
 
   // マウスに動きがあるウィンドウであるかを確認
@@ -193,7 +187,7 @@
 
   return -1
 
-// isOnMouse ...マウスがメモに乗っているかを判定します。
+// isOnMouse ...マウス座標が変化したかを判定します。
 #modcfunc isOnMouse
 
   // 座標を取得
@@ -315,7 +309,7 @@
   // テキストエリアの配置
   if (Id.TEXTAREA_ID == -1) {
     // 割り込み設定
-    oncmd gosub *OnCtrlEdit, 0x0133
+    oncmd gosub *OnCtrlEdit, WM_CTLCOLOREDIT
 
     // 描画設定
     font fontName, fontSize, fontStyle
@@ -554,7 +548,7 @@
   // テキストの文字数を判定
   charCount = strlen(text1)
   
-  // メニュー文字数の閾値（MenuTextLength-1以上なら省略記号を追加）
+  // メニュー文字数の閾値（MenuTextLength+1以上なら省略記号を追加）
   truncateLength = MenuTextLength - 1
   truncateThreshold = MenuTextLength + 1
   
@@ -563,6 +557,7 @@
     memcpy buf2, buf1, truncateLength * 2, , 0
     sdim buf3, 10
     cnvstow buf3, "…"
+    // 「…」をtruncateLength文字目に追加
     memcpy buf2, buf3, 2, truncateLength * 2, 0
     res = cnvwtos(buf2)
   } else {
@@ -674,7 +669,7 @@
       continue
     }
 
-    // ピン止めの処理
+    // メモを削除
     DelMemo memo.cnt
     break
 

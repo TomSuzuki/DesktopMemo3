@@ -66,7 +66,6 @@ Windows上でのみ動作確認を行っています。
 ## 使用しているDLL
 - `shell32.dll`
 - `user32.dll`
-- `gdi32.dll`
 - `hspext.dll`
 - `hspinet.dll`
 
