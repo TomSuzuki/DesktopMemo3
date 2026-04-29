@@ -100,8 +100,6 @@
   oncmd gosub *OnWidthChange,   WM_NCHITTEST
   oncmd gosub *OnMove,          WM_MOVE
   oncmd gosub *OnGetMinMaxInfo, WM_GETMINMAXINFO
-  DandD_SetLabel *OnDragAndDrop
-  DandD_SetWindow true
   oncmd 1
 
   // メニューに登録
@@ -619,20 +617,6 @@
     // 移動時処理
     Move memo.cnt
     break
-  loop
-
-  return
-
-// D&D時の処理
-*OnDragAndDrop
-
-  // 情報の取得
-  fileNum = DandD_GetInfo(0)
-
-  // 各ファイルの処理
-  repeat fileNum
-    fname = DandD_GetPath(cnt)
-    createNewMemo fname
   loop
 
   return

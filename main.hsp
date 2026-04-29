@@ -31,7 +31,6 @@
 #include "./Module/StatusManager.hsp"
 #include "./Common/CommonConstants.hsp"
 #include "./Common/CommonFunctions.hsp"
-#include "./Common/DragAndDrop.hsp"
 #include "./Module/ErrorDialog.hsp"
 #include "./Module/SettingsManager.hsp"
 #include "./Module/ColorManager.hsp"
