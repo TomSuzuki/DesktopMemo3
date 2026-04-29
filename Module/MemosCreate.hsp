@@ -37,10 +37,9 @@
   }
 
   // 初期設定の作成
-  jsonnewobj@ jsonPtr
-  jsonputs@ jsonPtr, "path", fname
-  jsonout@ jsonText, jsonPtr
-  jsonclose@
+  jsonText  = "{"
+  jsonText += "  \"path\": \"" + fname + "\""
+  jsonText += "}"
 
   // 設定ファイルを保存
   notesel jsonText

@@ -58,14 +58,11 @@
   noteunsel
 
   // JSON形式を開く
-  jsonopen@ jsonPtr, jsonText
+  jsonsel jsonText
 
   // 読み込み
-  jsongets@ path, "path", jsonPtr
+  path = jsonget("path")
   path = cnvatos(path)
-
-  // JSONを閉じる
-  jsonclose@
 
   // リンク先メモが存在しなかったらゴミ箱に入れる
   if (strsize == -1) {
