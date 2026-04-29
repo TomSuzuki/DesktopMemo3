@@ -3,8 +3,10 @@
 
 #include "../Common/JsonParser.as"
 
+screen 0, 640, 640
+
 // テスト１
-JsonTestData = "{ \"item1\": 32, \"item2\": $00FF, \"item3\": \"おなかすいた。\", \"item4\": \"寿司\\\"🍣\\\"。\", \"item5\": { \"subitem51\": 128 } }"
+JsonTestData = "{ \"item1\": 32, \"item2\": $00FF, \"item3\": \"おなかすいた。\", \"item4\": \"寿司🍣。\", \"item5\": { \"subitem51\": 128 } }"
 jsonsel JsonTestData
 mes "[" + jsonget("item1") + "]"
 mes "[" + jsonget("item2") + "]" + "[" + int(jsonget("item2")) + "]"
@@ -25,7 +27,7 @@ JsonTestData += "    \"1\": {"
 JsonTestData += "        \"text\": \"$FFFFFF\","
 JsonTestData += "        \"theme\": \"$1E3A5F\","
 JsonTestData += "        \"box\": \"$2E5A8F\"
-JsonTestData += "    }\"
+JsonTestData += "    }"
 JsonTestData += "}"
 jsonsel JsonTestData
 mes "[" + jsonget("0,text") + "]"
@@ -35,3 +37,20 @@ mes "[" + jsonget("1,text") + "]"
 mes "[" + jsonget("1,theme") + "]"
 mes "[" + jsonget("1,box") + "]"
 mes "------------------------------------------------------------"
+
+// 更新
+_ = jsonset("0,text", "更新後の値")
+_ = jsonset("0,theme", "999")
+_ = jsonset("0,new", "NEW!!")
+_ = jsonset("99,new", "新規")
+mes "[" + jsonget("0,text") + "]"
+mes "[" + jsonget("0,theme") + "]"
+mes "[" + jsonget("0,box") + "]"
+mes "[" + jsonget("0,new") + "]"
+mes "[" + jsonget("99,new") + "]"
+mes "------------------------------------------------------------"
+
+y = ginfo(23) + 5
+pos 0, y
+j = jsontostr()
+mesbox j, 640, ginfo(13) - y, 4
