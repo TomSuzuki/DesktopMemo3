@@ -18,8 +18,8 @@
 #include "hsp3utf.as"
 #include "user32.as"
 #include "hspext.as"
-#include "hspinet.as"
 #include "obj.as"
+#include "./Common/JsonParser.as"
 
 // グローバル変数
 #define global memo _memo@

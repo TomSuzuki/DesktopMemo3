@@ -55,19 +55,15 @@
   dimtype color_obj, vartype("struct")    // 色オブジェクト配列
 
   // JSON形式を開く
-  jsonopen@ jsonPtr, jsonText
+  jsonsel jsonText
 
   // JSONから読み込み（モジュール変数の順番は保証されるはず）
   repeat ColorNum
-    jsongetobj@ nowPtr, str(cnt), jsonPtr
-    jsongets@ text, "text", nowPtr
-    jsongets@ theme, "theme", nowPtr
-    jsongets@ box, "box", nowPtr
+    text  = jsonget(str(cnt) + ",text")
+    theme = jsonget(str(cnt) + ",theme")
+    box   = jsonget(str(cnt) + ",box")
     newmod color_obj, MOD_COLOR_OBJ, int(text), int(theme), int(box)
   loop
-
-  // JSONを閉じる
-  jsonclose@
 
   return
 

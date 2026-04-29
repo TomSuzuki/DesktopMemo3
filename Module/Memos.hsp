@@ -61,21 +61,18 @@
   Id.WID = _wid
 
   // JSON形式を開く
-  jsonopen@ jsonPtr, jsonText
+  jsonsel jsonText
 
   // 読み込み
-  jsongets@ path, "path", jsonPtr
-  jsongeti@ x, "x", jsonPtr
-  jsongeti@ y, "y", jsonPtr
-  jsongeti@ w, "w", jsonPtr
-  jsongeti@ h, "h", jsonPtr
-  jsongeti@ Id.COLOR_ID, "color_id", jsonPtr
-  jsongeti@ isPin, "pin", jsonPtr
-  jsongeti@ isHidden, "is_hidden", jsonPtr
+  path = jsonget("path")
+  x = int(jsonget("x"))
+  y = int(jsonget("y"))
+  w = int(jsonget("w"))
+  h = int(jsonget("h"))
+  Id.COLOR_ID = int(jsonget("color_id"))
+  isPin = int(jsonget("pin"))
+  isHidden = int(jsonget("is_hidden"))
   path = cnvatos(path)
-
-  // JSONを閉じる
-  jsonclose@
 
   // バックアップの作成
   FileBackup path
@@ -436,21 +433,19 @@
   w = ginfo_sizex
   h = ginfo_sizey
 
-  // 設定データの組み立て
-  sdim jsonText
-  jsonnewobj@ jsonPtr
-  jsonputs@ jsonPtr, "path", path
-  jsonputi@ jsonPtr, "x", x
-  jsonputi@ jsonPtr, "y", y
-  jsonputi@ jsonPtr, "w", w
-  jsonputi@ jsonPtr, "h", h
-  jsonputi@ jsonPtr, "color_id", Id.COLOR_ID
-  jsonputi@ jsonPtr, "pin", isPin
-  jsonputi@ jsonPtr, "is_hidden", isHidden
-  jsonout@ jsonText, jsonPtr
-  jsonclose@
+  // JSONの更新
+  jsonsel jsonText
+  _ = jsonset("path", path)
+  _ = jsonset("x", str(x))
+  _ = jsonset("y", str(y))
+  _ = jsonset("w", str(w))
+  _ = jsonset("h", str(h))
+  _ = jsonset("color_id", str(Id.COLOR_ID))
+  _ = jsonset("pin", str(isPin))
+  _ = jsonset("is_hidden", str(isHidden))
 
   // 設定の保存
+  jsonText = jsontostr()
   notesel jsonText
   notesave memoPath
   noteunsel

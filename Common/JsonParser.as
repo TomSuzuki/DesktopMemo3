@@ -26,6 +26,11 @@
     if (isdata == 0) {
       if cnvwtos(v) == " "  : continue
       if cnvwtos(v) == "\t" : continue
+      if cnvwtos(v) == "\n" : continue
+      if cnvwtos(v) == "\r" : continue
+      if cnvwtos(v) == ""   : continue
+      if v == $0A : continue // \n
+      if v == $0D : continue // \r
     }
 
     // 文字追加
@@ -251,6 +256,7 @@
 
   // トリム
   response = strtrim(response, 0)
+  if str(int(response)) == response : return int(response)
   response = strtrim(response, 0, '\"')
 
   return response
