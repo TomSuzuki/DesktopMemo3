@@ -3,9 +3,17 @@
 // ------------------------------------------------------------
 
 #const global ColorNum 8
+
 #enum global ColorTypeText 0
 #enum global ColorTypeTheme
 #enum global ColorTypeBox
+#enum global ColorTypeButton
+#enum global ColorTypeButtonClick
+#enum global ColorTypeButtonMouseOver
+
+#define global ButtonColor          getColor(-1, ColorTypeButton)
+#define global ButtonClickColor     getColor(-1, ColorTypeButtonClick)
+#define global ButtonMouseOverColor getColor(-1, ColorTypeButtonMouseOver)
 
 // 色管理モジュール
 #module MOD_COLOR_OBJ text, theme, box
@@ -65,6 +73,14 @@
     newmod color_obj, MOD_COLOR_OBJ, int(text), int(theme), int(box)
   loop
 
+  // テーマファイル側のボタンカラー設定を優先して読み込む
+  buttonColor1 = jsonget("button_color")
+  buttonColor2 = jsonget("button_color_click")
+  buttonColor3 = jsonget("button_color_mouseover")
+  if (buttonColor1 != "") : buttonColor1 = int(buttonColor1) : else : buttonColor1 = int("$666666")
+  if (buttonColor2 != "") : buttonColor2 = int(buttonColor2) : else : buttonColor1 = int("$FFFFFF")
+  if (buttonColor3 != "") : buttonColor3 = int(buttonColor3) : else : buttonColor1 = int("$AAAAAA")
+
   return
 
 // getColor ...色を取得します。
@@ -73,6 +89,9 @@
   if (_type == ColorTypeText)  : c = getObjTextColor(color_obj._id)
   if (_type == ColorTypeTheme) : c = getObjThemeColor(color_obj._id)
   if (_type == ColorTypeBox)   : c = getObjBoxColor(color_obj._id)
+  if (_type == ColorTypeButton)          : c = buttonColor1
+  if (_type == ColorTypeButtonClick)     : c = buttonColor2
+  if (_type == ColorTypeButtonMouseOver) : c = buttonColor3
   return c
 
 #global

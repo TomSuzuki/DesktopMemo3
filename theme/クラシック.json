@@ -38,5 +38,8 @@
         "text": "$000000",
         "theme": "$FFBBFF",
         "box": "$EEAEEE"
-    }
+    },
+    "button_color": "$666666",
+    "button_color_click": "$FFFFFF",
+    "button_color_mouseover": "$AAAAAA"
 }

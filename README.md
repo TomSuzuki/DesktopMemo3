@@ -23,14 +23,14 @@ Windows上でのみ動作確認を行っています。
 - `text` ...文字色です。
 - `theme` ...タイトルバーの色です。
 - `box` ...文字の背景色です。
+- `button_color` ...基本のボタン色です。
+- `button_color_click` ...クリック時のボタン色です。
+- `button_color_mouseover` ...マウスホバー時のボタン色です。
 
 ## その他の設定について `setting.json`
 - `font` ...使用するフォントです。
 - `font_size` ...フォントの大きさです。
 - `font_style` ...`0`が通常、`1`が太字です。
-- `button_color` ...基本のボタン色です。
-- `button_color_click` ...クリック時のボタン色です。
-- `button_color_mouseover` ...マウスホバー時のボタン色です。
 - `delete_dialog` ...削除時にダイアログを表示するかの設定です。 `1`で有効、`2`で無効です。
 - `menu_text_length` ...メモメニューに表示する文字数の設定です。
 - `translucent_rate` ...メモの半透明化率の設定です（0～100）。

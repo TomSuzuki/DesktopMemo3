@@ -18,9 +18,6 @@
 #define global SettingKey_fontName  "font"
 #define global SettingKey_fontSize  "font_size"
 #define global SettingKey_fontStyle "font_style"
-#define global SettingKey_buttonColor1 "button_color"
-#define global SettingKey_buttonColor2 "button_color_click"
-#define global SettingKey_buttonColor3 "button_color_mouseover"
 #define global SettingKey_deleteDialog "delete_dialog"
 #define global SettingKey_menuTextLength "menu_text_length"
 #define global SettingKey_translucentRate "translucent_rate"
@@ -30,9 +27,6 @@
 #define global fontName _application_setting_fontName()
 #define global fontSize _application_setting_fontSize()
 #define global fontStyle _application_setting_fontStyle()
-#define global ButtonColor _application_setting_buttonColor1()
-#define global ButtonClickColor _application_setting_buttonColor2()
-#define global ButtonMouseOverColor _application_setting_buttonColor3()
 #define global DeleteDialog _application_setting_deleteDialog()
 #define global MenuTextLength _application_setting_menuTextLength()
 #define global TranslucentRate _application_setting_translucentRate()
@@ -54,9 +48,6 @@
   _fontName        = jsonget(SettingKey_fontName)
   _fontSize        = jsonget(SettingKey_fontSize)
   _fontStyle       = jsonget(SettingKey_fontStyle)
-  _buttonColor1    = jsonget(SettingKey_buttonColor1)
-  _buttonColor2    = jsonget(SettingKey_buttonColor2)
-  _buttonColor3    = jsonget(SettingKey_buttonColor3)
   _deleteDialog    = jsonget(SettingKey_deleteDialog)
   _menuTextLength  = jsonget(SettingKey_menuTextLength)
   _translucentRate = jsonget(SettingKey_translucentRate)
@@ -66,9 +57,6 @@
   if (_fontName == ""):_fontName = DefaultSetting_fontName
   if (_fontSize == 0):_fontSize = DefaultSetting_fontSize
   if (_fontStyle == 0):_fontStyle = DefaultSetting_fontStyle
-  if (_buttonColor1 == ""):_buttonColor1 = DefaultSetting_buttonColor1
-  if (_buttonColor2 == ""):_buttonColor2 = DefaultSetting_buttonColor2
-  if (_buttonColor3 == ""):_buttonColor3 = DefaultSetting_buttonColor3
   if (_deleteDialog == 0):_deleteDialog = DefaultSetting_deleteDialog
   if (_menuTextLength == 0):_menuTextLength = DefaultSetting_menuTextLength
   if (_translucentRate == 0):_translucentRate = DefaultSetting_translucentRate
@@ -93,15 +81,6 @@
 
 #defcfunc _application_setting_fontStyle
   return _fontStyle
-
-#defcfunc _application_setting_buttonColor1
-  return int(_buttonColor1)
-
-#defcfunc _application_setting_buttonColor2
-  return int(_buttonColor2)
-
-#defcfunc _application_setting_buttonColor3
-  return int(_buttonColor3)
 
 #defcfunc _application_setting_deleteDialog
   return _deleteDialog = 1

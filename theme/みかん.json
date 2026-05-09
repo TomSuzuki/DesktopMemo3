@@ -1,0 +1,45 @@
+{
+    "0": {
+        "text": "$000000",
+        "theme": "$FC7A02",
+        "box": "$FD9A3D"
+    },
+    "1": {
+        "text": "$FFFFFF",
+        "theme": "$F54700",
+        "box": "$F76D31"
+    },
+    "2": {
+        "text": "$000000",
+        "theme": "$FA8E43",
+        "box": "$FCAD72"
+    },
+    "3": {
+        "text": "$000000",
+        "theme": "$FDC729",
+        "box": "$FEE576"
+    },
+    "4": {
+        "text": "$000000",
+        "theme": "$FFBE30",
+        "box": "$FFD56A"
+    },
+    "5": {
+        "text": "$000000",
+        "theme": "$B0C715",
+        "box": "$D3DD69"
+    },
+    "6": {
+        "text": "$000000",
+        "theme": "$F6A200",
+        "box": "$F8BF4A"
+    },
+    "7": {
+        "text": "$000000",
+        "theme": "$FECB72",
+        "box": "$FFDEA5"
+    },
+    "button_color": "$666666",
+    "button_color_click": "$FFFFFF",
+    "button_color_mouseover": "$AAAAAA"
+}

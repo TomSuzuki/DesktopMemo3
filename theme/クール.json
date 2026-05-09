@@ -15,7 +15,7 @@
         "box": "$4B82F0"
     },
     "3": {
-        "text": "$FFFFFF",
+        "text": "$000000",
         "theme": "$4B9FFF",
         "box": "$7CB8FF"
     },
@@ -36,7 +36,10 @@
     },
     "7": {
         "text": "$000000",
-        "theme": "$F0FBFF",
-        "box": "$F8FDFF"
-    }
+        "theme": "$E9FAFF",
+        "box": "$FEFEFF"
+    },
+    "button_color": "$666666",
+    "button_color_click": "$FFFFFF",
+    "button_color_mouseover": "$AAAAAA"
 }
