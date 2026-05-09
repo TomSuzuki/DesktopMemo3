@@ -17,8 +17,8 @@
 
 #include "hsp3utf.as"
 #include "user32.as"
-#include "hspext.as"
 #include "obj.as"
+#include "./Common/Clipboard.as"
 #include "./Common/JsonParser.as"
 
 // グローバル変数
@@ -45,12 +45,6 @@
 
   // メモの定義
   dimtype memo, vartype("struct")
-
-  // 多重起動防止
-  aplsel@ appTitle
-  if (stat != true) {
-    end
-  }
 
   // ウィンドウ設定
   gsel 0, -1
