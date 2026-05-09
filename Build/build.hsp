@@ -2,29 +2,29 @@
 #include "hspcmp.as"
 #packopt name "build"
 
-  // ビルド対象のディレクトリに移動
+  // Change to the build target directory
   chdir "../"
 
-  // 各種設定
+  // Setup
   fname = "main.hsp"
   objname = "obj"
 
-  // コンパイル
+  // Compile
   hsc_ini fname
   hsc_objname objname
   hsc_comp 4, 36 // UTF8
   if stat {
-    dialog "コンパイルに失敗しました。"
+    dialog "Compilation failed."
     end
   }
 
-  // ビルド
+  // Build
   hsc3_make dir_exe + "\\" + "runtime" + "\\"
   if stat {
-    dialog "ビルドに失敗しました。"
+    dialog "Build failed."
 	end
   }
 
-  // ビルド完了
-  dialog "ビルドが完了しました。"
+  // Build complete
+  dialog "Build completed."
   end
