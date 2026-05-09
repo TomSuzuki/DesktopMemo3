@@ -72,7 +72,6 @@
   Id.COLOR_ID = int(jsonget("color_id"))
   isPin = int(jsonget("pin"))
   isHidden = int(jsonget("is_hidden"))
-  path = cnvatos(path)
 
   // バックアップの作成
   FileBackup path

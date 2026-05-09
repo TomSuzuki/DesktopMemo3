@@ -62,7 +62,6 @@
 
   // 読み込み
   path = jsonget("path")
-  path = cnvatos(path)
 
   // リンク先メモが存在しなかったらゴミ箱に入れる
   if (strsize == -1) {
