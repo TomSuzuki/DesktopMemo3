@@ -56,4 +56,3 @@ Windows上でのみ動作確認を行っています。
 - [タスクトレイアイコンモジュール - つーさのくーかん](https://tu3.jp/0108)
 - [WINAPI ウィンドウメッセージリスト](http://chokuto.ifdef.jp/urawaza/message/index.html)
 - [Win32エラーコード一覧](http://ir9.jp/prog/ayu/win32err.htm)
-- [HSPEXT ver3.3 REFERENCE MANUAL](http://www.onionsoft.net/hsp/v33/doclib/hspext.txt)

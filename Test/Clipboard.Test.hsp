@@ -1,0 +1,18 @@
+#runtime "hsp3utf"
+#include "hsp3utf.as"
+
+#include "../Common/Clipboard.as"
+
+screen 0, 640, 480
+
+// クリップボードへコピー・取得
+ClipboardCopy "テストデータ"
+mes ClipboardGet()
+
+// クリップボードへコピー・取得
+ClipboardCopy "おなかすいた。🍣"
+mes ClipboardGet()
+
+// クリップボードへコピー・取得
+ClipboardCopy "ABC\nあいう"
+mes ClipboardGet()

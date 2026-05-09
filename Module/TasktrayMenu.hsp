@@ -433,7 +433,7 @@
         } else {
           text = getSkipText(memo.cnt)
         }
-        clipset@ text
+        ClipboardCopy text
         break
       }
 
