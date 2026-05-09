@@ -1,0 +1,15 @@
+#runtime "hsp3utf"
+#include "hsp3utf.as"
+
+#include "../Common/MultipleActive.as"
+
+screen 0, 640, 640
+
+title "Test Window"
+mes IsMultipleActive("Test Window")
+
+title "Test Window - test"
+mes IsMultipleActive("Test Window")
+
+title "Test Window"
+mes IsMultipleActive("Test Window")

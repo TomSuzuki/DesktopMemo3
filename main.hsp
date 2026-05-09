@@ -20,6 +20,7 @@
 #include "obj.as"
 #include "./Common/Clipboard.as"
 #include "./Common/JsonParser.as"
+#include "./Common/MultipleActive.as"
 
 // グローバル変数
 #define global memo _memo@
@@ -42,6 +43,11 @@
 #include "./Module/MemosCreate.hsp"
 #include "./Module/ColorWindow.hsp"
 #include "./Common/Tasktray.hsp"
+
+  // 多重起動をチェック
+  if (IsMultipleActive(appTitle)) {
+    end
+  }
 
   // メモの定義
   dimtype memo, vartype("struct")
