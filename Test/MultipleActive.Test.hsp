@@ -2,14 +2,25 @@
 #include "hsp3utf.as"
 
 #include "../Common/MultipleActive.as"
+#include "./TestFrame.hsp"
 
-screen 0, 640, 640
+// テストを初期化
+InitTest "多重起動チェックのテスト"
 
+// No.1 未設定
+TestRecord "未設定", (IsMultipleActive("Test Window") == 0)
+
+// No.2 設定済み
 title "Test Window"
-mes IsMultipleActive("Test Window")
+TestRecord "設定済み", (IsMultipleActive("Test Window") == 1)
 
+// No.3 変更
 title "Test Window - test"
-mes IsMultipleActive("Test Window")
+TestRecord "変更", (IsMultipleActive("Test Window") == 0)
 
+// No.4 戻す
 title "Test Window"
-mes IsMultipleActive("Test Window")
+TestRecord "戻す", (IsMultipleActive("Test Window") == 1)
+
+// 最終結果を出力
+TestResult

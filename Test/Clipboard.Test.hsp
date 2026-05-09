@@ -2,17 +2,30 @@
 #include "hsp3utf.as"
 
 #include "../Common/Clipboard.as"
+#include "./TestFrame.hsp"
 
-screen 0, 640, 480
+// テストを初期化
+InitTest "クリップボード操作のテスト"
 
-// クリップボードへコピー・取得
-ClipboardCopy "テストデータ"
-mes ClipboardGet()
+// No.1 英数文字列
+s = "ABC123"
+ClipboardCopy s
+TestRecord s, (ClipboardGet() == s)
 
-// クリップボードへコピー・取得
-ClipboardCopy "おなかすいた。🍣"
-mes ClipboardGet()
+// No.2 全角文字
+s = "テストデータ"
+ClipboardCopy s
+TestRecord s, (ClipboardGet() == s)
 
-// クリップボードへコピー・取得
-ClipboardCopy "ABC\nあいう"
-mes ClipboardGet()
+// No.3 改行データ
+s = "ABC\nあいう"
+ClipboardCopy s
+TestRecord s, (ClipboardGet() == s)
+
+// No.4 絵文字
+s = "寿司（🍣） 鍵（🔑）"
+ClipboardCopy s
+TestRecord s, (ClipboardGet() == s)
+
+// 最終結果を出力
+TestResult

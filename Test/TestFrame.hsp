@@ -1,0 +1,78 @@
+// ------------------------------------------------------------
+// テストフレーム
+// ------------------------------------------------------------
+
+#module
+
+// テストを初期化します。
+#deffunc InitTest str _title
+
+  // 変数を初期化
+  isAllSuccess = 1
+  testNumber = 1
+  sdim testMessage
+
+  // 画面を初期化
+  cls
+  pos 0, 0
+	objmode 2
+	font "Meiryo UI", 13
+  mesbox testMessage, ginfo_winx, ginfo_winy, 4
+  testMesBoxId = stat
+
+  // ログ出力
+  TestLog "----------------------------------------"
+  TestLog _title
+  TestLog "----------------------------------------"
+
+  return
+
+// ログを書き込みます。
+#deffunc TestLog str _p1
+  testMessage = testMessage + _p1
+  testMessage = testMessage + "\n"
+  objprm testMesBoxId, testMessage
+  return
+
+// テスト結果を登録します。
+#deffunc TestRecord str _title, int _result
+
+  // 結果を記録
+  isAllSuccess = isAllSuccess || (_result == 1)
+
+  // メッセージを組み立て
+  logMessage  = ""
+  logMessage += "["
+  if (_result == 1) : logMessage += "OK" : else :logMessage += "NG"
+  logMessage += "] No."
+  logMessage += testNumber
+  logMessage += " "
+  logMessage += _title
+
+  // テスト番号を進める
+  testNumber++
+
+  // 出力
+  TestLog logMessage
+
+  return
+
+// テストの最終結果を出力します。
+#deffunc TestResult
+
+  if (isAllSuccess) {
+    TestLog ""
+    TestLog "----------------------------------------"
+    TestLog "All tests is successful."
+    TestLog "----------------------------------------"
+  } else {
+    TestLog ""
+    TestLog "----------------------------------------"
+    TestLog "The test failed."
+    TestLog "----------------------------------------"
+  }
+
+  return
+
+#global
+

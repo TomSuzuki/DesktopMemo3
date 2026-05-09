@@ -2,55 +2,51 @@
 #include "hsp3utf.as"
 
 #include "../Common/JsonParser.as"
+#include "./TestFrame.hsp"
 
-screen 0, 640, 640
+// テストを初期化
+InitTest "JsonParser のテスト"
 
-// テスト１
+// テスト1: 基本値の取得
 JsonTestData = "{ \"item1\": 32, \"item2\": $00FF, \"item3\": \"おなかすいた。\", \"item4\": \"寿司🍣。\", \"item5\": { \"subitem51\": 128 } }"
 jsonsel JsonTestData
-mes "[" + jsonget("item1") + "]"
-mes "[" + jsonget("item2") + "]" + "[" + int(jsonget("item2")) + "]"
-mes "[" + jsonget("item3") + "]"
-mes "[" + jsonget("item4") + "]"
-mes "[" + jsonget("item5,subitem51") + "]"
-mes "[" + jsonget("not_found") + "] ※一致なし"
-mes "------------------------------------------------------------"
+TestRecord "item1 の取得", (jsonget("item1") == "32")
+TestRecord "item2 の取得", (jsonget("item2") == "$00FF")
+TestRecord "item3 の取得", (jsonget("item3") == "おなかすいた。")
+TestRecord "item4 の取得", (jsonget("item4") == "寿司🍣。")
+TestRecord "item5.subitem51 の取得", (jsonget("item5,subitem51") == "128")
+TestRecord "存在しないキーは空文字", (jsonget("not_found") == "")
 
-// テスト２
-JsonTestData =  "{"
+// テスト2: 入れ子オブジェクトの取得
+JsonTestData = "{"
 JsonTestData += "    \"0\": {"
-JsonTestData += "        \"text\": \"$FFFFFF\","
-JsonTestData += "        \"theme\": \"$0F1419\","
+JsonTestData += "        \"text\": \"$FFFFFF\"," 
+JsonTestData += "        \"theme\": \"$0F1419\"," 
 JsonTestData += "        \"box\": \"$1A2332\""
 JsonTestData += "    },"
 JsonTestData += "    \"1\": {"
-JsonTestData += "        \"text\": \"$FFFFFF\","
-JsonTestData += "        \"theme\": \"$1E3A5F\","
-JsonTestData += "        \"box\": \"$2E5A8F\"
+JsonTestData += "        \"text\": \"$FFFFFF\"," 
+JsonTestData += "        \"theme\": \"$1E3A5F\"," 
+JsonTestData += "        \"box\": \"$2E5A8F\""
 JsonTestData += "    }"
 JsonTestData += "}"
 jsonsel JsonTestData
-mes "[" + jsonget("0,text") + "]"
-mes "[" + jsonget("0,theme") + "]"
-mes "[" + jsonget("0,box") + "]"
-mes "[" + jsonget("1,text") + "]"
-mes "[" + jsonget("1,theme") + "]"
-mes "[" + jsonget("1,box") + "]"
-mes "------------------------------------------------------------"
+TestRecord "0,text の取得", (jsonget("0,text") == "$FFFFFF")
+TestRecord "0,theme の取得", (jsonget("0,theme") == "$0F1419")
+TestRecord "0,box の取得", (jsonget("0,box") == "$1A2332")
+TestRecord "1,text の取得", (jsonget("1,text") == "$FFFFFF")
+TestRecord "1,theme の取得", (jsonget("1,theme") == "$1E3A5F")
+TestRecord "1,box の取得", (jsonget("1,box") == "$2E5A8F")
 
-// 更新
+// テスト3: 更新と新規追加
 _ = jsonset("0,text", "更新後の値")
 _ = jsonset("0,theme", "999")
 _ = jsonset("0,new", "NEW!!")
 _ = jsonset("99,new", "新規")
-mes "[" + jsonget("0,text") + "]"
-mes "[" + jsonget("0,theme") + "]"
-mes "[" + jsonget("0,box") + "]"
-mes "[" + jsonget("0,new") + "]"
-mes "[" + jsonget("99,new") + "]"
-mes "------------------------------------------------------------"
+TestRecord "0,text の更新", (jsonget("0,text") == "更新後の値")
+TestRecord "0,theme の更新", (jsonget("0,theme") == "999")
+TestRecord "0,new の追加", (jsonget("0,new") == "NEW!!")
+TestRecord "99,new の追加", (jsonget("99,new") == "新規")
 
-y = ginfo(23) + 5
-pos 0, y
-j = jsontostr()
-mesbox j, 640, ginfo(13) - y, 4
+// 最終結果を出力
+TestResult
