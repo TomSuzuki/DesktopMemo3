@@ -78,8 +78,8 @@
   buttonColor2 = jsonget("button_color_click")
   buttonColor3 = jsonget("button_color_mouseover")
   if (buttonColor1 != "") : buttonColor1 = int(buttonColor1) : else : buttonColor1 = int("$666666")
-  if (buttonColor2 != "") : buttonColor2 = int(buttonColor2) : else : buttonColor1 = int("$FFFFFF")
-  if (buttonColor3 != "") : buttonColor3 = int(buttonColor3) : else : buttonColor1 = int("$AAAAAA")
+  if (buttonColor2 != "") : buttonColor2 = int(buttonColor2) : else : buttonColor2 = int("$FFFFFF")
+  if (buttonColor3 != "") : buttonColor3 = int(buttonColor3) : else : buttonColor3 = int("$AAAAAA")
 
   return
 

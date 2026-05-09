@@ -1,45 +1,45 @@
-{
-    "0": {
-        "text": "$FFFFFF",
-        "theme": "$0F1419",
-        "box": "$1A2332"
-    },
-    "1": {
-        "text": "$FFFFFF",
-        "theme": "$1E3A5F",
-        "box": "$2E5A8F"
-    },
-    "2": {
-        "text": "$FFFFFF",
-        "theme": "$2563EB",
-        "box": "$4B82F0"
-    },
-    "3": {
-        "text": "$000000",
-        "theme": "$4B9FFF",
-        "box": "$7CB8FF"
-    },
-    "4": {
-        "text": "$000000",
-        "theme": "$87CEEB",
-        "box": "$ADD8E6"
-    },
-    "5": {
-        "text": "$000000",
-        "theme": "$B0E0E6",
-        "box": "$D0F0F6"
-    },
-    "6": {
-        "text": "$000000",
-        "theme": "$E0F6FF",
-        "box": "$F0FAFF"
-    },
-    "7": {
-        "text": "$000000",
-        "theme": "$E9FAFF",
-        "box": "$FEFEFF"
-    },
-    "button_color": "$666666",
-    "button_color_click": "$FFFFFF",
-    "button_color_mouseover": "$AAAAAA"
+﻿{
+    "0":  {
+              "text":  "$FFFFFF",
+              "theme":  "$0F1419",
+              "box":  "$1A2332"
+          },
+    "1":  {
+              "text":  "$FFFFFF",
+              "theme":  "$1E3A5F",
+              "box":  "$2E5A8F"
+          },
+    "2":  {
+              "text":  "$FFFFFF",
+              "theme":  "$2563EB",
+              "box":  "$4B82F0"
+          },
+    "3":  {
+              "text":  "$000000",
+              "theme":  "$4B9FFF",
+              "box":  "$7CB8FF"
+          },
+    "4":  {
+              "text":  "$000000",
+              "theme":  "$87CEEB",
+              "box":  "$ADD8E6"
+          },
+    "5":  {
+              "text":  "$000000",
+              "theme":  "$B0E0E6",
+              "box":  "$D0F0F6"
+          },
+    "6":  {
+              "text":  "$000000",
+              "theme":  "$E0F6FF",
+              "box":  "$F0FAFF"
+          },
+    "7":  {
+              "text":  "$000000",
+              "theme":  "$E9FAFF",
+              "box":  "$FEFEFF"
+          },
+    "button_color":  "$1E293B",
+    "button_color_click":  "$2563EB",
+    "button_color_mouseover":  "$60A5FA"
 }

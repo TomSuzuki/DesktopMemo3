@@ -1,45 +1,45 @@
-{
-    "0": {
-        "text": "$000000",
-        "theme": "$EEF970",
-        "box": "$F4FB8C"
-    },
-    "1": {
-        "text": "$000000",
-        "theme": "$0094D3",
-        "box": "$4BB5DF"
-    },
-    "2": {
-        "text": "$000000",
-        "theme": "$7FFFD4",
-        "box": "$9EFFE2"
-    },
-    "3": {
-        "text": "$000000",
-        "theme": "$FFBB5B",
-        "box": "$FFD57F"
-    },
-    "4": {
-        "text": "$000000",
-        "theme": "$F767D5",
-        "box": "$F98ED6"
-    },
-    "5": {
-        "text": "$000000",
-        "theme": "$BC53B3",
-        "box": "$CD72C4"
-    },
-    "6": {
-        "text": "$000000",
-        "theme": "$6AD1FF",
-        "box": "$8BDBFF"
-    },
-    "7": {
-        "text": "$000000",
-        "theme": "$FF97A8",
-        "box": "$FFB9C6"
-    },
-    "button_color": "$666666",
-    "button_color_click": "$FFFFFF",
-    "button_color_mouseover": "$AAAAAA"
+﻿{
+    "0":  {
+              "text":  "$000000",
+              "theme":  "$EEF970",
+              "box":  "$F4FB8C"
+          },
+    "1":  {
+              "text":  "$000000",
+              "theme":  "$0094D3",
+              "box":  "$4BB5DF"
+          },
+    "2":  {
+              "text":  "$000000",
+              "theme":  "$7FFFD4",
+              "box":  "$9EFFE2"
+          },
+    "3":  {
+              "text":  "$000000",
+              "theme":  "$FFBB5B",
+              "box":  "$FFD57F"
+          },
+    "4":  {
+              "text":  "$000000",
+              "theme":  "$F767D5",
+              "box":  "$F98ED6"
+          },
+    "5":  {
+              "text":  "$000000",
+              "theme":  "$BC53B3",
+              "box":  "$CD72C4"
+          },
+    "6":  {
+              "text":  "$000000",
+              "theme":  "$6AD1FF",
+              "box":  "$8BDBFF"
+          },
+    "7":  {
+              "text":  "$000000",
+              "theme":  "$FF97A8",
+              "box":  "$FFB9C6"
+          },
+    "button_color":  "$333333",
+    "button_color_click":  "$FFFFFF",
+    "button_color_mouseover":  "$BBBBBB"
 }
