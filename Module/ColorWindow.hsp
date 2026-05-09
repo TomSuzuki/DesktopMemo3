@@ -10,6 +10,17 @@
 // InitializeColorWindow ...色ウィンドウを初期化します。
 #deffunc InitializeColorWindow
 
+  // 既存の色ウィンドウ／バッファを解放
+  if (colorWindow_wid != 0) {
+    gsel colorWindow_wid, -1
+    buffer colorWindow_wid, 1, 1, 2
+    colorWindow_wid = 0
+  }
+  if (colorWindow_BtnBuffer != 0) {
+    buffer colorWindow_BtnBuffer, 1, 1, 2
+    colorWindow_BtnBuffer = 0
+  }
+
   // カラーボタンバッファの作成
   colorWindow_BtnBuffer = ginfo_newid
   buffer colorWindow_BtnBuffer, colorButtonWidth * 2, colorButtonHeight * ColorNum

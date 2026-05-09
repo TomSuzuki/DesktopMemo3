@@ -47,6 +47,18 @@
 // CreateButton ...ボタン画像を作成します。
 #deffunc CreateButton
 
+  // 既存バッファの解放
+  if (BufferButton != 0) {
+    buffer BufferButton, 1, 1, 2
+    BufferButton = 0
+  }
+  if (ButtonBufferBaseID != 0) {
+    repeat ColorNum
+      buffer ButtonBufferBaseID + cnt, 1, 1, 2
+    loop
+    ButtonBufferBaseID = 0
+  }
+
   // バッファの作成
   BufferButton = NewBuffer(ButtonSize * 2, ButtonSize * 18)
 
@@ -95,6 +107,12 @@
       ButtonBufferBaseID = n
     }
   loop
+
+  // 一時バッファを破棄
+  if (BufferButton != 0) {
+    buffer BufferButton, 1, 1, 2
+    BufferButton = 0
+  }
 
   return
 
