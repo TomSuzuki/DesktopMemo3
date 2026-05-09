@@ -16,10 +16,7 @@ Windows上でのみ動作確認を行っています。
 
 終了はタスクトレイから行うことができます。
 
-メモは、他のメモの「＋」ボタンか、ファイルのドラッグアンドドロップ、タスクトレイから作成することができます。
-ドラッグアンドドロップ時は、元のファイルに上書きされますのでご注意ください。
-
-※まれに文字化けします。ドラッグアンドドロップで使用する際は、必ずバックアップをとってください。
+メモは、他のメモの「＋」ボタンか、タスクトレイメニューから作成することができます。
 
 ## 色の設定について `theme/***.json`
 各ファイルに8色登録することができます。`$`から始まる16進数のカラーコードで書いてください。
@@ -56,42 +53,7 @@ Windows上でのみ動作確認を行っています。
 `Build` フォルダ内の `build.hsp` を実行してください。
 
 ## 参考にさせていただいたもの
-- [HSP用 ドラッグ・アンド・ドロップ モジュール - 略して仮。](http://menyukko.ifdef.jp/cauldron/hmdandd.html)
 - [タスクトレイアイコンモジュール - つーさのくーかん](https://tu3.jp/0108)
 - [WINAPI ウィンドウメッセージリスト](http://chokuto.ifdef.jp/urawaza/message/index.html)
 - [Win32エラーコード一覧](http://ir9.jp/prog/ayu/win32err.htm)
 - [HSPEXT ver3.3 REFERENCE MANUAL](http://www.onionsoft.net/hsp/v33/doclib/hspext.txt)
-- [HSPINET ver3.3 REFERENCE MANUAL](http://www.onionsoft.net/hsp/v33/doclib/hspinet.txt)
-
-## 使用しているDLL
-- `shell32.dll`
-- `user32.dll`
-- `hspext.dll`
-- `hspinet.dll`
-
-## ライセンス表記
-### hspinet.dll
-```
-OpenHSP Copyright (c) 1997-2012, Onion Software/onitama.
-  NKF Copyright (C) 1987, FUJITSU LTD. (I.Ichikawa).
-  NKF Copyright (C) 1996-2009, The nkf Project.
-  cJSON Copyright (c) 2009 Dave Gamble
-
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
-
-  The above copyright notice and this permission notice shall be included in
-  all copies or substantial portions of the Software.
-
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-  THE SOFTWARE.
-  ```

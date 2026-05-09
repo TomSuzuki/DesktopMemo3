@@ -50,20 +50,17 @@
   noteunsel
 
   // JSON形式を開く
-  jsonopen@ jsonPtr, jsonText
-  jsongets@ _fontName, SettingKey_fontName, jsonPtr
-  jsongeti@ _fontSize, SettingKey_fontSize, jsonPtr
-  jsongeti@ _fontStyle, SettingKey_fontStyle, jsonPtr
-  jsongets@ _buttonColor1, SettingKey_buttonColor1, jsonPtr
-  jsongets@ _buttonColor2, SettingKey_buttonColor2, jsonPtr
-  jsongets@ _buttonColor3, SettingKey_buttonColor3, jsonPtr
-  jsongeti@ _deleteDialog, SettingKey_deleteDialog, jsonPtr
-  jsongeti@ _menuTextLength, SettingKey_menuTextLength, jsonPtr
-  jsongeti@ _translucentRate, SettingKey_translucentRate, jsonPtr
-  jsongets@ _colorName, SettingKey_colorName, jsonPtr
-
-  // JSONを閉じる
-  jsonclose@
+  jsonsel jsonText
+  _fontName        = jsonget(SettingKey_fontName)
+  _fontSize        = jsonget(SettingKey_fontSize)
+  _fontStyle       = jsonget(SettingKey_fontStyle)
+  _buttonColor1    = jsonget(SettingKey_buttonColor1)
+  _buttonColor2    = jsonget(SettingKey_buttonColor2)
+  _buttonColor3    = jsonget(SettingKey_buttonColor3)
+  _deleteDialog    = jsonget(SettingKey_deleteDialog)
+  _menuTextLength  = jsonget(SettingKey_menuTextLength)
+  _translucentRate = jsonget(SettingKey_translucentRate)
+  _colorName       = jsonget(SettingKey_colorName)
 
   // デフォルト設定の復元
   if (_fontName == ""):_fontName = DefaultSetting_fontName
@@ -78,22 +75,9 @@
   if (_colorName == ""):_colorName = DefaultSetting_colorName
 
   // 設定をJSONに
-  jsonnewobj@ jsonPtr, -1, ""
-  jsonputs@ jsonPtr, SettingKey_fontName, _fontName
-  jsonputi@ jsonPtr, SettingKey_fontSize, _fontSize
-  jsonputi@ jsonPtr, SettingKey_fontStyle, _fontStyle
-  jsonputs@ jsonPtr, SettingKey_buttonColor1, _buttonColor1
-  jsonputs@ jsonPtr, SettingKey_buttonColor2, _buttonColor2
-  jsonputs@ jsonPtr, SettingKey_buttonColor3, _buttonColor3
-  jsonputi@ jsonPtr, SettingKey_deleteDialog, _deleteDialog
-  jsonputi@ jsonPtr, SettingKey_menuTextLength, _menuTextLength
-  jsonputi@ jsonPtr, SettingKey_translucentRate, _translucentRate
-  jsonputs@ jsonPtr, SettingKey_colorName, _colorName
-  jsonout@ jsonText, jsonPtr
-  jsonclose@
+  jsonText = jsontostr()
 
   // 設定を保存
-  jsonText = cnvatos(jsonText)
   notesel jsonText
   notesave fname
   noteunsel
@@ -133,24 +117,13 @@
 
 #deffunc UpdateSetting_ColorName str _p1
   _colorName = _p1
-  
-  // 設定をJSONに
-  jsonnewobj@ jsonPtr, -1, ""
-  jsonputs@ jsonPtr, SettingKey_fontName, _fontName
-  jsonputi@ jsonPtr, SettingKey_fontSize, _fontSize
-  jsonputi@ jsonPtr, SettingKey_fontStyle, _fontStyle
-  jsonputs@ jsonPtr, SettingKey_buttonColor1, _buttonColor1
-  jsonputs@ jsonPtr, SettingKey_buttonColor2, _buttonColor2
-  jsonputs@ jsonPtr, SettingKey_buttonColor3, _buttonColor3
-  jsonputi@ jsonPtr, SettingKey_deleteDialog, _deleteDialog
-  jsonputi@ jsonPtr, SettingKey_menuTextLength, _menuTextLength
-  jsonputi@ jsonPtr, SettingKey_translucentRate, _translucentRate
-  jsonputs@ jsonPtr, SettingKey_colorName, _colorName
-  jsonout@ jsonText, jsonPtr
-  jsonclose@
+
+  // 設定を更新
+  jsonsel jsonText
+  _ = jsonset("color_name", _colorName)
   
   // 設定を保存
-  jsonText = cnvatos(jsonText)
+  jsonText = jsontostr()
   notesel jsonText
   notesave "setting.json"
   noteunsel

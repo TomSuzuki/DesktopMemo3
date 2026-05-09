@@ -18,8 +18,8 @@
 #include "hsp3utf.as"
 #include "user32.as"
 #include "hspext.as"
-#include "hspinet.as"
 #include "obj.as"
+#include "./Common/JsonParser.as"
 
 // グローバル変数
 #define global memo _memo@
@@ -31,7 +31,6 @@
 #include "./Module/StatusManager.hsp"
 #include "./Common/CommonConstants.hsp"
 #include "./Common/CommonFunctions.hsp"
-#include "./Common/DragAndDrop.hsp"
 #include "./Module/ErrorDialog.hsp"
 #include "./Module/SettingsManager.hsp"
 #include "./Module/ColorManager.hsp"

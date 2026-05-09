@@ -25,14 +25,11 @@
 #defcfunc Localizer str _key
 
   // JSONを開く
-  jsonopen@ jsonPtr, message_json
+  jsonsel message_json
 
   // JSONから読込み
-  jsongets@ res, _key, jsonPtr
-  if stat == 1 : res = _key
-
-  // JSONを閉じる
-  jsonclose@
+  res = str(jsonget(_key))
+  if res == "" : res = _key
 
   return res
 
