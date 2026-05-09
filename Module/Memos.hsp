@@ -120,14 +120,28 @@
 // デストラクタ
 #modterm
 
+  // 割り込み解除
+  oncmd 0
+
   // メニューから削除
   DeleteMemoMenu Id.WID
 
-  // ウィドウを非表示
-  gsel Id.WID, -1
+  // テキストエリアとボタンを削除
+  if (Id.TEXTAREA_ID != -1) : clrobj Id.TEXTAREA_ID, Id.TEXTAREA_ID : Id.TEXTAREA_ID = -1
+  if (Id.BUTTON_ID_ADD    != -1) : clrobj Id.BUTTON_ID_ADD,    Id.BUTTON_ID_ADD    : Id.BUTTON_ID_ADD    = -1
+  if (Id.BUTTON_ID_COLOR  != -1) : clrobj Id.BUTTON_ID_COLOR,  Id.BUTTON_ID_COLOR  : Id.BUTTON_ID_COLOR  = -1
+  if (Id.BUTTON_ID_PIN    != -1) : clrobj Id.BUTTON_ID_PIN,    Id.BUTTON_ID_PIN    : Id.BUTTON_ID_PIN    = -1
+  if (Id.BUTTON_ID_HID    != -1) : clrobj Id.BUTTON_ID_HID,    Id.BUTTON_ID_HID    : Id.BUTTON_ID_HID    = -1
+  if (Id.BUTTON_ID_DELETE != -1) : clrobj Id.BUTTON_ID_DELETE, Id.BUTTON_ID_DELETE : Id.BUTTON_ID_DELETE = -1
 
-  // メモリの開放
-  DeleteObject hBrush
+  // ウィンドウを非表示
+  gsel Id.WID, -1
+  Id.WID = -1
+
+  // ブラシ解放
+  if hBrush != -1 : DeleteObject hBrush : hBrush = -1
+
+  // ウィンドウバッファを破棄
   buffer wid, 1, 1, 2
 
   return
