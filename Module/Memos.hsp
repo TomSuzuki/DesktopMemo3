@@ -135,14 +135,14 @@
   if (Id.BUTTON_ID_DELETE != -1) : clrobj Id.BUTTON_ID_DELETE, Id.BUTTON_ID_DELETE : Id.BUTTON_ID_DELETE = -1
 
   // ウィンドウを非表示
-  gsel Id.WID, -1
-  Id.WID = -1
+  if (Id.WID != -1) {
+    gsel Id.WID, -1
+    buffer Id.WID, 1, 1, 2
+    Id.WID = -1
+  }
 
   // ブラシ解放
   if hBrush != -1 : DeleteObject hBrush : hBrush = -1
-
-  // ウィンドウバッファを破棄
-  buffer wid, 1, 1, 2
 
   return
 
@@ -470,6 +470,9 @@
 
   // 色コード変更
   Id.COLOR_ID = _colorId
+
+  // ブラシを解放
+  if hBrush != -1 : DeleteObject hBrush : hBrush = -1
 
   // テキストエリア削除
   clrobj Id.TEXTAREA_ID, Id.TEXTAREA_ID

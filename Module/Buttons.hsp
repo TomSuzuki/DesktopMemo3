@@ -62,13 +62,13 @@
   // バッファの作成
   BufferButton = NewBuffer(ButtonSize * 2, ButtonSize * 18)
 
-  // 画像のロード
-  imgAdd = ImgLoad(PathAdd)
-  imgCol = ImgLoad(PathCol)
-  imgDel = ImgLoad(PathDel)
-  imgHid = ImgLoad(PathHid)
-  imgPinT = ImgLoad(PathPinT)
-  imgPinF = ImgLoad(PathPinF)
+  // 画像のロード（既に読み込まれていれば再ロードしない）
+  if (imgAdd == 0)  : imgAdd  = ImgLoad(PathAdd)
+  if (imgCol == 0)  : imgCol  = ImgLoad(PathCol)
+  if (imgDel == 0)  : imgDel  = ImgLoad(PathDel)
+  if (imgHid == 0)  : imgHid  = ImgLoad(PathHid)
+  if (imgPinT == 0) : imgPinT = ImgLoad(PathPinT)
+  if (imgPinF == 0) : imgPinF = ImgLoad(PathPinF)
 
   // ボタン色の設定（通常、押し下げ、マウスオーバー）
   gsel BufferButton
