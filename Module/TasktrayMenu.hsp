@@ -389,6 +389,8 @@
       InitializeColorWindow
 
       // メモを再読込み
+      dim memo, 0
+      dimtype memo, vartype("struct")
       LoadAllMemo memoFileMask
 
       // 設定を更新
